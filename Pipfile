@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 rplcd = "*"
 smbus2 = "*"
+pigpio-encoder = "*"
+pigpio = "*"
 
 [dev-packages]
 
