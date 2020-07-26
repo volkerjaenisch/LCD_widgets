@@ -122,7 +122,7 @@ class Selector(object):
     def on_up(self):
         print(self.__class__.__name__, 'selector on Up')
 #        import pdb; pdb.set_trace()
-        if self.selected_idx > 1 :
+        if self.selected_idx > 0 :
             self.selected_idx -= 1
             return True
         else:
