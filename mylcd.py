@@ -1,21 +1,46 @@
 from RPLCD.i2c import CharLCD
 
+SIGNAL_UP = 'up'
+SIGNAL_DOWN = 'down'
+SIGNAL_CLICK = 'click'
+
 
 class Widget(object):
     
     _content = ''
     display = None
     autorender = True
+    _selector = None
     
     def __init__(self, position, **kwargs):
         self.position = position
         if 'autorender' in kwargs:
             self.autorender = kwargs['autorender']
+
+    @property        
+    def selectable(self):
+        return self._selector is not None
+    
+    @selectable.setter        
+    def selectable(self, value):
+        if value:
+            self._selector = Selector( self, self.content )
+        else :
+            self._selector = None
+
+    @property
+    def selector(self):
+        return self._selector
         
-    def signal(self, signal, value=None):
+    def notify(self, signal):
         print('Signal received', signal)
-        getattr(self, signal)()
-        
+        print('Displatching signal', signal)
+        if self.selectable :
+            print('Displatching signal to selectable', signal)
+            return self.selector.notify( signal )
+        else:
+            print('No one to dispatch to', signal)
+            
     def render(self):
         pass
 
@@ -23,7 +48,9 @@ class Widget(object):
         self._content = value
         if self.autorender:
             self.render()
-
+        if self.selector:
+            self.selector.select_on = self.content 
+            
     @property
     def content(self):
         return self._content
@@ -33,19 +60,23 @@ class Widget(object):
         self.handle_new_content(value)
 
         
-class Selectable(object):
+class Selector(object):
     
     _selected_idx = None
+    _select_on = None
     _parent = None
 
-    def __init__(self, selected_idx=0):
+    def __init__(self, parent, select_on, selected_idx=0):
+        self.parent = parent
+        self.select_on = select_on
         self.selected_idx = selected_idx
         self._signals = {
-            'up', self.on_up,
-            'down', self.on_down,
-            'click', self.on_click,
+            SIGNAL_UP : self.on_up,
+            SIGNAL_DOWN : self.on_down,
+            SIGNAL_CLICK : self.on_click,
             }
-        
+
+            
     @property
     def parent(self):
         return self._parent
@@ -53,6 +84,14 @@ class Selectable(object):
     @parent.setter
     def parent(self, value):
         self._parent = value
+            
+    @property
+    def select_on(self):
+        return self._select_on
+        
+    @select_on.setter
+    def select_on(self, value):
+        self._select_on = value
     
     @property
     def selected_idx(self):
@@ -64,24 +103,35 @@ class Selectable(object):
         if self.parent and self.parent.autorender:
             self.parent.render()
 
+    def active_item(self):
+        return self.select_on[self.selected_idx]
+            
     def on_click(self):
-        pass
+        return True
 
     def on_down(self):
-        if self.selected_idx < self.line_count:
+        print(self.__class__.__name__, 'selector on Down')
+#        import pdb; pdb.set_trace()
+        
+        if self.selected_idx < len(self.select_on) - 1:
             self.selected_idx += 1
+            return True
         else:
-            self.parent.down()
+            return False
         
     def on_up(self):
+        print(self.__class__.__name__, 'selector on Up')
+#        import pdb; pdb.set_trace()
         if self.selected_idx > 1 :
             self.selected_idx -= 1
+            return True
         else:
-            self.parent.up()
+            return False
             
-    def on_signal(self, signal):
-        self._signals[signal]()
+    def notify(self, signal):
+        return self._signals[signal]()
 
+    
         
 class Line(Widget):
     
@@ -119,23 +169,15 @@ class Select(Lines):
     _selectable = None
 
     
-    def __init__(self, position, line_count, selectable):
+    def __init__(self, position, line_count):
         super(Lines, self).__init__(position)
         self.line_count = line_count
-        self.selectable = selectable
+        self.selectable = True
+        
         
     def handle_selectable(self, value):
-        self._selectable = value
-        self._selectable.parent = self
-        
-    @property
-    def selectable(self):
-        return self._selectable
-
-    @selectable.setter
-    def selectable(self, value):
-        self.handle_selectable(value)
-        
+        self.selectable = value
+                 
     def handle_new_content(self, value):
         super(Select, self).handle_new_content(value)
         
@@ -143,7 +185,7 @@ class Select(Lines):
         y_pos, x_pos = self.position
         for idx, line in enumerate(self.content[0:self.line_count]):
             self.display.cursor_pos(y_pos, x_pos)
-            if  idx == self.selectable.selected_idx:
+            if  idx == self.selector.selected_idx:
                 self.display.write('>' + line)
             else:
                 self.display.write(' ' + line)
@@ -153,27 +195,55 @@ class Select(Lines):
             
 class Page(Widget):
     widgets = []
+    selectable_widgets = []
     
-    def __init__(self, display, parent=None, selectable=None):
+    def __init__(self, display, parent=None):
         self.display = display
         self.parent = parent
-        self.selectable = selectable
-            
+        self._selector = Selector( self, self.selectable_widgets )    
+        
     def add_widget(self, widget):
         widget.display = self.display
         widget.parent = self
         self.widgets.append(widget)
+        self.check_mark_selectable(widget)
+        
+    def check_mark_selectable(self, widget):
+        if widget.selectable :
+            self.selectable_widgets.append(widget)
 
+    def set_selectable( self, widget ):
+        if widget in self.selectable_widgets:
+            return
+        else: 
+            self.selectable_widgets = []
+            for widget in self.widgets:
+                self.check_mark_selectable( widget)
+            
     def active_widget(self):
-        return self.widgets[0]
+        if not self.selectable_widgets:
+            return None
+        return self.selectable_widgets[0]
         
     def render(self):
         for widget in self.widgets:
             widget.render()
 
-    def signal(self, signal, value=None):
-        print('Signal received', signal)
-        getattr(self.active_widget(), signal)()
+    def handle_signal(self, signal):
+        self.selector.notify( signal )
+            
+    def notify(self, signal, value=None):
+        print('Page received Signal:', signal)
+        target = self.active_widget()
+        if not target : 
+            return
+        res = target.notify(signal)
+        if res :
+            return
+        else:
+            self.handle_signal(signal)
+            
+            
         
             
 class Display(object):
@@ -198,6 +268,9 @@ class Display(object):
         self.lcd.write_string(line)
                       
 
+
+        
+        
 class Controller(object):
     
     _active_page = None
@@ -213,15 +286,15 @@ class Controller(object):
     
     def up(self):
         print('sended signal up')
-        self.active_page.signal('up')
+        self.active_page.notify(SIGNAL_UP)
 
     def down(self):
         print('sended signal down')
-        self.active_page.signal('down')
+        self.active_page.notify(SIGNAL_DOWN)
 
     def click(self):
         print('sended Signal click')
-        self.active_page.signal('click')
+        self.active_page.notify(SIGNAL_CLICK)
     
     def register_input(self, input_cls):
         self.input = input_cls(
@@ -243,7 +316,8 @@ class Input(object):
 
 from pigpio_encoder import Rotary
 from time import sleep
-    
+
+
 class InputRotary(Input):
 
     rotary = None
@@ -281,7 +355,7 @@ controller = Controller()
 start_page = Page(display)
 
 header = Line((0, 0))
-body = Select((1,0), 3, Selectable())
+body = Select((1,0), 3 )
 
 start_page.add_widget(header)
 start_page.add_widget(body)
