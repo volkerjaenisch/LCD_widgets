@@ -2,7 +2,8 @@
 
 class Display(object):
 
-    def __init__(self, line_count=4, chars_per_line=20):
+    def __init__(self, line_count=4, chars_per_line=20, autoupdate=False):
+        self.autoupdate = autoupdate
         self.line_count = line_count
         self.chars_per_line = chars_per_line
         self.pos_x = 0
@@ -22,7 +23,8 @@ class Display(object):
         current_line = current_line[0:self.pos_x] + line + current_line[self.pos_x + len(line):]
         current_line = current_line[0:self.chars_per_line]
         self.display[self.pos_y] = current_line
-        self.show()
+        if self.autoupdate:
+            self.show()
 
     def show(self):
         print('+' + '-' * self.chars_per_line + '+')

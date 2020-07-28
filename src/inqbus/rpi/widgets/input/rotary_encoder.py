@@ -1,6 +1,5 @@
-
+from inqbus.rpi.widgets.base.input import Input
 from pigpio_encoder import Rotary
-from src.base.input import Input
 
 
 class InputRotary(Input):

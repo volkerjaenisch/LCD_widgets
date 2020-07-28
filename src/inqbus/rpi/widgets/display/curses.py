@@ -1,6 +1,6 @@
 import curses
 
-from base.display import Display
+from inqbus.rpi.widgets.base.display import Display
 
 
 class CursesDisplay(Display):

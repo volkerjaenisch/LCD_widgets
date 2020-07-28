@@ -1,8 +1,8 @@
 from time import sleep
 
-from display.curses import CursesDisplay
-from src.base.signals import SIGNAL_UP, SIGNAL_DOWN, SIGNAL_CLICK
-from log import logging
+from inqbus.rpi.widgets.display.curses   import CursesDisplay
+from .signals import SIGNAL_UP, SIGNAL_DOWN, SIGNAL_CLICK
+from inqbus.rpi.widgets.log import logging
 
 KEYBOARD_SIGNALS = {
     'u' : SIGNAL_UP,

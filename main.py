@@ -1,8 +1,7 @@
-from base.controller import Controller
-from base.display import Display
-from display.curses import CursesDisplay
+from inqbus.rpi.widgets.base.controller import Controller
+from inqbus.rpi.widgets.display.curses import CursesDisplay
 #from input.rotary_encoder import InputRotary
-from widgets import Page, Line, Select
+from inqbus.rpi.widgets.widget import Page, Line, Select
 
 
 display = CursesDisplay()
