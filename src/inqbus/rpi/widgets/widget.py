@@ -1,5 +1,5 @@
-from base.widget import Widget, Selector
-from log import logging
+from inqbus.rpi.widgets.base.widget import Widget, Selector
+from inqbus.rpi.widgets.log import logging
 
 class Line(Widget):
 

@@ -1,5 +1,5 @@
-from src.base.signals import SIGNAL_UP, SIGNAL_DOWN, SIGNAL_CLICK
-from src.log import logging
+from inqbus.rpi.widgets.base.signals import SIGNAL_UP, SIGNAL_DOWN, SIGNAL_CLICK
+from inqbus.rpi.widgets.log import logging
 
 
 class Widget(object):
