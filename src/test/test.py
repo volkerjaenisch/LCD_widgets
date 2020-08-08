@@ -4,11 +4,11 @@ disp = Display()
 
 disp.write('huhu1')
 
-disp.cursor_pos(1,0)
+disp.set_cursor_pos(1,0)
 
 disp.write('huhu2')
 
-disp.cursor_pos(1,3)
+disp.set_cursor_pos(1,3)
 
 disp.write('Eulefuchsschwanzfurz')
 
