@@ -1,11 +1,14 @@
 import curses
 
 from inqbus.rpi.widgets.base.display import Display
+from inqbus.rpi.widgets.interfaces.widgets import IDisplay
+from zope.interface import implementer
 
 
-class CursesDisplay(Display):
+@implementer(IDisplay)
+class DisplayCurses(Display):
 
-    def init_display(self):
+    def init(self):
         curses.initscr()
         self.display = curses.newwin(self.line_count, self.chars_per_line, 0, 0)
         self.display.clear()

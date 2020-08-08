@@ -1,26 +1,31 @@
-from inqbus.rpi.widgets.base.controller import Controller
-from inqbus.rpi.widgets.display.curses import CursesDisplay
-#from input.rotary_encoder import InputRotary
-from inqbus.rpi.widgets.widget import Page, Line, Select
+from inqbus.rpi.widgets.display.curses import DisplayCurses
+from inqbus.rpi.widgets.input.curses import InputCurses
+from inqbus.rpi.widgets.interfaces.widgets import IGUI
+from inqbus.rpi.widgets.widgets import Page, Line
+
+from zope.component import getUtility
 
 
-display = CursesDisplay()
-controller = Controller()
-controller.register_display(display)
+import inqbus.rpi.widgets.gui # IMPORTANT!
+import inqbus.rpi.widgets.render # IMPORTANT!
+import inqbus.rpi.widgets.base.widget_controller # IMPORTANT!
+import inqbus.rpi.widgets.base.notify # IMPORTANT!
 
-start_page = Page(controller)
 
-header = Line((0, 0))
-body = Select((1,0), 3 )
+gui = getUtility(IGUI)
 
-start_page.add_widget(header)
-start_page.add_widget(body)
 
-header.content = 'Hallo'
-body.content = ['Volker', 'Du', 'Aas']
+display = DisplayCurses()
+input = InputCurses(display)
 
-header.content = 'Huhu'
+layout = Page((0,0),4)
 
-controller.active_page = start_page
+line = Line((0,0))
+line.content = 'huhu'
 
-controller.loop_curses(display)
+layout.add_widget(line)
+
+gui.setup(inputs=[input], displays=[display], layout=layout)
+
+gui.run()
+

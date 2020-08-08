@@ -2,20 +2,23 @@
 
 class Display(object):
 
-    def __init__(self, line_count=4, chars_per_line=20, autoupdate=False):
+    def __init__(self, line_count=4, chars_per_line=20, autoupdate=True):
         self.autoupdate = autoupdate
         self.line_count = line_count
         self.chars_per_line = chars_per_line
         self.pos_x = 0
         self.pos_y = 0
 
-        self.init_display()
-
-    def init_display(self):
-
+    def init(self):
         self.display = [ ' ' * self.chars_per_line for i in range(self.line_count)]
 
-    def cursor_pos(self, y, x):
+    def run(self):
+        pass
+
+    def done(self):
+        pass
+
+    def set_cursor_pos(self, y, x):
         self.pos_y, self.pos_x = (y, x)
 
     def write(self, line):
@@ -31,3 +34,4 @@ class Display(object):
         for line in self.display:
             print('|' + line + '|')
         print('+' + '-' * self.chars_per_line + '+')
+

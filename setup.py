@@ -35,6 +35,7 @@ setup(
         'smbus2',
         'pigpio',
         'pigpio-encoder',
+        'zope.component',
     ],
     extras_require={
         'test': [
