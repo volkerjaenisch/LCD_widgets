@@ -1,7 +1,13 @@
 from inqbus.rpi.widgets import events
 from inqbus.rpi.widgets.base.events import event_registry
-from inqbus.rpi.widgets.interfaces.widgets import IWidgetController
+from inqbus.rpi.widgets.interfaces.widgets import (
+    IWidgetController, IRenderer,
+    IGUI, )
 from inqbus.rpi.widgets.log import logging
+from zope.component import getUtility, getMultiAdapter
+from zope.interface import Interface
+
+
 
 
 class Widget(object):
@@ -38,16 +44,25 @@ class Widget(object):
         self._parent = value
 
     @property
+    def length(self):
+        return len(self.content)
+
+    @property
     def controller(self):
         return self._controller
 
     def render(self):
-        pass
+        gui = getUtility(IGUI)
+        for display in gui.displays:
+            renderer = getMultiAdapter((self, display), IRenderer)
+            if renderer:
+                renderer.render()
 
     def handle_new_content(self, value):
         self._content = value
         if self.autorender:
             self.render()
-        if self._controller:
-            self._controller.select_on = self.content
+
+    def init(self):
+        pass
 

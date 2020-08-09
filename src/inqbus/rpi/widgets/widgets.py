@@ -78,3 +78,8 @@ class Page(Select):
             return
         else:
             self.handle_signal(signal)
+
+    @property
+    def length(self):
+        return len(self.widgets)
+

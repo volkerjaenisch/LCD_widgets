@@ -1,10 +1,14 @@
-from inqbus.rpi.widgets.interfaces.widgets import IRenderer
+from inqbus.rpi.widgets.interfaces.widgets import (
+    IRenderer, ILineWidget,
+    IPageWidget, ISelectWidget, ILinesWidget, )
 from inqbus.rpi.widgets.base.render import Renderer
-from zope.interface import implementer
+from zope.component import getGlobalSiteManager
+from zope.interface import implementer, Interface
+
 
 @implementer(IRenderer)
 class LineRenderer(Renderer):
-
+    __used_for__ = (ILineWidget, Interface)
     def render(self):
         self.display.set_cursor_pos(*self.widget.position)
         out_line = self.widget.content
@@ -14,6 +18,7 @@ class LineRenderer(Renderer):
 
 @implementer(IRenderer)
 class LinesRenderer(Renderer):
+    __used_for__ = (ILinesWidget,)
 
     def render(self):
         widget = self.widget
@@ -26,6 +31,7 @@ class LinesRenderer(Renderer):
 
 @implementer(IRenderer)
 class SelectRenderer(Renderer):
+    __used_for__ = (ISelectWidget,)
 
     def render(self):
         y_pos, x_pos = self.widget.position
@@ -40,7 +46,15 @@ class SelectRenderer(Renderer):
 
 @implementer(IRenderer)
 class PageRenderer(Renderer):
+    __used_for__ = (IPageWidget,)
 
     def render(self):
         for widget in self.widget.widgets:
             IRenderer(widget).render()
+
+
+gsm = getGlobalSiteManager()
+gsm.registerAdapter(LineRenderer, (ILineWidget, Interface), IRenderer)
+gsm.registerAdapter(LinesRenderer, (ILinesWidget, Interface,), IRenderer)
+gsm.registerAdapter(LinesRenderer, (ISelectWidget, Interface,), IRenderer)
+gsm.registerAdapter(LinesRenderer, (IPageWidget, Interface,), IRenderer)

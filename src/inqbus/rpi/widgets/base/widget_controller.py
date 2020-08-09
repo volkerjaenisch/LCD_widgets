@@ -41,7 +41,7 @@ class WidgetController(object):
         logging.debug(self.__class__.__name__ + ' done Down')
         #        import pdb; pdb.set_trace()
 
-        if self.widget.selected_idx < len(self.widget.content) - 1:
+        if self.widget.selected_idx < self.widget.length - 1:
             self.widget.selected_idx += 1
             return True
         else:

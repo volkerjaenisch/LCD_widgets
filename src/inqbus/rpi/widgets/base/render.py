@@ -7,6 +7,7 @@ gsm = zope.component.getGlobalSiteManager()
 @implementer(IRenderer)
 class Renderer(object):
     __used_for__ = (IWidget, IDisplay)
+
     def __init__(self, widget, display):
         self.widget = widget
         self.display = display
