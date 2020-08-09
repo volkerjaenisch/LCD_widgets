@@ -1,11 +1,11 @@
 from RPLCD.i2c import CharLCD
+from inqbus.rpi.widgets.base.display import Display
+from inqbus.rpi.widgets.interfaces.widgets import IDisplay
+from zope.interface import implementer
 
 
-class DisplayCharLCD(object):
-
-    def __init__(self, line_count=4, chars_per_line=20):
-        self.line_count = line_count
-        self.chars_per_line = chars_per_line
+@implementer(IDisplay)
+class DisplayCharLCD(Display):
 
     def init(self):
 

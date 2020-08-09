@@ -1,3 +1,5 @@
+import threading
+
 from inqbus.rpi.widgets.base.input import Input
 from inqbus.rpi.widgets.events import Input_Down, Input_Up, Input_Click
 from inqbus.rpi.widgets.interfaces.widgets import IInput, INotify, IGUI
@@ -22,6 +24,10 @@ class InputCurses(Input):
         self.display = curses_display
 
     def run(self):
+        thread = threading.Thread(target=self.run_curses)
+        thread.start()
+
+    def run_curses(self):
         while True:
             key = self.display.display.getkey()
             if key.lower() in KEYBOARD_SIGNALS:

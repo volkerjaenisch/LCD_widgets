@@ -12,8 +12,8 @@ class Input(object):
     click_handler = None
     target = None
 
-    def init(self, target):
-        self.target = target
+    def init(self):
+        pass
 
     def run(self):
         pass

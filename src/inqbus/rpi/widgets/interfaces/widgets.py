@@ -9,6 +9,13 @@ class IWidget(Interface):
 
     content = Attribute("""Content of widget""")
     position = Attribute("""X,Y position of widget""")
+    parent = Attribute("""X,Y position of widget""")
+
+    def length(self):
+        pass
+
+    def init(self):
+        pass
 
 
 class ILineWidget(IWidget):

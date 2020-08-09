@@ -7,23 +7,35 @@ gsm = getGlobalSiteManager()
 
 @implementer(IGUI)
 class GUI(object):
-    _displays = None
-    _inputs = None
-    _layout = None
 
-    def setup(self, inputs, displays, layout):
-        self._inputs = inputs
-        self._displays = displays
+    def __init__(self):
+        self._displays = []
+        self._inputs = []
+        self._layout = None
+
+    def add_display(self, display):
+        self._displays.append( display )
+
+    def add_input(self, input):
+        self._inputs.append(input)
+
+    def set_layout(self, layout):
         self._layout = layout
 
     def run(self):
         for display in self._displays:
             display.init()
             display.run()
-        self._layout.init()
         for input in self._inputs:
-            input.init(self._layout)
+            input.init()
             input.run()
+
+    @property
+    def displays(self):
+        return self._displays
+
+    def render(self):
+        self._layout.render()
 
 
 gui = GUI()

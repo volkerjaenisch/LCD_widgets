@@ -1,5 +1,8 @@
+from inqbus.rpi.widgets.interfaces.widgets import IDisplay
+from zope.interface import implementer
 
 
+@implementer(IDisplay)
 class Display(object):
 
     def __init__(self, line_count=4, chars_per_line=20, autoupdate=True):
@@ -8,6 +11,7 @@ class Display(object):
         self.chars_per_line = chars_per_line
         self.pos_x = 0
         self.pos_y = 0
+        self.init()
 
     def init(self):
         self.display = [ ' ' * self.chars_per_line for i in range(self.line_count)]
