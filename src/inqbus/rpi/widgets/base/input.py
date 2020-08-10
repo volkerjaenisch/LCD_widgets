@@ -1,4 +1,5 @@
-from inqbus.rpi.widgets.interfaces.widgets import IInput, IGUI
+from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
+from inqbus.rpi.widgets.interfaces.widgets import IInput, IGUI, INotify
 from zope.component import getUtility
 from zope.interface import implementer
 
@@ -20,3 +21,6 @@ class Input(object):
 
     def done(self):
         pass
+
+
+

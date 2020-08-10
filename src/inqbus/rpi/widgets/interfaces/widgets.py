@@ -8,7 +8,8 @@ class IGUI(Interface):
 class IWidget(Interface):
 
     content = Attribute("""Content of widget""")
-    position = Attribute("""X,Y position of widget""")
+    pos_x = Attribute("""X position of widget""")
+    pos_y = Attribute("""Y position of widget""")
     parent = Attribute("""X,Y position of widget""")
 
     def length(self):
