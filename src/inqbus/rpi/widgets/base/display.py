@@ -9,8 +9,8 @@ class Display(object):
         self.autoupdate = autoupdate
         self.line_count = line_count
         self.chars_per_line = chars_per_line
-        self.pos_x = 0
-        self.pos_y = 0
+        self._pos_x = 0
+        self._pos_y = 0
         self.init()
 
     def init(self):
@@ -22,10 +22,15 @@ class Display(object):
     def done(self):
         pass
 
-    def set_cursor_pos(self, y, x):
+    def set_cursor_pos(self, x, y):
         self.pos_y, self.pos_x = (y, x)
 
     def write(self, line):
+        if not self.pos_y < self.line_count :
+            return
+        if not self.pos_x < self.chars_per_line :
+            return
+
         current_line = self.display[self.pos_y]
         current_line = current_line[0:self.pos_x] + line + current_line[self.pos_x + len(line):]
         current_line = current_line[0:self.chars_per_line]

@@ -19,8 +19,8 @@ class Line(Widget):
 class Lines(Line):
     _content = None
 
-    def __init__(self, position, line_count):
-        super(Lines, self).__init__(position)
+    def __init__(self, pos_x=0, pos_y=0, line_count=None):
+        super(Lines, self).__init__(pos_x=pos_x, pos_y=pos_y)
         self._content = []
         self.line_count = line_count
 
@@ -30,11 +30,15 @@ class Select(Lines):
     _content = None
     selected_idx = 0
 
-
     def handle_new_content(self, value):
-        super(Select, self).handle_new_content(value)
-
-
+        for line_val in value:
+            if isinstance(line_val, str):
+                line = Line()
+                line.autorender = False
+                line.content = line_val
+                self._content.append(line)
+        if self.autorender:
+            self.render()
 
 
 @implementer(IPageWidget)
@@ -45,7 +49,6 @@ class Page(Select):
     def add_widget(self, widget):
         widget.parent = self
         self.widgets.append(widget)
-#        self.check_mark_selectable(widget)
 
     def check_mark_selectable(self, widget):
         if widget.selectable:

@@ -12,7 +12,16 @@ class Renderer(object):
         self.widget = widget
         self.display = display
 
-    def render(self):
-        pass
+    def render(self, pos_x=None, pos_y=None):
+        if pos_x is None:
+            self.pos_x = self.widget.pos_x
+        else:
+            self.pos_x = pos_x
+
+
+        if pos_y is None:
+            self.pos_y = self.widget.pos_y
+        else:
+            self.pos_y = pos_y
 
 gsm.registerAdapter(Renderer, (IWidget, IDisplay), IRenderer)

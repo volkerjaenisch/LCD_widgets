@@ -18,11 +18,9 @@ class Widget(object):
     autoscroll = False
     focused = False
 
-    def __init__(self, position=None, **kwargs):
-        if position:
-            self.position = position
-        else:
-            self.position = (0,0)
+    def __init__(self, pos_x = 0, pos_y = 0, **kwargs):
+        self.pos_x = pos_x
+        self.pos_y = pos_y
         if 'autorender' in kwargs:
             self.autorender = kwargs['autorender']
         self._controller = IWidgetController(self)
@@ -51,12 +49,16 @@ class Widget(object):
     def controller(self):
         return self._controller
 
-    def render(self):
+    def render(self, pos_x=None, pos_y=None):
+        if pos_x is None:
+            pos_x = self.pos_x
+        if pos_y is None:
+            pos_y = self.pos_y
         gui = getUtility(IGUI)
         for display in gui.displays:
             renderer = getMultiAdapter((self, display), IRenderer)
             if renderer:
-                renderer.render()
+                renderer.render(pos_x=pos_x, pos_y=pos_y)
 
     def handle_new_content(self, value):
         self._content = value
