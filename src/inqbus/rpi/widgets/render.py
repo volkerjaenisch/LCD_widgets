@@ -9,7 +9,7 @@ from zope.interface import implementer, Interface
 @implementer(IRenderer)
 class LineRenderer(Renderer):
     __used_for__ = (ILineWidget, Interface)
-    def render(self, pos_x=0, pos_y=0):
+    def render(self, pos_x=None, pos_y=None):
         super(LineRenderer, self).render(pos_x=pos_x, pos_y=pos_y)
         self.display.set_cursor_pos(pos_x, pos_y)
         out_line = self.widget.content
@@ -21,7 +21,8 @@ class LineRenderer(Renderer):
 class LinesRenderer(Renderer):
     __used_for__ = (ILinesWidget,)
 
-    def render(self, pos_x=0, pos_y=0):
+    def render(self, pos_x=None, pos_y=None):
+        super(LinesRenderer, self).render(pos_x=pos_x, pos_y=pos_y)
         widget = self.widget
         y_pos= self.widget.pos_y
         x_pos = self.widget.pos_x
@@ -34,7 +35,7 @@ class LinesRenderer(Renderer):
 class SelectRenderer(Renderer):
     __used_for__ = (ISelectWidget,)
 
-    def render(self, pos_x=0, pos_y=0):
+    def render(self, pos_x=None, pos_y=None):
         super(SelectRenderer, self).render(pos_x=pos_x, pos_y=pos_y)
         pos_x = self.pos_x
         pos_y = self.pos_y
@@ -52,7 +53,7 @@ class SelectRenderer(Renderer):
 class PageRenderer(Renderer):
     __used_for__ = (IPageWidget,)
 
-    def render(self, pos_x=0, pos_y=0):
+    def render(self, pos_x=None, pos_y=None):
         for widget in self.widget.widgets:
             IRenderer(widget).render()
 

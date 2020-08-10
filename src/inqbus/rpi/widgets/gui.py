@@ -29,6 +29,7 @@ class GUI(object):
         for input in self._inputs:
             input.init()
             input.run()
+        self._layout.render()
 
     @property
     def displays(self):
