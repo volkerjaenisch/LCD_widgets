@@ -10,3 +10,4 @@ class Rotary(object):
     def setup_switch(self, **kwargs):
         pass
 
+
