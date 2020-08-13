@@ -2,9 +2,8 @@ from time import sleep
 
 from inqbus.rpi.widgets.base.input import Input
 from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
-from inqbus.rpi.widgets.interfaces.widgets import IInput, INotify, IGUI
+from inqbus.rpi.widgets.interfaces.widgets import IInput
 from pynput import keyboard
-from zope.component import getUtility
 from zope.interface import implementer
 
 
