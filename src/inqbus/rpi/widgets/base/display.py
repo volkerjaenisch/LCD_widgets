@@ -9,8 +9,8 @@ class Display(object):
         self.autoupdate = autoupdate
         self.line_count = line_count
         self.chars_per_line = chars_per_line
-        self._pos_x = 0
-        self._pos_y = 0
+        self.pos_x = 0
+        self.pos_y = 0
         self.init()
 
     def init(self):

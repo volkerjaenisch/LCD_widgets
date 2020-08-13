@@ -55,7 +55,7 @@ class PageRenderer(Renderer):
 
     def render(self, pos_x=None, pos_y=None):
         for widget in self.widget.widgets:
-            IRenderer(widget).render()
+            widget.render()
 
 
 gsm = getGlobalSiteManager()

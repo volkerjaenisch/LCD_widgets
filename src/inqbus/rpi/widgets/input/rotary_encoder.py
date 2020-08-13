@@ -1,6 +1,6 @@
 from inqbus.rpi.widgets.base.events import event_registry
 from inqbus.rpi.widgets.base.input import Input
-from inqbus.rpi.widgets.events import Input_Down, Input_Up, Input_Click
+from inqbus.rpi.widgets.signals import Input_Down, Input_Up, Input_Click
 from inqbus.rpi.widgets.interfaces.widgets import IInput
 from zope.interface import implementer
 

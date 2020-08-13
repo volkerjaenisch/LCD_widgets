@@ -1,6 +1,6 @@
 import logging
 
-from inqbus.rpi.widgets import events
+from inqbus.rpi.widgets import signals
 from inqbus.rpi.widgets.errors import SignalNotCatched
 from zope.component import getGlobalSiteManager
 from inqbus.rpi.widgets.interfaces.widgets import IWidgetController, IWidget
@@ -10,28 +10,15 @@ from zope.interface import implementer
 @implementer(IWidgetController)
 class WidgetController(object):
     __used_for__ = (IWidget)
-    _active_page = None
 
     def __init__(self, widget):
         self.widget = widget
         self.modules = []
-        self._events = {
-            events.Input_Up: self.on_up,
-            events.Input_Down: self.on_down,
-            events.Input_Click: self.on_click,
+        self._signals = {
+            signals.Input_Up: self.on_up,
+            signals.Input_Down: self.on_down,
+            signals.Input_Click: self.on_click,
         }
-
-    @property
-    def active_page(self):
-        return self._active_page
-
-    @active_page.setter
-    def active_page(self, value):
-        self._active_page = value
-        self._active_page.render()
-
-    def register_module(self, module):
-        self.modules.append(module(self))
 
     def on_click(self, signal):
         logging.debug(self.__class__.__name__ + ' done click')
@@ -57,7 +44,7 @@ class WidgetController(object):
             return False
 
     def notify(self, signal):
-        result = self._events[signal](signal)
+        result = self._signals[signal](signal)
         if result:
             return result
         else:

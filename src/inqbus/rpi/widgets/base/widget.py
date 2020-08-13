@@ -1,28 +1,30 @@
-from inqbus.rpi.widgets import events
-from inqbus.rpi.widgets.base.events import event_registry
 from inqbus.rpi.widgets.interfaces.widgets import (
     IWidgetController, IRenderer,
-    IGUI, )
-from inqbus.rpi.widgets.log import logging
+    IGUI, IWidget, )
 from zope.component import getUtility, getMultiAdapter
-from zope.interface import Interface
+from zope.interface import implementer
 
 
-
-
+@implementer(IWidget)
 class Widget(object):
     _content = ''
     _parent = None
     _controller = None
-    autorender = True
+    render_on_content_change = True
     autoscroll = False
     focused = False
 
-    def __init__(self, pos_x = 0, pos_y = 0, **kwargs):
+    def __init__(self,
+                 pos_x = 0,
+                 pos_y = 0,
+                 render_on_content_change=True,
+                 autoscroll=True,
+                 ):
         self.pos_x = pos_x
         self.pos_y = pos_y
-        if 'autorender' in kwargs:
-            self.autorender = kwargs['autorender']
+        self.render_on_content_change = render_on_content_change
+        self.autoscroll = autoscroll
+
         self._controller = IWidgetController(self)
 
     @property
@@ -62,7 +64,7 @@ class Widget(object):
 
     def handle_new_content(self, value):
         self._content = value
-        if self.autorender:
+        if self.render_on_content_change:
             self.render()
 
     def init(self):

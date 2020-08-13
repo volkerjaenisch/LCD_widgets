@@ -18,7 +18,6 @@ class Renderer(object):
         else:
             self.pos_x = pos_x
 
-
         if pos_y is None:
             self.pos_y = self.widget.pos_y
         else:

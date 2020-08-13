@@ -16,7 +16,7 @@ class Input(object):
     def init(self):
         pass
 
-    def run(self):
+    def run(self, queue):
         pass
 
     def done(self):
