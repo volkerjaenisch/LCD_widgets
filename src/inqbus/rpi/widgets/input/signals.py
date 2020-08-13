@@ -1,4 +1,4 @@
-from inqbus.rpi.widgets.events import Input_Down, Input_Up, Input_Click
+from inqbus.rpi.widgets.signals import Input_Down, Input_Up, Input_Click
 
 KEYBOARD_SIGNALS = {
     'u': Input_Up,

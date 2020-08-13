@@ -28,16 +28,27 @@ class Lines(Line):
 @implementer(ISelectWidget)
 class Select(Lines):
     _content = None
-    selected_idx = 0
+    _selected_idx = 0
+    render_on_selection_change = True
+
+    @property
+    def selected_idx(self):
+        return self._selected_idx
+
+    @selected_idx.setter
+    def selected_idx(self, value):
+        self._selected_idx = value
+        if self.render_on_selection_change:
+            self.render()
 
     def handle_new_content(self, value):
         for line_val in value:
             if isinstance(line_val, str):
                 line = Line()
-                line.autorender = False
+                line.render_on_content_change = False
                 line.content = line_val
                 self._content.append(line)
-        if self.autorender:
+        if self.render_on_content_change:
             self.render()
 
 

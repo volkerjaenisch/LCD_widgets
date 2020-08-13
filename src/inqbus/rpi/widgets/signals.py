@@ -1,11 +1,11 @@
-from .base.events import Event
+from .base.signal import Signal
 
 
-class Input_Move(Event):
+class Input_Move(Signal):
     pass
 
 
-class Input_Click(Event):
+class Input_Click(Signal):
     pass
 
 

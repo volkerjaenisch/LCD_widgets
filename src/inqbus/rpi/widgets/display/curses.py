@@ -10,9 +10,13 @@ class DisplayCurses(Display):
 
     def init(self):
         curses.initscr()
-        self.display = curses.newwin(self.line_count, self.chars_per_line, 0, 0)
-        self.display.clear()
+        self.display = curses.newwin(self.line_count+1, self.chars_per_line, 0, 0)
 
     def write(self, line):
-        self.display.addstr(self.pos_x, self.pos_y, line)
+        if not self.pos_y < self.line_count :
+            return
+        if not self.pos_x < self.chars_per_line :
+            return
+        self.display.addstr(self.pos_y, self.pos_x, line)
+        self.display.refresh()
 
