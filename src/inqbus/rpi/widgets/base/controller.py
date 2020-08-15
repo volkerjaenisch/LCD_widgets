@@ -46,6 +46,7 @@ class WidgetController(object):
     def notify(self, signal):
         result = self._signals[signal](signal)
         if result:
+            self.widget.render()
             return result
         else:
             if self.widget.parent:

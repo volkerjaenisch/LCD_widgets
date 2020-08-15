@@ -1,17 +1,21 @@
 from time import sleep
 
-from inqbus.rpi.widgets.base.input import Input
+from inqbus.rpi.widgets.base.input import Input, BlockingInput
 from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
-from inqbus.rpi.widgets.interfaces.widgets import IInput
+from inqbus.rpi.widgets.interfaces.widgets import IBlockingInput
 from pynput import keyboard
 from zope.interface import implementer
 
 
-@implementer(IInput)
-class PynputInput(Input):
+@implementer(IBlockingInput)
+class PynputInput(BlockingInput):
+
+    def init(self):
+        pass
 
     def run(self, queue):
-        self.queue = queue
+        super(PynputInput, self).run(queue)
+
         self.listener = keyboard.Listener(
             on_release=self.on_key_release)
         self.listener.start()

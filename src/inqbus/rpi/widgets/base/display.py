@@ -1,3 +1,4 @@
+from inqbus.rpi.widgets.errors import OutOfDisplay
 from inqbus.rpi.widgets.interfaces.widgets import IDisplay
 from zope.interface import implementer
 
@@ -5,7 +6,11 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class Display(object):
 
-    def __init__(self, line_count=4, chars_per_line=20, autoupdate=True):
+    def __init__(self,
+                 line_count=4,
+                 chars_per_line=20,
+                 autoupdate=True,
+                 ):
         self.autoupdate = autoupdate
         self.line_count = line_count
         self.chars_per_line = chars_per_line
@@ -22,17 +27,23 @@ class Display(object):
     def done(self):
         pass
 
+    def write_at_pos(self, x, y, content):
+        try:
+            self.set_cursor_pos(x, y)
+            self.write(content)
+        except OutOfDisplay:
+            return
+
     def set_cursor_pos(self, x, y):
-        self.pos_y, self.pos_x = (y, x)
+        if not y < self.line_count :
+            raise OutOfDisplay
+        if not x < self.chars_per_line :
+            raise OutOfDisplay
+        self.pos_x, self.pos_y = (x, y)
 
-    def write(self, line):
-        if not self.pos_y < self.line_count :
-            return
-        if not self.pos_x < self.chars_per_line :
-            return
-
+    def write(self, content):
         current_line = self.display[self.pos_y]
-        current_line = current_line[0:self.pos_x] + line + current_line[self.pos_x + len(line):]
+        current_line = current_line[0:self.pos_x] + content + current_line[self.pos_x + len(content):]
         current_line = current_line[0:self.chars_per_line]
         self.display[self.pos_y] = current_line
         if self.autoupdate:

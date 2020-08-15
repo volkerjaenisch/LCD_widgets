@@ -17,12 +17,19 @@ class RotaryInput(Input):
     counter = None
 
     def __init__(self):
-        self.rotary = Rotary(clk=17, dt=22, sw=27)
-        self.rotary.setup_rotary(rotary_callback=self.rotary_callback)
+        self.rotary = Rotary(clk_gpio=22, dt_gpio=27, sw_gpio=17)
+        self.rotary.setup_rotary(min=0, max=50, rotary_callback=self.rotary_callback)
         self.rotary.setup_switch(sw_short_callback=self.click_callback)
+        self.rotary.counter = 25
+
+    def init(self):
         gui = getUtility(IGUI)
-        layout = gui._layout
-        self.notify = INotify(layout.controller)
+        focus = gui.focus
+        self.notify = INotify(focus.controller)
+
+    def run(self):
+        pass
+
 
     def rotary_callback(self, counter):
         print('Rotation', counter)

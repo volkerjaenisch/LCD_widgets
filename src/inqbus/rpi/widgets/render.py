@@ -11,10 +11,7 @@ class LineRenderer(Renderer):
     __used_for__ = (ILineWidget, Interface)
     def render(self, pos_x=None, pos_y=None):
         super(LineRenderer, self).render(pos_x=pos_x, pos_y=pos_y)
-        self.display.set_cursor_pos(pos_x, pos_y)
-        out_line = self.widget.content
-        out_line += (self.display.chars_per_line - len(self.widget.content)) * ' '
-        self.display.write(out_line)
+        self.display.write_at_pos(pos_x, pos_y, self.widget.content)
 
 
 @implementer(IRenderer)
@@ -40,14 +37,12 @@ class SelectRenderer(Renderer):
         pos_x = self.pos_x
         pos_y = self.pos_y
         for idx, line in enumerate(self.widget.content[0:self.widget.line_count]):
-            self.display.set_cursor_pos(pos_x, pos_y)
             if idx == self.widget.selected_idx:
-                self.display.write('>')
+                self.display.write_at_pos(pos_x, pos_y, '>')
             else:
-                self.display.write(' ')
+                self.display.write_at_pos(pos_x, pos_y, ' ')
             line.render(pos_x + 1, pos_y)
             pos_y += 1
-
 
 @implementer(IRenderer)
 class PageRenderer(Renderer):
