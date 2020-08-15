@@ -36,7 +36,14 @@ class SelectRenderer(Renderer):
         super(SelectRenderer, self).render(pos_x=pos_x, pos_y=pos_y)
         pos_x = self.pos_x
         pos_y = self.pos_y
-        for idx, line in enumerate(self.widget.content[0:self.widget.line_count]):
+
+        if self.widget.selected_idx + pos_y >= self.display.line_count:
+            start_idx =  self.widget.selected_idx - (self.display.line_count - pos_y - 1)
+            end_idx = self.widget.selected_idx + 1
+        else:
+            start_idx = 0
+            end_idx = self.display.line_count - pos_y
+        for idx, line in enumerate(self.widget.content[start_idx:end_idx]):
             if idx == self.widget.selected_idx:
                 self.display.write_at_pos(pos_x, pos_y, '>')
             else:

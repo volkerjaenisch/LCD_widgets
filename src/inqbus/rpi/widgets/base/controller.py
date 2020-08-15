@@ -26,7 +26,6 @@ class WidgetController(object):
 
     def on_down(self, signal):
         logging.debug(self.__class__.__name__ + ' done Down')
-        #        import pdb; pdb.set_trace()
 
         if self.widget.selected_idx < self.widget.length - 1:
             self.widget.selected_idx += 1
@@ -36,7 +35,7 @@ class WidgetController(object):
 
     def on_up(self, signal):
         logging.debug(self.__class__.__name__ + ' done Up')
-        #        import pdb; pdb.set_trace()
+
         if self.widget.selected_idx > 0:
             self.widget.selected_idx -= 1
             return True
@@ -53,7 +52,6 @@ class WidgetController(object):
                 return self.widget.parent.notify(signal)
             else:
                 raise SignalNotCatched
-
 
 
 gsm = getGlobalSiteManager()
