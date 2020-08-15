@@ -1,26 +1,22 @@
-from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
-from inqbus.rpi.widgets.interfaces.widgets import IInput, IGUI, INotify
-from zope.component import getUtility
+from inqbus.rpi.widgets.base.device import Device
+from inqbus.rpi.widgets.interfaces.widgets import (
+    IInput, IBlockingInput, )
 from zope.interface import implementer
 
 
-
-
 @implementer(IInput)
-class Input(object):
+class Input(Device):
     up_handler = None
     down_handler = None
     click_handler = None
     target = None
 
-    def init(self):
-        pass
+
+@implementer(IBlockingInput)
+class BlockingInput(Input):
+    queue = None
 
     def run(self, queue):
-        pass
-
-    def done(self):
-        pass
-
+        self.queue = queue
 
 

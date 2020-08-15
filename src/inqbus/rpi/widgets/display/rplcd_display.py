@@ -5,7 +5,7 @@ from zope.interface import implementer
 
 
 @implementer(IDisplay)
-class DisplayCharLCD(Display):
+class RPLCDDisplay(Display):
 
     def init(self):
 
@@ -13,10 +13,12 @@ class DisplayCharLCD(Display):
 #        self.lcd = CharLCD('MCP23017', 0x20, backlight_enabled=True, expander_params={'gpio_bank': 'B'})
         self.display.clear()
 
-    def set_cursor_pos(self, y, x):
+    def set_cursor_pos(self, x, y):
+        super(RPLCDDisplay, self).set_cursor_pos(x,y)
         self.display.cursor_pos = (y, x)
 
     def write(self, line):
         self.display.write_string(line)
 
-
+    def show(self):
+        pass

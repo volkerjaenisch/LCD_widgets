@@ -41,7 +41,7 @@ class IRenderer(Interface):
         pass
 
 
-class IDisplay(Interface):
+class IDevice(Interface):
 
     def init(self):
         pass
@@ -52,10 +52,10 @@ class IDisplay(Interface):
     def done(self):
         pass
 
-    def write(self, value):
-        pass
 
-    def set_cursor_pos(self, x, y):
+class IDisplay(IDevice):
+
+    def write_at_pos(self, x, y, content):
         pass
 
 
@@ -71,15 +71,14 @@ class ICurses(IDisplay):
     pass
 
 
-class IInput(Interface):
+class IInput(IDevice):
+    pass
 
-    def init(self):
-        pass
 
-    def run(self):
-        pass
+class IBlockingInput(IInput):
+    queue = Attribute("""Sync-Queue to main thread""")
 
-    def donw(self):
+    def run(self, queue):
         pass
 
 

@@ -18,6 +18,7 @@ except ImportError:
 class InputCurses(Input):
 
     def __init__(self, curses_display):
+
         if not curses_display:
             self.display =  curses.newwin(1, 1, 0, 0)
         else:
