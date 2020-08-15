@@ -83,7 +83,7 @@ class Page(Select):
         self.selector.notify(signal)
 
     def notify(self, signal, value=None):
-        logging.debug('Page received Signal: ' + signal)
+        logging.debug('Page received Signal: %s' % signal)
         target = self.active_widget()
         if not target:
             return
