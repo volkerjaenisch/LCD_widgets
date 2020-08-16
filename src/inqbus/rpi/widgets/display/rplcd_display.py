@@ -7,10 +7,41 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class RPLCDDisplay(Display):
 
-    def init(self):
+    def __init__(self,
+                 line_count,
+                 chars_per_line,
+                 i2c_expander,
+                 address,
+                 expander_params=None,
+                 port=1,
+                 dotsize=8,
+                 charmap='A02',
+                 auto_linebreaks=True,
+                 backlight_enabled=True):
+        self.chars_per_line = chars_per_line
+        self.line_count = line_count
+        self.i2c_expander = i2c_expander
+        self.address = address
+        self.port = port
+        self.expander_params = expander_params
+        self.dotsize = dotsize
+        self.charmap = charmap
+        self.auto_linebreaks = auto_linebreaks
+        self.backlight_enabled=backlight_enabled
 
-        self.display = CharLCD('PCF8574', 0x27, backlight_enabled=True)
-#        self.lcd = CharLCD('MCP23017', 0x20, backlight_enabled=True, expander_params={'gpio_bank': 'B'})
+    def init(self, display=None):
+        self.display = CharLCD(
+                self.i2c_expander,
+                self.address,
+                port=self.port,
+                cols=self.chars_per_line,
+                rows=self.line_count,
+                expander_params=self.expander_params,
+                dotsize=self.dotsize,
+                charmap=self.charmap,
+                auto_linebreaks=self.auto_linebreaks,
+                backlight_enabled=self.backlight_enabled,
+        )
         self.display.clear()
 
     def set_cursor_pos(self, x, y):
