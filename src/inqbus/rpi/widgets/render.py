@@ -43,13 +43,15 @@ class SelectRenderer(Renderer):
         else:
             start_idx = 0
             end_idx = self.display.line_count - pos_y
-        for idx, line in enumerate(self.widget.content[start_idx:end_idx]):
+        idx = start_idx
+        for line in self.widget.content[start_idx:end_idx]:
             if idx == self.widget.selected_idx:
                 self.display.write_at_pos(pos_x, pos_y, '>')
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')
             line.render(pos_x + 1, pos_y)
             pos_y += 1
+            idx += 1
 
 @implementer(IRenderer)
 class PageRenderer(Renderer):
