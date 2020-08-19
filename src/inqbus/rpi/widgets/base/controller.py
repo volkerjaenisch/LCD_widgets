@@ -1,4 +1,4 @@
-import logging
+from inqbus.rpi.widgets.log import logging
 
 from inqbus.rpi.widgets import signals
 from inqbus.rpi.widgets.errors import SignalNotCatched
