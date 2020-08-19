@@ -1,22 +1,35 @@
 from zope.interface import Interface, Attribute
 
 
-class IGUI(Interface):
-    pass
-
-
 class IWidget(Interface):
 
-    content = Attribute("""Content of widget""")
-    pos_x = Attribute("""X position of widget""")
-    pos_y = Attribute("""Y position of widget""")
-    parent = Attribute("""X,Y position of widget""")
+    content = Attribute('Content of widget')
+    pos_x = Attribute('X position of widget')
+    pos_y = Attribute('Y position of widget')
+    width = Attribute('Width of widget')
+    height = Attribute('Height of widget')
+    parent = Attribute('Parent widget')
+    content_length = Attribute('Length of the content e.g. number of select item')
+    prev_widget = Attribute('Previous sibling widget')
+    next_widget = Attribute('Next sibling widget')
+    controller = Attribute('Controller for the widget')
+    has_focus = Attribute('is the widget focussed')
 
-    def length(self):
-        pass
+    def get_prev_sibling(self, widget):
+        """Get from the parent widget the previous sibling"""
+
+    def get_next_sibling(self, widget):
+        """Get from the parent widget the following sibling"""
+
+    def render(self, pos_x=None, pos_y=None):
+        """Render the widget"""
+
+    def handle_new_content(self, value):
+        """Handle the addition of new content"""
 
     def init(self):
         pass
+
 
 
 class ILineWidget(IWidget):
@@ -39,65 +52,3 @@ class IPageWidget(IWidget):
     pass
 
 
-class IRenderer(Interface):
-
-    def render(self):
-        pass
-
-
-class IDevice(Interface):
-
-    def init(self):
-        pass
-
-    def run(self):
-        pass
-
-    def done(self):
-        pass
-
-
-class IDisplay(IDevice):
-
-    def write_at_pos(self, x, y, content):
-        pass
-
-
-class IRPLCD(IDisplay):
-    pass
-
-
-class ICharLCD(IDisplay):
-    pass
-
-
-class ICurses(IDisplay):
-    pass
-
-
-class IInput(IDevice):
-    pass
-
-
-class IBlockingInput(IInput):
-    queue = Attribute("""Sync-Queue to main thread""")
-
-    def run(self, queue):
-        pass
-
-
-class IWidgetController(Interface):
-    pass
-
-
-class ILayout(Interface):
-
-    focus = Attribute("""Focussed widget""")
-
-
-class INotify(Interface):
-    pass
-
-
-class IMoveFocus(Interface):
-    pass

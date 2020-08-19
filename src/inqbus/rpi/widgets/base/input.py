@@ -1,6 +1,5 @@
 from inqbus.rpi.widgets.base.device import Device
-from inqbus.rpi.widgets.interfaces.widgets import (
-    IInput, IBlockingInput, )
+from inqbus.rpi.widgets.interfaces.input import IInput, IBlockingInput
 from zope.interface import implementer
 
 

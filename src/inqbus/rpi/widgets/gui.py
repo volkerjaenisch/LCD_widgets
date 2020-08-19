@@ -3,8 +3,11 @@ from queue import Queue, Empty
 from time import sleep
 
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IGUI, INotify,
-    IBlockingInput, IWidgetController, IMoveFocus, IWidget, )
+    IWidget, )
+from inqbus.rpi.widgets.interfaces.interfaces import (
+    IWidgetController,
+    INotify, IMoveFocus, IGUI, )
+from inqbus.rpi.widgets.interfaces.input import IBlockingInput
 from zope.interface import implementer, provider
 from zope.component import getGlobalSiteManager
 

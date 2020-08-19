@@ -1,6 +1,7 @@
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IRenderer, ILineWidget,
+    ILineWidget,
     IPageWidget, ISelectWidget, ILinesWidget, IButtonWidget, )
+from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.base.render import Renderer
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer, Interface

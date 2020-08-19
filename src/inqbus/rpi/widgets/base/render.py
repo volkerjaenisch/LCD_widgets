@@ -1,4 +1,6 @@
-from inqbus.rpi.widgets.interfaces.widgets import IWidget, IRenderer, IDisplay
+from inqbus.rpi.widgets.interfaces.widgets import IWidget
+from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
+from inqbus.rpi.widgets.interfaces.display import IDisplay
 from zope.component import getMultiAdapter
 from zope.interface import implementer
 import zope.component
