@@ -1,8 +1,9 @@
 from inqbus.rpi.widgets.interfaces.interfaces import IDevice
 
+
 class IDisplayHardware(IDevice):
     """
-    Interface to hardware display
+    Interface to display driver
     """
 
     def set_cursor_pos(self, x, y):
@@ -23,7 +24,7 @@ class IDisplayHardware(IDevice):
 
 class IDisplay(IDisplayHardware):
     """
-    Abstraction of the hardware. Dealing with out of bounds coordinates and so the like.
+    Abstraction of the display driver. Dealing with out of bounds coordinates and so the like.
     """
 
     def write_at_pos(self, x, y, content):
@@ -43,13 +44,27 @@ class IDisplay(IDisplayHardware):
         """
 
 
+class IConsoleDisplay(IDisplay):
+    """
+    Display of the char display in the console of the host
+    """
+
+
 class IRPLCD(IDisplay):
-    pass
+    """
+    Integration of RPLCD  https://pypi.org/project/RPLCD/
+    driven Character displays.
+    """
 
 
 class ICharLCD(IDisplay):
-    pass
+    """
+    Integration of CharLCD  https://pypi.org/project/charlcd/
+    driven Character displays.
+    """
 
 
 class ICurses(IDisplay):
-    pass
+    """
+    Curses integration
+    """
