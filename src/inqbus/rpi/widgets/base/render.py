@@ -1,4 +1,5 @@
 from inqbus.rpi.widgets.interfaces.widgets import IWidget, IRenderer, IDisplay
+from zope.component import getMultiAdapter
 from zope.interface import implementer
 import zope.component
 
@@ -22,5 +23,11 @@ class Renderer(object):
             self.pos_y = self.widget.pos_y
         else:
             self.pos_y = pos_y
+        return pos_x, pos_y
+
+    def get_display_renderer_for(self, widget):
+        renderer = getMultiAdapter((widget, self.display), IRenderer)
+        return renderer
+
 
 gsm.registerAdapter(Renderer, (IWidget, IDisplay), IRenderer)

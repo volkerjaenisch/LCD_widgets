@@ -1,7 +1,7 @@
 from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.widgets import (
     IWidgetController,
-    ILineWidget, ILinesWidget, ISelectWidget, IPageWidget, )
+    ILineWidget, ILinesWidget, ISelectWidget, IPageWidget, IButtonWidget, )
 from inqbus.rpi.widgets.log import logging
 from zope.interface import implementer
 
@@ -9,25 +9,53 @@ from zope.interface import implementer
 @implementer(ILineWidget)
 class Line(Widget):
 
+    def init_content(self):
+        self._content = ''
+
     def clear_line(self, line_number=None):
         if line_number:
             self.display.set_cursor_pos = (line_number, 0)
-        self.display.write_string(' ' * self.display.chars_per_line)
+        self.display.write_string(' ' * self.display.width)
+
+
+@implementer(IButtonWidget)
+class Button(Line):
+    _click_handler = None
+
+    def init_content(self):
+        self._content = ''
+
+    @property
+    def click_handler(self):
+        return self._click_handler
+
+    @click_handler.setter
+    def click_handler(self, handler):
+        self._click_handler = handler
 
 
 @implementer(ILinesWidget)
 class Lines(Line):
-    _content = None
 
-    def __init__(self, pos_x=0, pos_y=0, line_count=None):
-        super(Lines, self).__init__(pos_x=pos_x, pos_y=pos_y)
+    def init_content(self):
         self._content = []
-        self.line_count = line_count
+
+    def handle_new_content(self, value):
+        for line_val in value:
+            if isinstance(line_val, str):
+                line = Line()
+                line.render_on_content_change = False
+                line.content = line_val
+                self._content.append(line)
+            else:
+                self._content.append(line_val)
+
+        if self.render_on_content_change:
+            self.render()
 
 
 @implementer(ISelectWidget)
 class Select(Lines):
-    _content = None
     _selected_idx = 0
     render_on_selection_change = True
 
@@ -41,25 +69,14 @@ class Select(Lines):
         if self.render_on_selection_change:
             self.render()
 
-    def handle_new_content(self, value):
-        for line_val in value:
-            if isinstance(line_val, str):
-                line = Line()
-                line.render_on_content_change = False
-                line.content = line_val
-                self._content.append(line)
-        if self.render_on_content_change:
-            self.render()
-
 
 @implementer(IPageWidget)
 class Page(Select):
-    widgets = []
     selectable_widgets = []
 
     def add_widget(self, widget):
         widget.parent = self
-        self.widgets.append(widget)
+        self.content.append(widget)
 
     def check_mark_selectable(self, widget):
         if widget.selectable:
@@ -70,12 +87,13 @@ class Page(Select):
             return
         else:
             self.selectable_widgets = []
-            for widget in self.widgets:
+            for widget in self.content:
                 self.check_mark_selectable(widget)
 
+    @property
     def active_widget(self):
         if not self.selectable_widgets:
-            return None
+            return self.parent
         return self.selectable_widgets[0]
 
 
@@ -84,7 +102,7 @@ class Page(Select):
 
     def notify(self, signal, value=None):
         logging.debug('Page received Signal: %s' % signal)
-        target = self.active_widget()
+        target = self.active_widget
         if not target:
             return
         res = target.notify(signal)
@@ -92,8 +110,4 @@ class Page(Select):
             return
         else:
             self.handle_signal(signal)
-
-    @property
-    def length(self):
-        return len(self.widgets)
 
