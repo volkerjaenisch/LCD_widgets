@@ -23,6 +23,10 @@ class ILineWidget(IWidget):
     pass
 
 
+class IButtonWidget(ILineWidget):
+    pass
+
+
 class ILinesWidget(IWidget):
     pass
 
@@ -92,4 +96,8 @@ class ILayout(Interface):
 
 
 class INotify(Interface):
+    pass
+
+
+class IMoveFocus(Interface):
     pass

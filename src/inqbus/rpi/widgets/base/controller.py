@@ -13,7 +13,7 @@ class WidgetController(object):
 
     def __init__(self, widget):
         self.widget = widget
-        self.modules = []
+#        self.modules = []
         self._signals = {
             signals.Input_Up: self.on_up,
             signals.Input_Down: self.on_down,

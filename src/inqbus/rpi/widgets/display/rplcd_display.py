@@ -8,8 +8,8 @@ from zope.interface import implementer
 class RPLCDDisplay(Display):
 
     def __init__(self,
-                 line_count,
-                 chars_per_line,
+                 height,
+                 width,
                  i2c_expander,
                  address,
                  expander_params=None,
@@ -17,9 +17,8 @@ class RPLCDDisplay(Display):
                  dotsize=8,
                  charmap='A02',
                  auto_linebreaks=True,
-                 backlight_enabled=True):
-        self.chars_per_line = chars_per_line
-        self.line_count = line_count
+                 backlight_enabled=True,
+                 autoupdate=True):
         self.i2c_expander = i2c_expander
         self.address = address
         self.port = port
@@ -28,14 +27,15 @@ class RPLCDDisplay(Display):
         self.charmap = charmap
         self.auto_linebreaks = auto_linebreaks
         self.backlight_enabled=backlight_enabled
+        super(RPLCDDisplay, self).__init__(height, width, autoupdate=True)
 
     def init(self, display=None):
         self.display = CharLCD(
                 self.i2c_expander,
                 self.address,
                 port=self.port,
-                cols=self.chars_per_line,
-                rows=self.line_count,
+                cols=self.width,
+                rows=self.height,
                 expander_params=self.expander_params,
                 dotsize=self.dotsize,
                 charmap=self.charmap,

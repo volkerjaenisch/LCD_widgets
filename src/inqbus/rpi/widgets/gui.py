@@ -2,17 +2,18 @@ import threading
 from queue import Queue, Empty
 from time import sleep
 
-from inqbus.rpi.widgets.interfaces.widgets import IGUI, INotify, IBlockingInput
-from zope.interface import implementer
+from inqbus.rpi.widgets.interfaces.widgets import (
+    IGUI, INotify,
+    IBlockingInput, IWidgetController, IMoveFocus, IWidget, )
+from zope.interface import implementer, provider
 from zope.component import getGlobalSiteManager
-
 
 gsm = getGlobalSiteManager()
 
 
-
-@implementer(IGUI)
+@implementer(IGUI, IWidgetController)
 class GUI(object):
+
 
     def __init__(self):
         self._displays = []
@@ -51,7 +52,6 @@ class GUI(object):
             else:
                 input.run()
 
-
     def run(self):
         self._layout.render()
         self.signal_loop()
@@ -60,11 +60,20 @@ class GUI(object):
         while True:
             sleep(0.1)
             try:
-                signal = self.signal_queue.get(block=True)
-                notify = INotify(self._layout.controller)
-                notify.notify(signal)
+                signal = self.signal_queue.get(block=False)
+                self.notify(signal)
             except Empty:
                 pass
+
+    def notify(self, signal):
+        notify = INotify(self.focus.controller)
+        result = notify.notify(signal)
+        if result:
+            return result
+        else:
+            IMoveFocus(self)(signal)
+            return True
+
 
     @property
     def displays(self):
