@@ -36,6 +36,7 @@ setup(
         'pigpio',
         'pigpio-encoder',
         'zope.component',
+        'pynput',
     ],
     extras_require={
         'test': [
