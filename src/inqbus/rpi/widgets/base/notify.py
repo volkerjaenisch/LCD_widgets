@@ -1,4 +1,4 @@
-import logging
+from inqbus.rpi.widgets.log import logging
 
 from inqbus.rpi.widgets.interfaces.widgets import IWidgetController, INotify
 from zope.interface import implementer

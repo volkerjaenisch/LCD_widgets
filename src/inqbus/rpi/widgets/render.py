@@ -80,11 +80,8 @@ class SelectRenderer(Renderer):
             end_idx = self.display.height - pos_y
         idx = start_idx
         for line in self.widget.content[start_idx:end_idx]:
-            if idx == self.widget.selected_idx:
-                if self.widget.has_focus:
+            if self.widget.has_focus and idx == self.widget.selected_idx :
                     self.display.write_at_pos(pos_x, pos_y, '>')
-                else:
-                    self.display.write_at_pos(pos_x, pos_y, ' ')
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')
             _pos_x, pos_y = self.get_display_renderer_for(line).render(pos_x+1, pos_y)

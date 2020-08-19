@@ -1,4 +1,5 @@
-import logging
+
+from inqbus.rpi.widgets.log import logging
 
 from inqbus.rpi.widgets.base.input import Input
 from inqbus.rpi.widgets.signals import Input_Down, Input_Up, Input_Click

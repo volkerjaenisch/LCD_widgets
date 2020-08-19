@@ -26,7 +26,8 @@ class MoveFocus(WidgetController):
         old_focus = self.widget.focus
         self.widget.focus = new_focus
         old_focus.render()
-        self.widget.focus.render()
+        if new_focus:
+            new_focus.render()
 
 
 gsm = getGlobalSiteManager()
