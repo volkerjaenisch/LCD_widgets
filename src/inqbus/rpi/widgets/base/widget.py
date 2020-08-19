@@ -1,6 +1,8 @@
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IWidgetController, IRenderer,
-    IGUI, IWidget, )
+    IWidget, )
+from inqbus.rpi.widgets.interfaces.interfaces import (
+    IRenderer,
+    IWidgetController, IGUI, )
 from zope.component import getUtility, getMultiAdapter
 from zope.interface import implementer
 

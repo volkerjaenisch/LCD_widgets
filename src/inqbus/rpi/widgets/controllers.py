@@ -1,6 +1,7 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IWidgetController, IPageWidget, IButtonWidget, INotify, )
+    IPageWidget, IButtonWidget, )
+from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController, INotify
 from inqbus.rpi.widgets.signals import Input_Click
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer

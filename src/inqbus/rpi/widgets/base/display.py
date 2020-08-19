@@ -1,10 +1,14 @@
 from inqbus.rpi.widgets.errors import OutOfDisplay
-from inqbus.rpi.widgets.interfaces.widgets import IDisplay
+from inqbus.rpi.widgets.interfaces.display import IDisplay
 from zope.interface import implementer
 
 
 @implementer(IDisplay)
 class Display(object):
+    """
+    The display base class "wrapps" the physical display e.g. to catch out of bounds errors.
+    """
+
 
     def __init__(self,
                  height=4,

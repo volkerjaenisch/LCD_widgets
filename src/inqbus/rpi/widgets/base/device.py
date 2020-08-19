@@ -1,6 +1,6 @@
 from zope.interface import implementer
 
-from src.inqbus.rpi.widgets.interfaces.widgets import IDevice
+from inqbus.rpi.widgets.interfaces.interfaces import IDevice
 
 
 @implementer(IDevice)

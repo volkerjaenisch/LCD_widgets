@@ -1,6 +1,7 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IWidget, IMoveFocus, IGUI, )
+    IWidget, )
+from inqbus.rpi.widgets.interfaces.interfaces import IMoveFocus, IGUI
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 

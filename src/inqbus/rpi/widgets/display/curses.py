@@ -1,7 +1,7 @@
 import curses
 
 from inqbus.rpi.widgets.base.display import Display
-from inqbus.rpi.widgets.interfaces.widgets import IDisplay
+from inqbus.rpi.widgets.interfaces.display import IDisplay
 from zope.interface import implementer
 
 

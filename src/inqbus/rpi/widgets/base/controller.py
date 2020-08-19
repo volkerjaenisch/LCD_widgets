@@ -3,7 +3,8 @@ from inqbus.rpi.widgets.log import logging
 from inqbus.rpi.widgets import signals
 from inqbus.rpi.widgets.errors import SignalNotCatched
 from zope.component import getGlobalSiteManager
-from inqbus.rpi.widgets.interfaces.widgets import IWidgetController, IWidget
+from inqbus.rpi.widgets.interfaces.widgets import IWidget
+from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController
 from zope.interface import implementer
 
 
@@ -13,7 +14,6 @@ class WidgetController(object):
 
     def __init__(self, widget):
         self.widget = widget
-#        self.modules = []
         self._signals = {
             signals.Input_Up: self.on_up,
             signals.Input_Down: self.on_down,

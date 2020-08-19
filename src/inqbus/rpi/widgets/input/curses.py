@@ -3,7 +3,8 @@ import threading
 
 from inqbus.rpi.widgets.base.input import Input
 
-from inqbus.rpi.widgets.interfaces.widgets import IInput, INotify, IGUI
+from inqbus.rpi.widgets.interfaces.interfaces import INotify, IGUI
+from inqbus.rpi.widgets.interfaces.input import IInput
 from zope.component import getUtility
 from zope.interface import implementer
 
