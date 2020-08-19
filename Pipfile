@@ -7,7 +7,8 @@ name = "pypi"
 rplcd = "*"
 smbus2 = "*"
 pigpio = "*"
-pigpio-encoder = {editable = true, git = "https://github.com/Inqbus/pigpio_encoder.git"}
+pigpio-encoder = {editable = true, git = "https://github.com/Inqbus/pigpio_encoder.git", ref = "pigpio_reconstruction"}
+sphinx = "*"
 
 [dev-packages]
 
