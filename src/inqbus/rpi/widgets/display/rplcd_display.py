@@ -30,6 +30,7 @@ class RPLCDDisplay(Display):
         super(RPLCDDisplay, self).__init__(height, width, autoupdate=True)
 
     def init(self, display=None):
+        super(RPLCDDisplay, self).init()
         self.display = CharLCD(
                 self.i2c_expander,
                 self.address,

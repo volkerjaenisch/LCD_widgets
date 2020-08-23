@@ -20,6 +20,7 @@ class ConsoleDisplay(Display):
         self.init()
 
     def init(self):
+        super(ConsoleDisplay, self).init()
         self.display = [ ' ' * self.width for i in range(self.height)]
 
     def run(self):

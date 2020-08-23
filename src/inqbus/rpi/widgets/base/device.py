@@ -6,8 +6,10 @@ from inqbus.rpi.widgets.interfaces.interfaces import IDevice
 @implementer(IDevice)
 class Device(object):
 
+    is_init = False
+
     def init(self):
-        pass
+        self.is_init = True
 
     def run(self):
         pass

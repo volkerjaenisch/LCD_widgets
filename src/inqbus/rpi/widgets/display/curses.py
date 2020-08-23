@@ -9,6 +9,7 @@ from zope.interface import implementer
 class DisplayCurses(Display):
 
     def init(self):
+        super(DisplayCurses, self).init()
         curses.initscr()
         self.display = curses.newwin(self.height + 1, self.width, 0, 0)
 
