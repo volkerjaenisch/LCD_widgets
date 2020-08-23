@@ -61,9 +61,9 @@ class Widget(object):
     def pos_y(self):
         return self._pos_y
 
-    @pos_x.setter
-    def pos_x(self, value):
-        self._pos_x = value
+    @pos_y.setter
+    def pos_y(self, value):
+        self._pos_y = value
 
     @property
     def parent(self):
@@ -126,16 +126,12 @@ class Widget(object):
         gui = getUtility(IGUI)
         return gui.focus == self
 
-    def render(self, pos_x=None, pos_y=None):
-        if pos_x is None:
-            pos_x = self.pos_x
-        if pos_y is None:
-            pos_y = self.pos_y
+    def render(self):
         gui = getUtility(IGUI)
         for display in gui.displays:
             renderer = getMultiAdapter((self, display), IRenderer)
             if renderer:
-                renderer.render(pos_x=pos_x, pos_y=pos_y)
+                renderer.render()
 
     def handle_new_content(self, value):
         self._content = value

@@ -18,6 +18,7 @@ class ButtonController(WidgetController):
         else:
             return False
 
+
 @implementer(IWidgetController)
 class PageController(WidgetController):
     __used_for__ = (IPageWidget)

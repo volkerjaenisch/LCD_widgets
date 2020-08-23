@@ -1,7 +1,7 @@
 from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.widgets import (
     ILineWidget, ILinesWidget, ISelectWidget, IPageWidget, IButtonWidget, )
-from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController
+
 from inqbus.rpi.widgets.log import logging
 from zope.interface import implementer
 

@@ -15,17 +15,19 @@ class Renderer(object):
         self.widget = widget
         self.display = display
 
-    def render(self, pos_x=None, pos_y=None):
-        if pos_x is None:
-            self.pos_x = self.widget.pos_x
-        else:
-            self.pos_x = pos_x
+    def set_position(self, pos_x, pos_y):
+        self.widget.pos_x = pos_x
+        self.widget.pos_y = pos_y
 
-        if pos_y is None:
-            self.pos_y = self.widget.pos_y
-        else:
-            self.pos_y = pos_y
-        return pos_x, pos_y
+    def render(self):
+        return self.widget.pos_x, self.widget.pos_y
+
+    def render_at(self, pos_x, pos_y):
+        self.set_position(pos_x, pos_y)
+        return self.render()
+
+    def clear(self):
+        self.display.write_at_pos(self.widget.pos_x, self.widget.pos_y, ' ' * self.widget.length)
 
     def get_display_renderer_for(self, widget):
         renderer = getMultiAdapter((widget, self.display), IRenderer)
