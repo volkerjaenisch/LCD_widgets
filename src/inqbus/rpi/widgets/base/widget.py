@@ -29,8 +29,11 @@ class Widget(object):
         self._pos_y = pos_y
         self._width = width
         self._height = height
-        fixed_pos = False,
-        fixed_size = False,
+
+        self.fixed_pos = False
+        self.fixed_size = False
+
+        self._scroll_pos = 0
 
         self.render_on_content_change = render_on_content_change
         self.autoscroll = autoscroll
@@ -48,6 +51,14 @@ class Widget(object):
     @content.setter
     def content(self, value):
         self.handle_new_content(value)
+
+    @property
+    def scroll_pos(self):
+        return self._scroll_pos
+
+    @scroll_pos.setter
+    def scroll_pos(self, value):
+        self._scroll_pos = value
 
     @property
     def pos_x(self):

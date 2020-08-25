@@ -68,6 +68,7 @@ class GUI(object):
             except Empty:
                 pass
 
+
     def notify(self, signal):
         notify = INotify(self.focus.controller)
         result = notify.notify(signal)
