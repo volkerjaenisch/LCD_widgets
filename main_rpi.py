@@ -14,7 +14,6 @@ import inqbus.rpi.widgets.render # IMPORTANT!
 import inqbus.rpi.widgets.widgets # IMPORTANT!
 import inqbus.rpi.widgets.controllers # IMPORTANT!
 import inqbus.rpi.widgets.base.controller # IMPORTANT!
-import inqbus.rpi.widgets.base.notify # IMPORTANT!
 import inqbus.rpi.widgets.base.focus # IMPORTANT!
 import inqbus.rpi.widgets.base.visibility # IMPORTANT!
 
@@ -66,8 +65,8 @@ gui.set_layout(layout)
 
 gui.focus = button1
 
-blink_button  = getMultiAdapter((button1, display2), interface=IBlinking)
-fake  = getMultiAdapter((select, display2), interface=IBlinking)()
+blink_button  = getMultiAdapter((button1, display1), interface=IBlinking)
+fake  = getMultiAdapter((select, display1), interface=IBlinking)()
 blink_button()
 
 t = Timer(5, blink_button.done)

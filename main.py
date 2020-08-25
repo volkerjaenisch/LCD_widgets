@@ -1,6 +1,4 @@
 from inqbus.rpi.widgets.base.display import Display
-#from inqbus.rpi.widgets.display.curses import DisplayCurses
-#from inqbus.rpi.widgets.input.curses import InputCurses
 from inqbus.rpi.widgets.input.pynput_input import PynputInput
 from inqbus.rpi.widgets.interfaces.interfaces import IGUI
 from inqbus.rpi.widgets.widgets import Page, Line, Select
@@ -12,7 +10,6 @@ import inqbus.rpi.widgets.gui # IMPORTANT!
 import inqbus.rpi.widgets.render # IMPORTANT!
 import inqbus.rpi.widgets.widgets # IMPORTANT!
 import inqbus.rpi.widgets.base.controller # IMPORTANT!
-import inqbus.rpi.widgets.base.notify # IMPORTANT!
 
 
 gui = getUtility(IGUI)
