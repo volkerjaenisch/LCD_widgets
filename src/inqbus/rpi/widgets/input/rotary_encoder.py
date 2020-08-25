@@ -30,7 +30,7 @@ class RotaryInput(Input):
 
     def init(self):
         gui = getUtility(IGUI)
-        self.notify = INotify(gui)
+        self.notify = gui._layout
         self.initialized = True
 
     def run(self):

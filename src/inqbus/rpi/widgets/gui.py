@@ -70,8 +70,7 @@ class GUI(object):
 
 
     def notify(self, signal):
-        notify = INotify(self.focus.controller)
-        result = notify.notify(signal)
+        result = self.focus.controller.notify(signal)
         if result:
             return result
         else:
