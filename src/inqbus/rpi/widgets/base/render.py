@@ -19,6 +19,9 @@ class Renderer(object):
         self.widget.pos_x = pos_x
         self.widget.pos_y = pos_y
 
+    def content(self):
+        return self.widget.content
+
     def render(self):
         return self.widget.pos_x, self.widget.pos_y
 

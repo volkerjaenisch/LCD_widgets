@@ -1,3 +1,5 @@
+from threading import Lock
+
 from inqbus.rpi.widgets.base.device import Device
 from inqbus.rpi.widgets.errors import OutOfDisplay
 from inqbus.rpi.widgets.interfaces.display import IDisplay
@@ -21,6 +23,7 @@ class Display(Device):
         self.width = width
         self.pos_x = 0
         self.pos_y = 0
+        self.lock = Lock()
 
     def init(self):
         super(Display, self).init()
@@ -32,11 +35,12 @@ class Display(Device):
         pass
 
     def write_at_pos(self, x, y, content):
-        try:
-            self.set_cursor_pos(x, y)
-            self.write(content)
-        except OutOfDisplay:
-            return
+        with self.lock:
+            try:
+                self.set_cursor_pos(x, y)
+                self.write(content)
+            except OutOfDisplay:
+                return
 
     def set_cursor_pos(self, x, y):
         if not y < self.height :
