@@ -30,12 +30,11 @@ class RotaryInput(Input):
 
     def init(self):
         gui = getUtility(IGUI)
-        self.notify = gui._layout
+        self.gui = gui
         self.initialized = True
 
     def run(self):
         pass
-
 
     def rotary_callback(self, counter):
         logging.debug('Rotation %s', counter)
@@ -46,13 +45,13 @@ class RotaryInput(Input):
             return
         if counter > self.counter:
             self.counter = counter
-            self.notify.notify(Input_Up)
+            self.gui.notify(Input_Up)
         elif counter < self.counter:
             self.counter = counter
-            self.notify.notify(Input_Down)
+            self.gui.notify(Input_Down)
 
     def click_callback(self):
         logging.debug('Click!')
         if not self.initialized:
             return
-        self.notify.notify(Input_Click)
+        self.gui.notify(Input_Click)
