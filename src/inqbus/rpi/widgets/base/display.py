@@ -9,7 +9,10 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class Display(Device):
     """
-    The display base class "wrapps" the physical display e.g. to catch out of bounds errors.
+    The display base class implements the access to the physical display e.g. to
+    * initialize the underlying hardware
+    * catch out of bounds errors
+    * give the Display a Lock for multithreading
     """
 
 
@@ -48,3 +51,6 @@ class Display(Device):
         if not x < self.width :
             raise OutOfDisplay
         self.pos_x, self.pos_y = (x, y)
+
+    def write(self, content):
+        pass

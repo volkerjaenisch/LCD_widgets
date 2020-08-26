@@ -10,6 +10,11 @@ from zope.interface import implementer
 
 @implementer(IWidgetController)
 class WidgetController(object):
+    """
+    Each widget has a WidgetController assigned that takes care of all state changes:
+    * Signal processing/dispatching
+    * Changing the internal state of the Widget e.g. the selected index in a SelectWidget
+    """
     __used_for__ = (IWidget)
 
     def __init__(self, widget):
