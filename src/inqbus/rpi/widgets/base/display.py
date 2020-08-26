@@ -14,7 +14,8 @@ class Display(Device):
     * catch out of bounds errors
     * give the Display a Lock for multithreading
     """
-
+    # states if the display is ready to accept requests. Mainly to prevent writes to non initialized hardware.
+    initialized = False
 
     def __init__(self,
                  height=4,
@@ -26,6 +27,7 @@ class Display(Device):
         self.width = width
         self.pos_x = 0
         self.pos_y = 0
+        # Threading.Lock isntance to serialize write operations from different render threads
         self.lock = Lock()
 
     def init(self):
@@ -38,6 +40,7 @@ class Display(Device):
         pass
 
     def write_at_pos(self, x, y, content):
+        # Use the threading Lock
         with self.lock:
             try:
                 self.set_cursor_pos(x, y)

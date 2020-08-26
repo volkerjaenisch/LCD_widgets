@@ -4,7 +4,7 @@ Adapters for visual effects on widgets. E.G. blinking, scrolling
 
 import threading
 from queue import Queue, Empty
-
+from wrapt import ObjectProxy
 from time import sleep
 
 from inqbus.rpi.widgets.interfaces.display import IDisplay
@@ -36,8 +36,39 @@ class Effect(object):
     def init(self):
         pass
 
+    def get_renderer(self):
+        renderer = getMultiAdapter((self.widget, self.display), interface=IRenderer)
+        return renderer
+
+    def render(self):
+        self.renderer.render()
+
+    def clear(self):
+        self.renderer.clear()
+
     def run(self, queue):
-        pass
+        # get the renderer for the widget/display
+        self.renderer = self.get_renderer()
+        while True:
+            # Not initilized yet?
+            if not self.display.initialized:
+                sleep(self.delay)
+                continue
+            # Render the widget. This is important to prevent an empty widget when blinking stops
+            self.render()
+            # check for stopping the blinking
+            try:
+                # get a signal from the queue
+                signal = queue.get(block=False)
+                # if we got a signal break the loop/end the thread
+                break
+            # if the queue is empty we have to continue
+            except Empty:
+                pass
+            sleep(self.delay)
+            self.clear()
+            sleep(self.delay)
+
 
     def done(self):
         """
@@ -55,42 +86,22 @@ class Blinking(Effect):
     """
     __used_for__ = (IWidget, IDisplay)
 
-    def change_widget(self):
-        pass
-
-    def run(self, queue):
-        """
-        Do the blinking by renderen/clearing the widget at the blink_delay schedule.
-        :param queue: Signal queue for interrupting the blink thread
-        :return: None
-        """
-        # get the renderer for the widget/display
-        renderer = getMultiAdapter((self.widget, self.display), interface=IRenderer)
-        while True:
-            # Not initilized yet?
-            if not self.display.is_init:
-                sleep(self.delay)
-                continue
-            # Render the widget. This is important to prevent an empty widget when blinking stops
-            renderer.render()
-            # check for stopping the blinking
-            try:
-                # get a signla from the queue
-                signal = queue.get(block=False)
-                # if we got a signal break the loop/end the thread
-                break
-            # if the queue is empty we have to continue
-            except Empty:
-                pass
-            self.change_widget()
-            sleep(self.delay)
-            renderer.clear()
-            sleep(self.delay)
-
-
 
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(Blinking, (IWidget, IDisplay), IBlinking)
+
+
+class ScrollWrapper(ObjectProxy):
+
+    def __init__(self, wrapped, effect):
+        super(ScrollWrapper, self).__init__(wrapped)
+        self.effect = effect
+
+
+    @property
+    def content(self):
+        cont = self.__wrapped__.content
+        return cont[self.effect.scroll_pos:]
 
 
 @implementer(IScrolling)
@@ -101,26 +112,22 @@ class Scrolling(Blinking):
     __used_for__ = (IWidget, IDisplay)
 
     def init(self):
-        """
-        Generate a cyclic generator of scroll positions
-        :return:
-        """
-        def _next_pos():
-            while True:
-                for i in range(self.widget.length):
-                    yield i
+        self.scroll_pos = 0
+        self.next_pos = self._next_pos()
 
-        self.next_pos = _next_pos()
+    def _next_pos(self):
+        while True:
+            for i in range(self.widget.length):
+                yield i
 
+    def get_renderer(self):
+        scrolling_widget = ScrollWrapper(self.widget, self)
+        renderer = getMultiAdapter((scrolling_widget, self.display), interface=IRenderer)
+        return renderer
 
-    def change_widget(self):
-        """
-        Set the new scroll position by the cycly generator
-        :return:
-        """
-        # set the scroll position on the widget
-        self.widget.scroll_pos = self.next_pos.__next__()
-
+    def render(self):
+        self.scroll_pos = self.next_pos.__next__()
+        super(Scrolling, self).render()
 
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(Scrolling, (IWidget, IDisplay), IScrolling)
