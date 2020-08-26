@@ -15,26 +15,46 @@ from zope.component import getGlobalSiteManager, getMultiAdapter
 from zope.interface import implementer
 
 
-@implementer(IBlinking)
-class Blinking(object):
-    """
-    Adapter for blinking widgets. This adapter starts its own thread to render the widget on/off
-    """
-    __used_for__ = (IWidget, IDisplay)
-
+class Effect(object):
     def __init__(self, widget, display):
         self.widget = widget
         self.display = display
         # Signal Queue to control the blinking thread
         self.queue = Queue()
+        self.init()
 
     def __call__(self, blink_delay=0.5):
         self.blink_delay = blink_delay
         # Start the blinking thread
-        self.thread = threading.Thread(target=self.blink, args =(self.queue, ))
+        self.thread = threading.Thread(target=self.run, args =(self.queue, ))
         self.thread.start()
 
-    def blink(self, queue):
+    def init(self):
+        pass
+
+    def run(self, queue):
+        pass
+
+    def done(self):
+        """
+        Halt the blinking
+        :return: None
+        """
+        self.queue.put(True)
+
+
+
+@implementer(IBlinking)
+class Blinking(Effect):
+    """
+    Adapter for blinking widgets. This adapter starts its own thread to render the widget on/off after blink_delay seconds.
+    """
+    __used_for__ = (IWidget, IDisplay)
+
+    def change_widget(self):
+        pass
+
+    def run(self, queue):
         """
         Do the blinking by renderen/clearing the widget at the blink_delay schedule.
         :param queue: Signal queue for interrupting the blink thread
@@ -58,16 +78,11 @@ class Blinking(object):
             # if the queue is empty we have to continue
             except Empty:
                 pass
+            self.change_widget()
             sleep(self.blink_delay)
             renderer.clear()
             sleep(self.blink_delay)
 
-    def done(self):
-        """
-        Halt the blinking
-        :return: None
-        """
-        self.queue.put(True)
 
 
 gsm = getGlobalSiteManager()
@@ -75,36 +90,31 @@ gsm.registerAdapter(Blinking, (IWidget, IDisplay), IBlinking)
 
 
 @implementer(IScrolling)
-class Scrolling(object):
+class Scrolling(Blinking):
     """
     Adapter for scrolling widgets
     """
     __used_for__ = (IWidget, IDisplay)
 
-    def __init__(self, widget, display):
-        self.widget = widget
-        self.display = display
+    def init(self):
+        """
+        Generate a cyclic generator of scroll positions
+        :return:
+        """
+        def _next_pos():
+            while True:
+                for i in range(self.widget.length):
+                    yield i
 
-    def __call__(self):
-        self.thread = threading.Thread(target=self.scroll)
-        self.thread.start()
+        self.next_pos = _next_pos()
 
-    def scroll(self):
-        renderer = getMultiAdapter((self.widget, self.display), interface=IRenderer)
-        while True:
-            if not self.display.is_init:
-                sleep(0.5)
-                continue
-            else:
-                break
-        while True:
-            for i in range(self.widget.length):
-                renderer.clear()
-                sleep(0.5)
-                self.widget.scroll_pos = i
-                renderer.render()
-                sleep(0.5)
 
+    def change_widget(self):
+        """
+        Set the new scroll position by the cycly generator
+        :return:
+        """
+        self.widget.scroll_pos = self.next_pos.__next__()
 
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(Scrolling, (IWidget, IDisplay), IScrolling)
