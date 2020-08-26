@@ -16,16 +16,20 @@ from zope.interface import implementer
 
 
 class Effect(object):
+    """
+    Base of Effect adapters. Having its own thread enables adapters to be used for asynchronous efects as
+    blinking, scrolling, etc of a widget.
+    """
     def __init__(self, widget, display):
         self.widget = widget
         self.display = display
-        # Signal Queue to control the blinking thread
+        # Signal Queue to control the effects thread
         self.queue = Queue()
         self.init()
 
-    def __call__(self, blink_delay=0.5):
-        self.blink_delay = blink_delay
-        # Start the blinking thread
+    def __call__(self, delay=0.5):
+        self.delay = delay
+        # Start the thread
         self.thread = threading.Thread(target=self.run, args =(self.queue, ))
         self.thread.start()
 
@@ -65,7 +69,7 @@ class Blinking(Effect):
         while True:
             # Not initilized yet?
             if not self.display.is_init:
-                sleep(self.blink_delay)
+                sleep(self.delay)
                 continue
             # Render the widget. This is important to prevent an empty widget when blinking stops
             renderer.render()
@@ -79,9 +83,9 @@ class Blinking(Effect):
             except Empty:
                 pass
             self.change_widget()
-            sleep(self.blink_delay)
+            sleep(self.delay)
             renderer.clear()
-            sleep(self.blink_delay)
+            sleep(self.delay)
 
 
 
@@ -114,7 +118,9 @@ class Scrolling(Blinking):
         Set the new scroll position by the cycly generator
         :return:
         """
+        # set the scroll position on the widget
         self.widget.scroll_pos = self.next_pos.__next__()
+
 
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(Scrolling, (IWidget, IDisplay), IScrolling)
