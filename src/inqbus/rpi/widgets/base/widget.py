@@ -47,6 +47,10 @@ class Widget(object):
         self.init_content()
 
     def init_content(self):
+        """
+        Hook for content initialisation
+        :return:
+        """
         pass
 
     @property
