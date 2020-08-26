@@ -17,6 +17,9 @@ except ImportError:
 
 @implementer(IInput)
 class InputCurses(Input):
+    """
+    Input from a curses display. CURRENTLY NOT WORKING!
+    """
 
     def __init__(self, curses_display):
 

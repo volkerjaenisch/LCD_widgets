@@ -16,3 +16,8 @@ class Input_Up(Input_Move):
 class Input_Down(Input_Move):
     pass
 
+
+class Input_Char(Signal):
+
+    def __init__(self, content):
+        self.content = content
