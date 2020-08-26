@@ -4,7 +4,7 @@ from inqbus.rpi.widgets.display.console import ConsoleDisplay
 from inqbus.rpi.widgets.display.rplcd_display import RPLCDDisplay
 from inqbus.rpi.widgets.input.rotary_encoder import RotaryInput
 from inqbus.rpi.widgets.interfaces.interfaces import IGUI
-from inqbus.rpi.widgets.interfaces.visibility import IBlinking, IScrolling
+from inqbus.rpi.widgets.interfaces.effects import IBlinking, IScrolling
 from inqbus.rpi.widgets.widgets import Page, Line, Lines, Select, Button
 
 from zope.component import getUtility, getMultiAdapter
@@ -15,7 +15,7 @@ import inqbus.rpi.widgets.widgets # IMPORTANT!
 import inqbus.rpi.widgets.controllers # IMPORTANT!
 import inqbus.rpi.widgets.base.controller # IMPORTANT!
 import inqbus.rpi.widgets.base.focus # IMPORTANT!
-import inqbus.rpi.widgets.base.visibility # IMPORTANT!
+import inqbus.rpi.widgets.base.effects # IMPORTANT!
 
 def button_clicked():
     print('Button Clicked!')
