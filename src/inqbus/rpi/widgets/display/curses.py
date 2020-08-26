@@ -7,6 +7,9 @@ from zope.interface import implementer
 
 @implementer(IDisplay)
 class DisplayCurses(Display):
+    """
+    Curses display. CURRENTLY NOT WORKING!
+    """
 
     def init(self):
         super(DisplayCurses, self).init()
