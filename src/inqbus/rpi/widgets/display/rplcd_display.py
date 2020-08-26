@@ -55,6 +55,7 @@ class RPLCDDisplay(Display):
         )
         # Clear the display
         self.display.clear()
+        self.initialized = True
 
     def set_cursor_pos(self, x, y):
         """
@@ -65,6 +66,8 @@ class RPLCDDisplay(Display):
         :param y: Y position in characters
         :return:
         """
+        if not self.initialized :
+            return
         super(RPLCDDisplay, self).set_cursor_pos(x,y)
         self.display.cursor_pos = (y, x)
 
@@ -75,6 +78,8 @@ class RPLCDDisplay(Display):
         :param value: The string to be written
         :return:
         """
+        if not self.initialized :
+            return
         self.display.write_string(value)
 
     def show(self):

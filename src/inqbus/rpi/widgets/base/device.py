@@ -13,10 +13,10 @@ class Device(object):
     """
 
     # Am I initialized
-    is_init = False
+    initialized = False
 
     def init(self):
-        self.is_init = True
+        pass
 
     def run(self):
         pass

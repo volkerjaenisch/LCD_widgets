@@ -13,10 +13,18 @@ class PynputInput(BlockingInput):
     """
     Input from the keyboard via the pynput python lib.
     """
+    def __init__(self, keyboard_signals=None):
+        """
+        A dict of keyboard to signal mapping can be given to the PynputInput instance
+        :param keyboard_signals: A dict of keyboard to signal mappings
+        """
+        if keyboard_signals:
+            self.keyboard_signals = keyboard_signals
+        else:
+            self.keyboard_signals = KEYBOARD_SIGNALS
 
     def init(self):
         """
-        Does not need a intialisation
         :return:
         """
         pass
@@ -43,9 +51,9 @@ class PynputInput(BlockingInput):
         # get the current released key as its character
         char = key.char.lower()
         # if the key is registered for a signal ..
-        if char in KEYBOARD_SIGNALS:
+        if char in self.keyboard_signals:
             # .. optain the signal
-            signal = KEYBOARD_SIGNALS[char]
+            signal = self.keyboard_signals[char]
         else:
             # if not generate a Character input signal containing the character
             signal = Input_Char(char)

@@ -9,17 +9,6 @@ from zope.interface import implementer
 @implementer(ILineWidget)
 class Line(Widget):
 
-    def init_content(self):
-        self._content = ''
-
-    @property
-    def content(self):
-        return self._content[self.scroll_pos:]
-
-    @content.setter
-    def content(self, value):
-        self.handle_new_content(value)
-
     def clear_line(self, line_number=None):
         if line_number:
             self.display.set_cursor_pos = (line_number, 0)
