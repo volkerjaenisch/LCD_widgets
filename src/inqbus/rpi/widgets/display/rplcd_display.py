@@ -6,6 +6,11 @@ from zope.interface import implementer
 
 @implementer(IDisplay)
 class RPLCDDisplay(Display):
+    """
+    Display class for Character display mangeable by the RPLCD python driver
+    https://rplcd.readthedocs.io/en/stable/
+    Find the explanation of the paramters there.
+    """
 
     def __init__(self,
                  height,
@@ -30,6 +35,11 @@ class RPLCDDisplay(Display):
         super(RPLCDDisplay, self).__init__(height, width, autoupdate=True)
 
     def init(self, display=None):
+        """
+        Bring up the display.
+        :param display:
+        :return:
+        """
         super(RPLCDDisplay, self).init()
         self.display = CharLCD(
                 self.i2c_expander,
@@ -43,14 +53,33 @@ class RPLCDDisplay(Display):
                 auto_linebreaks=self.auto_linebreaks,
                 backlight_enabled=self.backlight_enabled,
         )
+        # Clear the display
         self.display.clear()
 
     def set_cursor_pos(self, x, y):
+        """
+        Set the position of the cursor. This function should not be called directly, since it is not thread safe.
+        Call the write_at(x,y,value) instead, which subsequently calls set_cursor_pos for you.
+
+        :param x: X position in characters
+        :param y: Y position in characters
+        :return:
+        """
         super(RPLCDDisplay, self).set_cursor_pos(x,y)
         self.display.cursor_pos = (y, x)
 
-    def write(self, line):
-        self.display.write_string(line)
+    def write(self, value):
+        """
+        Write a string to the display. This function should not be called directly, since it is not thread safe.
+        Call the write_at(x,y,value) instead, which subsequently calls set_cursor_pos for you.
+        :param value: The string to be written
+        :return:
+        """
+        self.display.write_string(value)
 
     def show(self):
+        """
+        Not used since the display reacts immedialtely.
+        :return:
+        """
         pass
