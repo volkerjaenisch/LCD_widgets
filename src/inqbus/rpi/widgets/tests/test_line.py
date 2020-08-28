@@ -45,3 +45,4 @@ class TestLine(TestBase):
             for y in range(self.display.height):
                 self.display.clear()
                 self.test_line(x,y)
+                self.test_long_line_clipping(x,y)
