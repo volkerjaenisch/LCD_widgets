@@ -12,6 +12,8 @@ class TestBase(unittest.TestCase):
         self.gui = getUtility(IGUI)
         self.gui.add_display(self.display)
 
+    def tearDown(self):
+        self.display.clear()
 
     def widget_test(self, widget):
         self.gui.set_layout(widget)
