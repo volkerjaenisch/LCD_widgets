@@ -9,12 +9,12 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class Display(Device):
     """
-    The display base class implements the access to the physical display e.g. to
+    The frame_buffer base class implements the access to the physical frame_buffer e.g. to
     * initialize the underlying hardware
     * catch out of bounds errors
     * give the Display a Lock for multithreading
     """
-    # states if the display is ready to accept requests. Mainly to prevent writes to non initialized hardware.
+    # states if the frame_buffer is ready to accept requests. Mainly to prevent writes to non initialized hardware.
     initialized = False
 
     def __init__(self,

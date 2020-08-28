@@ -49,7 +49,7 @@ class Effect(object):
         self.renderer.clear()
 
     def run(self, queue):
-        # get the renderer for the widget/display
+        # get the renderer for the widget/frame_buffer
         self.renderer = self.get_renderer()
         while True:
             # Not initilized yet?
@@ -151,7 +151,7 @@ class Scrolling(Blinking):
         scrolling_widget = IScrollWrapper(self.widget)
         # Get the wrappe a reference of the scrollingController to get access to the generator.
         scrolling_widget(self)
-        # retrieve the renderer for the wrapper and the current display.
+        # retrieve the renderer for the wrapper and the current frame_buffer.
         renderer = getMultiAdapter((scrolling_widget, self.display), interface=IRenderer)
         # Return the renderer
         return renderer

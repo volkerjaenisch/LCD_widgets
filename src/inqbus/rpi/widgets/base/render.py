@@ -10,10 +10,10 @@ gsm = zope.component.getGlobalSiteManager()
 @implementer(IRenderer)
 class Renderer(object):
     """
-    The Renderer is a multiadapter for a given widget and display combination.
+    The Renderer is a multiadapter for a given widget and frame_buffer combination.
     It handles therefore two things:
         * the visual appearance of the widget.
-        * and its appearance on a certain type of Display. A potential Display may be character display, or HTML file...
+        * and its appearance on a certain type of Display. A potential Display may be character frame_buffer, or HTML file...
     """
     __used_for__ = (IWidget, IDisplay)
 
@@ -23,7 +23,7 @@ class Renderer(object):
 
     def set_position(self, pos_x, pos_y):
         """
-        Set the position of the widget in display coordinates
+        Set the position of the widget in frame_buffer coordinates
         :param pos_x:
         :param pos_y:
         :return:

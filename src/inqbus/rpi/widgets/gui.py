@@ -33,8 +33,8 @@ class GUI(object):
 
     def add_display(self, display):
         """
-        Register a display device.
-        :param display: The display to register
+        Register a frame_buffer device.
+        :param display: The frame_buffer to register
         :return:
         """
         self._displays.append( display )
@@ -42,7 +42,7 @@ class GUI(object):
     def add_input(self, input):
         """
         Register an input device.
-        :param display: The input to register
+        :param frame_buffer: The input to register
         :return:
         """
         self._inputs.append(input)
@@ -78,7 +78,7 @@ class GUI(object):
         Initialize the GUI
         :return:
         """
-        # Initialize the display devices and start them
+        # Initialize the frame_buffer devices and start them
         for display in self._displays:
             display.init()
             display.run()

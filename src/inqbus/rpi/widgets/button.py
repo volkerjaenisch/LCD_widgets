@@ -76,7 +76,7 @@ class ButtonRenderer(Renderer):
         # if a button width is set truncate the content
         if self.widget.width:
             # when we render the button we have to substract two characters for the braces to determine
-            # the amount of characters to display.
+            # the amount of characters to frame_buffer.
             content = self.widget.content[:self.widget.width-2]
         else:
             content = self.widget.content
@@ -93,7 +93,7 @@ class ButtonRenderer(Renderer):
 
     def clear(self):
         """
-        Erase the button from the display
+        Erase the button from the frame_buffer
         :return:
         """
         self.display.write_at_pos(self.widget.pos_x, self.widget.pos_y, ' ' * (len(self.widget.content) + 2))

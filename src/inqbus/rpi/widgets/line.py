@@ -54,7 +54,12 @@ class LineRenderer(Renderer):
         # get the current widget position
         pos_x = self.widget.pos_x
         pos_y = self.widget.pos_y
-        # issue the display to display the widgets content
+        # check if we have something to render
+        if self.widget.content is None:
+            # .. if not simply return our original coordinates
+            return pos_x, pos_y
+
+        # issue the frame_buffer to frame_buffer the widgets content
         self.display.write_at_pos(pos_x, pos_y, self.widget.content)
         # return the coordinate after the content
         # ToDo width, height handling

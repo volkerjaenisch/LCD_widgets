@@ -18,7 +18,7 @@ except ImportError:
 @implementer(IInput)
 class InputCurses(Input):
     """
-    Input from a curses display. CURRENTLY NOT WORKING!
+    Input from a curses frame_buffer. CURRENTLY NOT WORKING!
     """
 
     def __init__(self, curses_display):
@@ -26,7 +26,7 @@ class InputCurses(Input):
         if not curses_display:
             self.display =  curses.newwin(1, 1, 0, 0)
         else:
-            self.display = curses_display.display
+            self.display = curses_display.frame_buffer
 
     def run(self):
         thread = threading.Thread(target=self.run_curses)

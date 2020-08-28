@@ -3,13 +3,13 @@ from inqbus.rpi.widgets.interfaces.interfaces import IDevice
 
 class IDisplayHardware(IDevice):
     """
-    Interface to display driver
+    Interface to frame_buffer driver
     """
 
     def set_cursor_pos(self, x, y):
         """
         Set the cursor at position. This function should not be called directly but only from
-        write_at_pos to keep access to the display atomic.
+        write_at_pos to keep access to the frame_buffer atomic.
         :param x:
         :param y:
         :return:
@@ -18,7 +18,7 @@ class IDisplayHardware(IDevice):
     def write(self, line):
         """
         Write a string at the cursor position. This function should not be called directly but only from
-        write_at_pos to keep access to the display atomic.
+        write_at_pos to keep access to the frame_buffer atomic.
         :param line:
         :return:
         """
@@ -26,12 +26,12 @@ class IDisplayHardware(IDevice):
 
 class IDisplay(IDisplayHardware):
     """
-    Abstraction of the display driver. Dealing with out of bounds coordinates and so the like.
+    Abstraction of the frame_buffer driver. Dealing with out of bounds coordinates and so the like.
     """
 
     def write_at_pos(self, x, y, content):
         """
-        Write a string at a given display position. This atomic operation has to be secured by a threadsafe Lock.
+        Write a string at a given frame_buffer position. This atomic operation has to be secured by a threadsafe Lock.
         It calls "set_cursor_pos" and then "write" of the device.
         :param x:
         :param y:
@@ -42,7 +42,7 @@ class IDisplay(IDisplayHardware):
 
 class IConsoleDisplay(IDisplay):
     """
-    Display of the char display in the console of the host
+    Display of the char frame_buffer in the console of the host
     """
 
 

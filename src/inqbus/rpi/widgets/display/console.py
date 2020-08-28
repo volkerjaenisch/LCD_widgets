@@ -25,11 +25,11 @@ class ConsoleDisplay(Display):
 
     def init(self):
         """
-        INitialize the display. In this case we only build a character "frame buffer"
+        INitialize the frame_buffer. In this case we only build a character "frame buffer"
         :return:
         """
         super(ConsoleDisplay, self).init()
-        self.display = [ ' ' * self.width for i in range(self.height)]
+        self.frame_buffer = [' ' * self.width for i in range(self.height)]
 
     def run(self):
         pass
@@ -39,30 +39,30 @@ class ConsoleDisplay(Display):
 
     def write(self, content):
         """
-        Write given content to the display at the current cursor position.
+        Write given content to the frame_buffer at the current cursor position.
         :param content: the content given. String
         :return:
         """
         # copy the line where the cursor is set into new_line
-        new_line = self.display[self.pos_y]
+        new_line = self.frame_buffer[self.pos_y]
         # insert the content into the new_line
         new_line = new_line[0:self.pos_x] + content + new_line[self.pos_x + len(content):]
-        # clip new_line with the width of the display
+        # clip new_line with the width of the frame_buffer
         new_line = new_line[0:self.width]
-        # replace the line in the display with the new_line
-        self.display[self.pos_y] = new_line
+        # replace the line in the frame_buffer with the new_line
+        self.frame_buffer[self.pos_y] = new_line
         # if the diplay autoupdate is set ..
         if self.autoupdate:
-            # .. show the display
+            # .. show the frame_buffer
             self.show()
 
     def show(self):
         """
-        Do a simple representation of the display by printing all its lines to the console.
+        Do a simple representation of the frame_buffer by printing all its lines to the console.
         :return:
         """
         print('+' + '-' * self.width + '+')
-        for line in self.display:
+        for line in self.frame_buffer:
             print('|' + line + '|')
         print('+' + '-' * self.width + '+')
 

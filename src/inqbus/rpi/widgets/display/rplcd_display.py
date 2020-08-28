@@ -7,7 +7,7 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class RPLCDDisplay(Display):
     """
-    Display class for Character display mangeable by the RPLCD python driver
+    Display class for Character frame_buffer mangeable by the RPLCD python driver
     https://rplcd.readthedocs.io/en/stable/
     Find the explanation of the paramters there.
     """
@@ -36,7 +36,7 @@ class RPLCDDisplay(Display):
 
     def init(self, display=None):
         """
-        Bring up the display.
+        Bring up the frame_buffer.
         :param display:
         :return:
         """
@@ -53,7 +53,7 @@ class RPLCDDisplay(Display):
                 auto_linebreaks=self.auto_linebreaks,
                 backlight_enabled=self.backlight_enabled,
         )
-        # Clear the display
+        # Clear the frame_buffer
         self.display.clear()
         self.initialized = True
 
@@ -73,7 +73,7 @@ class RPLCDDisplay(Display):
 
     def write(self, value):
         """
-        Write a string to the display. This function should not be called directly, since it is not thread safe.
+        Write a string to the frame_buffer. This function should not be called directly, since it is not thread safe.
         Call the write_at(x,y,value) instead, which subsequently calls set_cursor_pos for you.
         :param value: The string to be written
         :return:
@@ -84,7 +84,7 @@ class RPLCDDisplay(Display):
 
     def show(self):
         """
-        Not used since the display reacts immedialtely.
+        Not used since the frame_buffer reacts immedialtely.
         :return:
         """
         pass
