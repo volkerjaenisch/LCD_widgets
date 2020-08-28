@@ -30,6 +30,9 @@ class Display(Device):
         # Threading.Lock isntance to serialize write operations from different render threads
         self.lock = Lock()
 
+    def clear(self):
+        pass
+
     def init(self):
         super(Display, self).init()
 

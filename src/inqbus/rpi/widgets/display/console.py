@@ -25,10 +25,13 @@ class ConsoleDisplay(Display):
 
     def init(self):
         """
-        INitialize the frame_buffer. In this case we only build a character "frame buffer"
+        Initialize the frame_buffer. In this case we only build a character "frame buffer"
         :return:
         """
         super(ConsoleDisplay, self).init()
+        self.clear()
+
+    def clear(self):
         self.frame_buffer = [' ' * self.width for i in range(self.height)]
 
     def run(self):

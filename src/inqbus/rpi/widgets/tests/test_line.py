@@ -8,14 +8,40 @@ import inqbus.rpi.widgets.gui
 
 class TestLine(TestBase):
 
-    def test_line(self):
+    def test_line(self, x=0, y=0):
 
-        line = Line()
+        line = Line(x,y)
         line.content = 'huhu'
 
         self.widget_test(line)
 
-        expected_result = line.content + ' ' * (self.display.width - len(line.content))
+        out_line = x * ' ' + line.content + ' ' * (self.display.width - len(line.content) - x)
+        expected_result = out_line[:self.display.width ]
 
-        assert self.display.frame_buffer[0] == expected_result
+        try :
+            assert self.display.frame_buffer[y] == expected_result
+        except:
+            pass
 
+
+    def test_long_line_clipping(self, x=0, y=0):
+
+        line = Line(x,y)
+        line.content = 15 * 'huhu'
+
+        self.widget_test(line)
+
+        out_line = x * ' ' + line.content + ' ' * (self.display.width - len(line.content) - x)
+        expected_result = out_line[:self.display.width ]
+
+        try :
+            assert self.display.frame_buffer[y] == expected_result
+        except:
+            pass
+
+
+    def test_position(self):
+        for x in range(self.display.width):
+            for y in range(self.display.height):
+                self.display.clear()
+                self.test_line(x,y)
