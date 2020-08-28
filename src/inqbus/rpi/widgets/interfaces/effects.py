@@ -1,9 +1,14 @@
 from zope.interface import Interface
-from zope.interface import Attribute
 
 class IBlinking(Interface):
     """
     Set a widget to do blinking
+    """
+
+
+class IScrollWrapper(Interface):
+    """
+    Wrapps a widget to modifiy its content to simulate scrolling
     """
 
 
