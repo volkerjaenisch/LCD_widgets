@@ -78,6 +78,5 @@ class IMoveFocus(Interface):
         """
 
 
-
 class IGUI(Interface):
     focus = Attribute("""The single focussed widget""")
