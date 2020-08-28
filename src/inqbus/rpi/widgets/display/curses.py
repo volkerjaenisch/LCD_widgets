@@ -8,7 +8,7 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class DisplayCurses(Display):
     """
-    Curses display. CURRENTLY NOT WORKING!
+    Curses frame_buffer. CURRENTLY NOT WORKING!
     """
 
     def init(self):

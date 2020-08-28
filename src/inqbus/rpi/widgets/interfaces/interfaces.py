@@ -3,7 +3,7 @@ from zope.interface import Interface, Attribute
 
 class IRenderer(Interface):
     """
-    Each Widget has its own renderers. Each Renderer is a multi adapter for a widget and a display type.
+    Each Widget has its own renderers. Each Renderer is a multi adapter for a widget and a frame_buffer type.
     """
 
     def render(self):
