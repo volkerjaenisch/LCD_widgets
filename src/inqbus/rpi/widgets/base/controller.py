@@ -1,6 +1,6 @@
-from inqbus.rpi.widgets.log import logging
+from inqbus.rpi.widgets.base.log import logging
 
-from inqbus.rpi.widgets import signals
+from inqbus.rpi.widgets.base import signals
 from inqbus.rpi.widgets.errors import SignalNotCatched
 from zope.component import getGlobalSiteManager
 from inqbus.rpi.widgets.interfaces.widgets import IWidget

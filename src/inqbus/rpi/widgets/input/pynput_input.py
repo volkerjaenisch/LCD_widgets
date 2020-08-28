@@ -3,7 +3,7 @@ from time import sleep
 from inqbus.rpi.widgets.base.input import BlockingInput
 from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
 from inqbus.rpi.widgets.interfaces.input import IBlockingInput
-from inqbus.rpi.widgets.signals import Input_Char
+from inqbus.rpi.widgets.base.signals import Input_Char
 from pynput import keyboard
 from zope.interface import implementer
 

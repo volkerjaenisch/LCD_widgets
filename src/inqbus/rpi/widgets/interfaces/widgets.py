@@ -31,8 +31,11 @@ class IWidget(Interface):
         pass
 
 
-
 class ILineWidget(IWidget):
+    pass
+
+
+class ITextWidget(IWidget):
     pass
 
 
