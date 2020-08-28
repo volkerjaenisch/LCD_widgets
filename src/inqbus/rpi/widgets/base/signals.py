@@ -1,4 +1,4 @@
-from .base.signal import Signal
+from inqbus.rpi.widgets.base.signal import Signal
 
 
 class Input_Move(Signal):
@@ -18,6 +18,9 @@ class Input_Down(Input_Move):
 
 
 class Input_Char(Signal):
+    """
+    The char signal contains the character typed
+    """
 
     def __init__(self, content):
         self.content = content

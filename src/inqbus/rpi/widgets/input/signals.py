@@ -1,4 +1,4 @@
-from inqbus.rpi.widgets.signals import Input_Down, Input_Up, Input_Click
+from inqbus.rpi.widgets.base.signals import Input_Down, Input_Up, Input_Click
 
 # Mapping of keyboard characters to Input Signals
 KEYBOARD_SIGNALS = {

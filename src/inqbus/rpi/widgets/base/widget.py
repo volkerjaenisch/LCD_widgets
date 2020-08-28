@@ -32,13 +32,13 @@ class Widget(object):
                  ):
         self._pos_x = pos_x
         self._pos_y = pos_y
-        self._width = width
-        self._height = height
+        self._desired_width = width
+        self._desired_height = height
+        self._rendered_width = None
+        self._rendered_height = None
 
-        self.fixed_pos = False
-        self.fixed_size = False
-
-        self._scroll_pos = 0
+        self.fixed_pos = fixed_pos
+        self.fixed_size = fixed_size
 
         self.render_on_content_change = render_on_content_change
         self.autoscroll = autoscroll
@@ -73,23 +73,9 @@ class Widget(object):
         self.handle_new_content(value)
 
     @property
-    def scroll_pos(self):
-        """
-        The scroll position defines the first content value to be rendered. If the content is a string then scroll pos indicates its chars.
-        If the content is e.g. a list then scroll position indicates the list items.
-        :return:
-        """
-        return self._scroll_pos
-
-    @scroll_pos.setter
-    def scroll_pos(self, value):
-        self._scroll_pos = value
-
-    @property
     def pos_x(self):
         """
-        The x position of the widget in screen coordinates
-        :return:
+        :return: The x position of the widget in screen coordinates
         """
         return self._pos_x
 
@@ -100,14 +86,107 @@ class Widget(object):
     @property
     def pos_y(self):
         """
-        The y position of the widget in screen coordinates
-        :return:
+        :return: The y position of the widget in screen coordinates
         """
         return self._pos_y
 
     @pos_y.setter
     def pos_y(self, value):
         self._pos_y = value
+
+    @property
+    def rendered_pos_x(self):
+        """
+        :return: The rendered x position of the widget in screen coordinates
+        """
+        if self.rendered__pos_x is None:
+            return self.pos_x
+        else :
+            return self.rendered__pos_x
+
+    @rendered_pos_x.setter
+    def rendered_pos_x(self, value):
+        self.rendered__pos_x = value
+
+    @property
+    def rendered_pos_y(self):
+        """
+        :return: The rendered_y position of the widget in screen coordinates
+        """
+        if self.rendered__pos_y is None:
+            return self.pos_y
+        else :
+            return self.rendered__pos_y
+
+    @rendered_pos_y.setter
+    def rendered_pos_y(self, value):
+        self.rendered__pos_y = value
+
+    @property
+    def height(self):
+        """
+        :return: the height of the widget in characters
+        """
+        return self._desired_height
+
+    @height.setter
+    def height(self, value):
+        """
+        Set the height to a fixed value
+        :param value: height
+        """
+        self._desired_height = value
+
+    @property
+    def width(self):
+        """
+        :return: the width of the widget in characters
+        """
+        return self._desired_width
+
+    @width.setter
+    def width(self, value):
+        """
+        Set the width to a fixed value
+        :param value: width
+        """
+        self._desired_width = value
+
+    @property
+    def rendered_width(self):
+        """
+        :return: the rendered width of the widget in characters
+        """
+        if self._rendered_width is None:
+            return self._desired_width
+        else:
+            return self._rendered_width
+
+    @rendered_width.setter
+    def rendered_width(self, value):
+        """
+        Set the rendered width
+        :param value: new rendered width
+        """
+        self._rendered_width = value
+
+    @property
+    def rendered_height(self):
+        """
+        :return: the rendered height of the widget in characters
+        """
+        if self._rendered_height is None:
+            return self._desired_height
+        else:
+            return self._rendered_height
+
+    @rendered_height.setter
+    def rendered_height(self, value):
+        """
+        Set the rendered height
+        :param value: new rendered height
+        """
+        self._rendered_height = value
 
     @property
     def parent(self):
@@ -169,63 +248,6 @@ class Widget(object):
         return len(self.content)
 
     @property
-    def height(self):
-        """
-        Return the height of the widget in characters
-        :return:
-        """
-        # If the height of the widget is not set fixed return the number of lines
-        if not self._height:
-            if isinstance(self._content, list):
-                return len(self._content)
-            else:
-                return 1
-        return self._height
-
-    @height.setter
-    def height(self, value):
-        """
-        Setting height to a fixed value
-        :param value:
-        :return:
-        """
-        self._height = value
-
-    @property
-    def width(self):
-        """
-        Return the width of the widget in characters
-        :return:
-        """
-        def len_func(item):
-            """
-            determine the length of a string or a widget
-            :param item:
-            :return:
-            """
-            if isinstance(item, Widget):
-                return item.width
-            else:
-                return len(item)
-
-        # If the wisth of the widget is not set fixed return the length of the content
-        if not self._width:
-            # If content is a list return the length of the longest item
-            if isinstance(self._content, list):
-                return max(self._content, key=len_func)
-            return len(self._content)
-        return self._width
-
-    @width.setter
-    def width(self, value):
-        """
-        Setting width to a fixed value
-        :param value:
-        :return:
-        """
-        self._width = value
-
-    @property
     def controller(self):
         """
         The controller adapter for the widget. This is in fact a caching for the controller adapter for performance.
@@ -267,4 +289,3 @@ class Widget(object):
 
     def init(self):
         pass
-
