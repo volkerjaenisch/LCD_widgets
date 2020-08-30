@@ -1,5 +1,4 @@
 from inqbus.rpi.widgets.button import Button
-from inqbus.rpi.widgets.line import Line
 from inqbus.rpi.widgets.tests.base import TestBase
 
 
@@ -12,7 +11,7 @@ class TestButton(TestBase):
     def test_button(self, x=0, y=0):
 
         button = Button(x,y)
-        button.content = 'huhu'
+        button.content = 'abcd'
 
         self.widget_test(button)
 
@@ -24,9 +23,8 @@ class TestButton(TestBase):
 
     def test_long_button_clipping(self, x=0, y=0):
 
-
         button = Button(x,y)
-        button.content = 'huhu'
+        button.content = 'abcd'
 
         self.widget_test(button)
 

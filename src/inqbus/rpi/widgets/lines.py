@@ -68,7 +68,7 @@ class LinesRenderer(Renderer):
         pos_x = self.widget.pos_x
         pos_y = self.widget.pos_y
         if self.widget.height == 1:
-            _pos_x, pos_y = self.get_display_renderer_for(self.widget.content[0]).render(
+            _pos_x, pos_y = self.get_display_renderer_for(self.widget.content[0]).render_at(
                     pos_x,
                     pos_y
             )
