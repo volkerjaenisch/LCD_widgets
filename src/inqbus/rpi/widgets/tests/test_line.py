@@ -11,7 +11,7 @@ class TestLine(TestBase):
     def test_line(self, x=0, y=0):
 
         line = Line(x,y)
-        line.content = 'huhu'
+        line.content = 'abcd'
 
         self.widget_test(line)
 
@@ -27,7 +27,7 @@ class TestLine(TestBase):
     def test_long_line_clipping(self, x=0, y=0):
 
         line = Line(x,y)
-        line.content = 15 * 'huhu'
+        line.content = 15 * 'abcd'
 
         self.widget_test(line)
 
