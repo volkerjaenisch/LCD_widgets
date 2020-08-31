@@ -1,9 +1,9 @@
 from time import sleep
 
 from inqbus.rpi.widgets.base.input import BlockingInput
+from inqbus.rpi.widgets.base.signals import InputChar
 from inqbus.rpi.widgets.input.signals import KEYBOARD_SIGNALS
 from inqbus.rpi.widgets.interfaces.input import IBlockingInput
-from inqbus.rpi.widgets.base.signals import Input_Char
 from pynput import keyboard
 from zope.interface import implementer
 
@@ -15,7 +15,8 @@ class PynputInput(BlockingInput):
     """
     def __init__(self, keyboard_signals=None):
         """
-        A dict of keyboard to signal mapping can be given to the PynputInput instance
+        A dict of keyboard to signal mappings
+        can be given to the PynputInput instance
         :param keyboard_signals: A dict of keyboard to signal mappings
         """
         if keyboard_signals:
@@ -32,7 +33,8 @@ class PynputInput(BlockingInput):
     def run(self, queue):
         """
         Setup the queue for thread safe communiation with the GUI
-        :param queue: communiation queue. Will be set by the frameworks run method if the input is blocking.
+        :param queue: communiation queue. Will be set by the frameworks
+                run method if the input is blocking.
         :return:
         """
         super(PynputInput, self).run(queue)
@@ -56,7 +58,7 @@ class PynputInput(BlockingInput):
             signal = self.keyboard_signals[char]
         else:
             # if not generate a Character input signal containing the character
-            signal = Input_Char(char)
+            signal = InputChar(char)
         # finally send the signal to the queue
         self.queue.put(signal)
 
@@ -64,12 +66,14 @@ class PynputInput(BlockingInput):
 def test(key):
     print('Released: ' + key)
 
+
 def main():
     listener = keyboard.Listener(
             on_release=test)
     listener.start()
     while True:
         sleep(1)
+
 
 if __name__ == '__main__':
     main()

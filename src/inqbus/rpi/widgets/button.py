@@ -1,13 +1,11 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.base.render import Renderer
-from inqbus.rpi.widgets.interfaces.interfaces import (
-    IRenderer,
-    IWidgetController, )
+from inqbus.rpi.widgets.base.signals import InputClick
+from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
 from inqbus.rpi.widgets.interfaces.widgets import IButtonWidget
 from inqbus.rpi.widgets.line import Line
-from inqbus.rpi.widgets.base.signals import Input_Click
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(IButtonWidget)
@@ -24,7 +22,8 @@ class Button(Line):
         :return: the width of the widget in characters
         """
         if self._desired_width is None:
-            # The button adds two braces so we have to add 2 to width if we calculate it based on the content
+            # The button adds two braces
+            # so we have to add 2 to the width of the content itself
             return len(self.content) + 2
         else:
             return self._desired_width
@@ -38,7 +37,8 @@ class Button(Line):
         self._desired_width = value
 
     def init_content(self):
-        # The initial content of the button should be empty as long as no content is set
+        # The initial content of the button should
+        # be empty as long as no content is set
         self._content = ''
 
     @property
@@ -75,13 +75,15 @@ class ButtonRenderer(Renderer):
         pos_y = self.widget.pos_y
         # if a button width is set truncate the content
         if self.widget.width:
-            # when we render the button we have to substract two characters for the braces to determine
-            # the amount of characters to frame_buffer.
+            # when we render the button
+            # we have to substract two characters for the braces to determine
+            # the amount of characters to use from the content.
             content = self.widget.content[:self.widget.width-2]
         else:
             content = self.widget.content
 
-        # If the button is focussed indicate this by changing the braces to angles
+        # If the button is focussed
+        # indicate this by changing the braces to angles
         if self.widget.has_focus:
             out_str = '>' + content + '<'
         else:
@@ -96,7 +98,11 @@ class ButtonRenderer(Renderer):
         Erase the button from the frame_buffer
         :return:
         """
-        self.display.write_at_pos(self.widget.pos_x, self.widget.pos_y, ' ' * (len(self.widget.content) + 2))
+        self.display.write_at_pos(
+                self.widget.pos_x,
+                self.widget.pos_y,
+                ' ' * (len(self.widget.content) + 2)
+        )
 
 
 @implementer(IWidgetController)
@@ -104,15 +110,16 @@ class ButtonController(WidgetController):
     """
     Controller for IButtonWidgets.
     """
-    __used_for__ = (IButtonWidget)
+    __used_for__ = IButtonWidget
 
     def notify(self, signal):
         """
-        Dispatcher for Signals. Displaytches only the Input_Click signal
+        Dispatcher for Signals. Displaytches only the InputClick signal
         :param signal: Incoming Signal
-        :return: True if the widget consumes the Signal, False if the widget cannot consume signal
+        :return: True if the widget consumes the Signal,
+            False if the widget cannot consume the signal
         """
-        if signal == Input_Click:
+        if signal == InputClick:
             return self.widget.click_handler()
         else:
             return False

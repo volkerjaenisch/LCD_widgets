@@ -1,15 +1,15 @@
-from RPLCD.i2c import CharLCD
 from inqbus.rpi.widgets.base.display import Display
 from inqbus.rpi.widgets.interfaces.display import IDisplay
+from RPLCD.i2c import CharLCD
 from zope.interface import implementer
 
 
 @implementer(IDisplay)
 class RPLCDDisplay(Display):
     """
-    Display class for Character frame_buffer mangeable by the RPLCD python driver
+    Display class for character displays via the RPLCD python driver
     https://rplcd.readthedocs.io/en/stable/
-    Find the explanation of the paramters there.
+    Please find the explanation of the parameters there.
     """
 
     def __init__(self,
@@ -31,7 +31,8 @@ class RPLCDDisplay(Display):
         self.dotsize = dotsize
         self.charmap = charmap
         self.auto_linebreaks = auto_linebreaks
-        self.backlight_enabled=backlight_enabled
+        self.backlight_enabled = backlight_enabled
+        self.autoupdate = autoupdate
         super(RPLCDDisplay, self).__init__(height, width, autoupdate=True)
 
     def init(self, display=None):
@@ -59,26 +60,33 @@ class RPLCDDisplay(Display):
 
     def set_cursor_pos(self, x, y):
         """
-        Set the position of the cursor. This function should not be called directly, since it is not thread safe.
-        Call the write_at(x,y,value) instead, which subsequently calls set_cursor_pos for you.
-
+        Set the position of the cursor.
+        This function should not be called directly,
+        since it is not thread safe
+        Call the write_at(x,y,value) instead,
+        which subsequently calls set_cursor_pos for you
+        and is thread safe.
         :param x: X position in characters
         :param y: Y position in characters
         :return:
         """
-        if not self.initialized :
+        if not self.initialized:
             return
-        super(RPLCDDisplay, self).set_cursor_pos(x,y)
+        super(RPLCDDisplay, self).set_cursor_pos(x, y)
         self.display.cursor_pos = (y, x)
 
     def write(self, value):
         """
-        Write a string to the frame_buffer. This function should not be called directly, since it is not thread safe.
-        Call the write_at(x,y,value) instead, which subsequently calls set_cursor_pos for you.
+        Write a string to the frame_buffer.
+        This function should not be called directly,
+        since it is not thread safe.
+        Call the write_at(x,y,value) instead,
+        which subsequently calls set_cursor_pos for you
+        and is thread safe.
         :param value: The string to be written
         :return:
         """
-        if not self.initialized :
+        if not self.initialized:
             return
         self.display.write_string(value)
 

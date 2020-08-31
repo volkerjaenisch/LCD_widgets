@@ -3,6 +3,7 @@ Adapters for visual effects on widgets. E.G. blinking, scrolling
 """
 
 import threading
+from abc import ABC
 from queue import Queue, Empty
 from wrapt import ObjectProxy
 from time import sleep
@@ -19,7 +20,8 @@ from zope.interface import implementer, alsoProvides
 
 class Effect(object):
     """
-    Base of Effect adapters. Having its own thread enables adapters to be used for asynchronous efects as
+    Base of Effect adapters. Having its own thread enables
+    adapters to be used for asynchronous efects as
     blinking, scrolling, etc of a widget.
     """
     def __init__(self, widget, display):
@@ -32,14 +34,17 @@ class Effect(object):
     def __call__(self, delay=0.5):
         self.delay = delay
         # Start the thread
-        self.thread = threading.Thread(target=self.run, args =(self.queue, ))
+        self.thread = threading.Thread(target=self.run, args=(self.queue, ))
         self.thread.start()
 
     def init(self):
         pass
 
     def get_renderer(self):
-        renderer = getMultiAdapter((self.widget, self.display), interface=IRenderer)
+        renderer = getMultiAdapter(
+                (self.widget, self.display),
+                interface=IRenderer
+        )
         return renderer
 
     def render(self):
@@ -56,12 +61,13 @@ class Effect(object):
             if not self.display.initialized:
                 sleep(self.delay)
                 continue
-            # Render the widget. This is important to prevent an empty widget when blinking stops
+            # Render the widget. This is important to prevent
+            # an empty widget when blinking stops
             self.render()
             # check for stopping the blinking
             try:
                 # get a signal from the queue
-                signal = queue.get(block=False)
+                _signal = queue.get(block=False)
                 # if we got a signal break the loop/end the thread
                 break
             # if the queue is empty we have to continue
@@ -71,14 +77,12 @@ class Effect(object):
             self.clear()
             sleep(self.delay)
 
-
     def done(self):
         """
         Halt the blinking
         :return: None
         """
         self.queue.put(True)
-
 
 
 @implementer(IBlinking)
@@ -89,18 +93,17 @@ class Blinking(Effect):
     __used_for__ = (IWidget, IDisplay)
 
 
-
 @implementer(IScrollWrapper)
-class ScrollWrapper(ObjectProxy):
+class ScrollWrapper(ObjectProxy, ABC):
     """
     Wrapper around a Widget to modify its content state.
     """
     __used_for__ = IWidget
 
-
     def __init__(self, wrapped):
         super(ScrollWrapper, self).__init__(wrapped)
-        # get the wrapper isntance the same interfaces than the wrapped instance
+        # Add to the wrapper instance the same interfaces
+        # that the wrapped instance has
         alsoProvides(self, self.__wrapped__.__provides__)
 
     def __call__(self, effect):
@@ -149,18 +152,24 @@ class Scrolling(Blinking):
         """
         # Get the wrapper
         scrolling_widget = IScrollWrapper(self.widget)
-        # Get the wrappe a reference of the scrollingController to get access to the generator.
+        # Get the wrappe a reference of the scrollingController
+        # to get access to the generator.
         scrolling_widget(self)
         # retrieve the renderer for the wrapper and the current frame_buffer.
-        renderer = getMultiAdapter((scrolling_widget, self.display), interface=IRenderer)
+        renderer = getMultiAdapter(
+                (scrolling_widget, self.display),
+                interface=IRenderer
+        )
         # Return the renderer
         return renderer
 
     def render(self):
         # get the next scroll_position from the generator
         self.scroll_pos = self.next_pos.__next__()
-        # do the rendering. While rendering the renderer will request the content of the wrapper. The wrapper will
-        # use the self.scroll_pos to deliver only the appropriate string portion.
+        # do the rendering. While rendering the renderer will
+        # request the content of the wrapper. The wrapper will
+        # use the self.scroll_pos to deliver only the
+        # appropriate string portion.
         super(Scrolling, self).render()
 
 

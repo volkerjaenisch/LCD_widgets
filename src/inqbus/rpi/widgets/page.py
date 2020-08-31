@@ -5,7 +5,7 @@ from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import IPageWidget
 from inqbus.rpi.widgets.select import Select
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(IPageWidget)
@@ -34,7 +34,6 @@ class Page(Select):
             return self.parent
         return self.selectable_widgets[0]
 
-
     def handle_signal(self, signal):
         self.selector.notify(signal)
 
@@ -52,7 +51,7 @@ class Page(Select):
 
 @implementer(IRenderer)
 class PageRenderer(Renderer):
-    __used_for__ = (IPageWidget,Interface)
+    __used_for__ = (IPageWidget, Interface)
 
     def render(self):
         new_x, new_y = 0, 0
@@ -62,9 +61,6 @@ class PageRenderer(Renderer):
         # return the coordinate after the content
         # ToDo width, height handling
         return new_x, new_y + 1
-
-
-
 
 
 # Register the render adapter

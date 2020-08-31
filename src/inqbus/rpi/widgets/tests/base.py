@@ -1,13 +1,12 @@
 import unittest
 
-from inqbus.rpi.widgets.display.console import ConsoleDisplay
-from inqbus.rpi.widgets.interfaces.interfaces import IGUI
-from zope.component import getUtility
-
 # Important imports to get the framework modules in place
 import inqbus.rpi.widgets.base.controller
 import inqbus.rpi.widgets.gui
 
+from inqbus.rpi.widgets.display.console import ConsoleDisplay
+from inqbus.rpi.widgets.interfaces.interfaces import IGUI
+from zope.component import getUtility
 
 TINY_LINE = 'A'
 SHORT_LINE = 'This is a short line'
@@ -29,4 +28,3 @@ class TestBase(unittest.TestCase):
         self.display.clear()
         self.gui.set_layout(widget)
         self.gui.render()
-

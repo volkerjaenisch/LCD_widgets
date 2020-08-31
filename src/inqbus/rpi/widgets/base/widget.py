@@ -10,8 +10,10 @@ from zope.interface import implementer
 @implementer(IWidget)
 class Widget(object):
     """
-    Base class for all widgets. The widget classes sontain no functionality but only the state of the widget.
-    Its content, ist position, dimensions, and parameters. Functionality is provided by adapters e.g. for rendering,
+    Base class for all widgets. The widget classes contains
+    no functionality but only the state of the widget.
+    That is the content, position, dimensions, and parameters.
+    Functionality is provided by adapters e.g. for rendering,
     visual effects, focus change, signal handling.
     """
     _content = None
@@ -65,7 +67,8 @@ class Widget(object):
     @content.setter
     def content(self, value):
         """
-        The content setter is responsible for the handling of new context. This is especially useful if content changes
+        The content setter is responsible for the handling
+        of new context. This is especially useful if content changes
         during the program run.
         :param value:
         :return:
@@ -101,7 +104,7 @@ class Widget(object):
         """
         if self.rendered__pos_x is None:
             return self.pos_x
-        else :
+        else:
             return self.rendered__pos_x
 
     @rendered_pos_x.setter
@@ -115,7 +118,7 @@ class Widget(object):
         """
         if self.rendered__pos_y is None:
             return self.pos_y
-        else :
+        else:
             return self.rendered__pos_y
 
     @rendered_pos_y.setter
@@ -191,7 +194,8 @@ class Widget(object):
     @property
     def parent(self):
         """
-        The parent of the widget. If None the widget ist the top most widget usually a page Widget.
+        The parent of the widget. If None the widget
+        is the top most widget usually a page Widget.
         :return:
         """
         return self._parent
@@ -234,15 +238,17 @@ class Widget(object):
         :return:
         """
         widget_idx = self.content.index(widget)
-        if widget_idx == len(self.content)-1 :
+        if widget_idx == len(self.content) - 1:
             return self.parent
         return self.content[widget_idx + 1]
 
     @property
     def length(self):
         """
-        Return the length of the content. If the content is a string then the stringlength is returned.
-        If the content is a list the number of elements is returned.
+        Return the length of the content. If the content is a string
+        then the length of the string is returned.
+        If the content is a list
+        the number of elements is returned.
         :return:
         """
         return len(self.content)
@@ -250,7 +256,8 @@ class Widget(object):
     @property
     def controller(self):
         """
-        The controller adapter for the widget. This is in fact a caching for the controller adapter for performance.
+        The controller adapter for the widget.
+        This is in fact a caching for the controller adapter for performance.
         :return: The controller Adapter
         """
         return self._controller

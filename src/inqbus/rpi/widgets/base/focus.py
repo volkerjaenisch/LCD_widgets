@@ -1,5 +1,5 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
-from inqbus.rpi.widgets.interfaces.interfaces import IMoveFocus, IGUI
+from inqbus.rpi.widgets.interfaces.interfaces import IGUI, IMoveFocus
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 
@@ -7,14 +7,16 @@ from zope.interface import implementer
 @implementer(IMoveFocus)
 class MoveFocus(WidgetController):
     """
-    This Adapter for WidgetControllers shifts the focus on a given WidgetController foaccording to a given signal
+    This Adapter for WidgetControllers shifts the focus
+    on a given WidgetController and relays the signal
+    that causes the focus shift
     """
 
-    __used_for__ = (IGUI)
+    __used_for__ = IGUI
 
     def __call__(self, signal):
         # Check if we obtain the focus
-        assert self.widget.focus.has_focus == True
+        assert self.widget.focus.has_focus is True
         # dispatch the signal
         self._signals[signal](signal)
 
@@ -23,7 +25,8 @@ class MoveFocus(WidgetController):
 
     def on_up(self, signal):
         """
-        Get the current focussed widget and shift the focus to the previous (sibling) widget
+        Get the current focussed widget and shift
+        the focus to the previous (sibling) widget
         :param signal:
         :return:
         """
@@ -31,7 +34,8 @@ class MoveFocus(WidgetController):
 
     def on_down(self, signal):
         """
-        Get the current focussed widget and shift the focus to the next (sibling) widget
+        Get the current focussed widget and
+        shift the focus to the next (sibling) widget
         :param signal:
         :return:
         """
@@ -39,8 +43,8 @@ class MoveFocus(WidgetController):
 
     def move_focus_to(self, target_widget):
         """
-        Move the focus to the given widget
-        :param new_focus:
+        Move the focus to the object given
+        :param target_widget: The object to focus on
         :return:
         """
         old_focus = self.widget.focus

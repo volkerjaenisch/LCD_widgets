@@ -1,28 +1,29 @@
-from inqbus.rpi.widgets.base.log import logging
-
 from inqbus.rpi.widgets.base import signals
+from inqbus.rpi.widgets.base.log import logging
 from inqbus.rpi.widgets.errors import SignalNotCatched
-from zope.component import getGlobalSiteManager
-from inqbus.rpi.widgets.interfaces.widgets import IWidget
 from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController
+from inqbus.rpi.widgets.interfaces.widgets import IWidget
+from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 
 
 @implementer(IWidgetController)
 class WidgetController(object):
     """
-    Each widget has a WidgetController assigned that takes care of all state changes:
+    Each widget has a WidgetController assigned
+    that takes care of all state changes:
     * Signal processing/dispatching
-    * Changing the internal state of the Widget e.g. the selected index in a SelectWidget
+    * Changing the internal state of the Widget e.g.
+        the selected index in a SelectWidget
     """
-    __used_for__ = (IWidget)
+    __used_for__ = IWidget
 
     def __init__(self, widget):
         self.widget = widget
         self._signals = {
-            signals.Input_Up: self.on_up,
-            signals.Input_Down: self.on_down,
-            signals.Input_Click: self.on_click,
+            signals.InputUp: self.on_up,
+            signals.InputDown: self.on_down,
+            signals.InputClick: self.on_click,
         }
 
     def on_click(self, signal):
@@ -61,4 +62,3 @@ class WidgetController(object):
 
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(WidgetController, (IWidget,), IWidgetController)
-

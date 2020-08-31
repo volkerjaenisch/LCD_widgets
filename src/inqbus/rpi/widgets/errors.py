@@ -1,6 +1,8 @@
 
 class SignalNotCatched(Exception):
-    """Raised when a widget cannot process a signal. E.g. when a select gets a Signal up but it is almost at the topmost position"""
+    """Raised when a widget cannot process a signal.
+    E.g. when a select gets a Signal up but it is already
+    at the topmost position"""
     pass
 
 

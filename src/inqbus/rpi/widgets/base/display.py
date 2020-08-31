@@ -9,12 +9,15 @@ from zope.interface import implementer
 @implementer(IDisplay)
 class Display(Device):
     """
-    The frame_buffer base class implements the access to the physical frame_buffer e.g. to
+    The frame_buffer base class implements
+    the access to the physical frame_buffer e.g. to
     * initialize the underlying hardware
     * catch out of bounds errors
     * give the Display a Lock for multithreading
     """
-    # states if the frame_buffer is ready to accept requests. Mainly to prevent writes to non initialized hardware.
+
+    # states if the frame_buffer is ready to accept requests.
+    # Mainly to prevent writes to non initialized hardware.
     initialized = False
 
     def __init__(self,
@@ -27,7 +30,8 @@ class Display(Device):
         self.width = width
         self.pos_x = 0
         self.pos_y = 0
-        # Threading.Lock isntance to serialize write operations from different render threads
+        # Threading.Lock isntance to serialize write operations
+        # from different render threads
         self.lock = Lock()
 
     def clear(self):
@@ -52,9 +56,9 @@ class Display(Device):
                 return
 
     def set_cursor_pos(self, x, y):
-        if not y < self.height :
+        if not y < self.height:
             raise OutOfDisplay
-        if not x < self.width :
+        if not x < self.width:
             raise OutOfDisplay
         self.pos_x, self.pos_y = (x, y)
 
