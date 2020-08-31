@@ -20,10 +20,7 @@ class TestLines(TestBase):
         out_line = x * ' ' + content + ' ' * (self.display.width - len(content) - x)
         expected_result = out_line[:self.display.width ]
 
-        try :
-            assert self.display.frame_buffer[y] == expected_result
-        except:
-            pass
+        assert self.display.frame_buffer[y] == expected_result
 
 
     def lines_multi(self, content_in, x=0, y=0):
@@ -33,19 +30,20 @@ class TestLines(TestBase):
 
         self.widget_test(lines)
         expected_result = []
+        pos_y = y
         for line in lines.content:
+            if pos_y > self.display.height - 1:
+                break
             content = line.content
             out_line = x * ' ' + content + ' ' * (self.display.width - len(content) - x)
             expected_result.append(out_line[:self.display.width ])
 
-        try :
-            pos_y = y
-            for line in expected_result:
-                assert self.display.frame_buffer[pos_y] == line
-                pos_y += 1
-        except:
-            pass
-
+        pos_y = y
+        for line in expected_result:
+            if pos_y > self.display.height - 1:
+                break
+            assert self.display.frame_buffer[pos_y] == line
+            pos_y += 1
 
     def test_lines_single(self, x=0, y=0):
 
@@ -58,19 +56,21 @@ class TestLines(TestBase):
 
     def test_lines_multi(self, x=0, y=0):
 
-        self.lines_multi(['abcd', 'volker', 'hugo'])
+        self.lines_multi(['abcd', 'volker', 'hugo', 'otto', 'gerald'])
 
 
     def test_long_lines_multi_clipping(self, x=0, y=0):
 
-        self.lines_multi([15*'abcd', 15*'volker', 15*'hugo'])
-
+        self.lines_multi([10*'abcd', 11*'volker', 12*'hugo', 13*'otto', 14*'gerald'])
 
     def test_position(self):
         for x in range(self.display.width):
             for y in range(self.display.height):
                 self.display.clear()
                 self.test_lines_single(x,y)
+                self.display.clear()
                 self.test_long_lines_single_clipping(x,y)
+                self.display.clear()
                 self.test_lines_multi(x,y)
+                self.display.clear()
                 self.test_long_lines_multi_clipping(x,y)

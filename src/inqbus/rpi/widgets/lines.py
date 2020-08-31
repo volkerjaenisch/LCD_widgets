@@ -73,15 +73,15 @@ class LinesRenderer(Renderer):
                     pos_y
             )
         else:
-            self.display.write_at_pos(pos_x, pos_y, '/')
+#            self.display.write_at_pos(pos_x, pos_y, '/')
             renderer = self.get_display_renderer_for(self.widget.content[0])
-            _pos_x, pos_y = renderer.render_at(pos_x + 1, pos_y)
+            _pos_x, pos_y = renderer.render_at(pos_x, pos_y)
             for line in self.widget.content[1:self.widget.height - 1]:
-                self.display.write_at_pos(pos_x, pos_y, '|')
-                _pos_x, pos_y = self.get_display_renderer_for(line).render_at(pos_x + 1, pos_y)
-            self.display.write_at_pos(pos_x, pos_y, chr(0b01100000))
+#                self.display.write_at_pos(pos_x, pos_y, '|')
+                _pos_x, pos_y = self.get_display_renderer_for(line).render_at(pos_x, pos_y)
+#            self.display.write_at_pos(pos_x, pos_y, chr(0b01100000))
             _pos_x, pos_y = self.get_display_renderer_for(self.widget.content[self.widget.height-1]).render_at(
-                    pos_x + 1,
+                    pos_x,
                     pos_y
             )
         # return the coordinate after the content

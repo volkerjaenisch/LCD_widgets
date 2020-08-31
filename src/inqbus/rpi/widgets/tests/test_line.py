@@ -18,10 +18,7 @@ class TestLine(TestBase):
         out_line = x * ' ' + line.content + ' ' * (self.display.width - len(line.content) - x)
         expected_result = out_line[:self.display.width ]
 
-        try :
-            assert self.display.frame_buffer[y] == expected_result
-        except:
-            pass
+        assert self.display.frame_buffer[y] == expected_result
 
 
     def test_long_line_clipping(self, x=0, y=0):
@@ -34,10 +31,7 @@ class TestLine(TestBase):
         out_line = x * ' ' + line.content + ' ' * (self.display.width - len(line.content) - x)
         expected_result = out_line[:self.display.width ]
 
-        try :
-            assert self.display.frame_buffer[y] == expected_result
-        except:
-            pass
+        assert self.display.frame_buffer[y] == expected_result
 
 
     def test_position(self):
