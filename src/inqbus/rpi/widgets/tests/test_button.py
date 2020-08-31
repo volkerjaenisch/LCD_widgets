@@ -6,37 +6,37 @@ class TestButton(TestBase):
 
     def test_button(self, x=0, y=0):
 
-        button = Button(x,y)
+        button = Button(x, y)
         button.content = SHORT_BUTTON
 
         self.widget_test(button)
-
-        out_line = x * ' ' + '>' + button.content + '<' + ' ' * (self.display.width - len(button.content) - x -1)
-        expected_result = out_line[:self.display.width ]
+        before = ' ' * x
+        after = ' ' * (self.display.width - len(button.content) - x - 1)
+        out_line = before + '>' + button.content + '<' + after
+        expected_result = out_line[:self.display.width]
 
         assert self.display.frame_buffer[y] == expected_result
-
 
     def test_long_button_clipping(self, x=0, y=0):
 
-        button = Button(x,y)
+        button = Button(x, y)
         button.content = LONG_LINE
 
         self.widget_test(button)
-
-        out_line = x * ' ' + '>' + button.content + '<' + ' ' * (self.display.width - len(button.content) - x -1)
-        expected_result = out_line[:self.display.width ]
+        before = ' ' * x
+        after = ' ' * (self.display.width - len(button.content) - x - 1)
+        out_line = before + '>' + button.content + '<' + after
+        expected_result = out_line[:self.display.width]
 
         assert self.display.frame_buffer[y] == expected_result
-
 
     def test_position(self):
         for x in range(self.display.width):
             for y in range(self.display.height):
                 self.display.clear()
-                self.test_button(x,y)
+                self.test_button(x, y)
 
         for x in range(self.display.width):
             for y in range(self.display.height):
                 self.display.clear()
-                self.test_long_button_clipping(x,y)
+                self.test_long_button_clipping(x, y)

@@ -3,13 +3,21 @@ from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ITextWidget
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(ITextWidget)
 class Text(Widget):
     """
-    Text Widget. Representing a single read only string of characters that is broken into lines to float into the given space.
+    Text Widget. Representing a single read only string of characters.
+    The content will be floating text filling the rectangle between
+    the x,y pos of the widget and the boundaries given by width,
+    height of the widget.
+    If width and height are not given the display width/height
+    will be used to constrain the content.
+    If a text widget constrained by its own width/heigth will cross the
+    display boundaries it will be clipped, but the text will not be broken
+    at the boundary.
     """
     def handle_new_content(self, value):
         assert isinstance(value, str)
@@ -38,10 +46,18 @@ class TextRenderer(Renderer):
         while True:
             rest_len = len(content[start_pos:])
             if width > rest_len:
-                self.display.write_at_pos(pos_x, pos_y, content[start_pos:start_pos + width])
+                self.display.write_at_pos(
+                        pos_x,
+                        pos_y,
+                        content[start_pos:start_pos + width]
+                )
                 break
             else:
-                self.display.write_at_pos(pos_x, pos_y, content[start_pos:start_pos + width])
+                self.display.write_at_pos(
+                        pos_x,
+                        pos_y,
+                        content[start_pos:start_pos + width]
+                )
                 start_pos += width
             pos_y += 1
         # return the coordinate after the content

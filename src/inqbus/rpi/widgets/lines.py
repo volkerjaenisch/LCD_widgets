@@ -4,13 +4,15 @@ from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ILinesWidget
 from inqbus.rpi.widgets.line import Line
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(ILinesWidget)
 class Lines(Widget):
     """
-    Lines Widget. Representing one or more lines. This widget contains a list of lines which will
+    Lines Widget.
+    Representing one or more lines.
+    This widget contains a list of lines which will
     be rendered left_bounded.
     """
     def init_content(self):
@@ -36,7 +38,6 @@ class Lines(Widget):
         if self.render_on_content_change:
             # .. render the widget
             self.render()
-
 
     @property
     def height(self):
@@ -68,22 +69,17 @@ class LinesRenderer(Renderer):
         pos_x = self.widget.pos_x
         pos_y = self.widget.pos_y
         if self.widget.height == 1:
-            _pos_x, pos_y = self.get_display_renderer_for(self.widget.content[0]).render_at(
+            renderer = self.get_display_renderer_for(self.widget.content[0])
+            _pos_x, pos_y = renderer.render_at(
                     pos_x,
                     pos_y
             )
         else:
-#            self.display.write_at_pos(pos_x, pos_y, '/')
-            renderer = self.get_display_renderer_for(self.widget.content[0])
-            _pos_x, pos_y = renderer.render_at(pos_x, pos_y)
-            for line in self.widget.content[1:self.widget.height - 1]:
-#                self.display.write_at_pos(pos_x, pos_y, '|')
-                _pos_x, pos_y = self.get_display_renderer_for(line).render_at(pos_x, pos_y)
-#            self.display.write_at_pos(pos_x, pos_y, chr(0b01100000))
-            _pos_x, pos_y = self.get_display_renderer_for(self.widget.content[self.widget.height-1]).render_at(
-                    pos_x,
-                    pos_y
-            )
+
+            for line in self.widget.content:
+                renderer = self.get_display_renderer_for(line)
+                pos_x, pos_y = renderer.render_at(pos_x, pos_y)
+
         # return the coordinate after the content
         # ToDo width, height handling
         return pos_x, pos_y + 1

@@ -17,10 +17,9 @@ class DisplayCurses(Display):
         self.display = curses.newwin(self.height + 1, self.width, 0, 0)
 
     def write(self, line):
-        if not self.pos_y < self.height :
+        if not self.pos_y < self.height:
             return
-        if not self.pos_x < self.width :
+        if not self.pos_x < self.width:
             return
         self.display.addstr(self.pos_y, self.pos_x, line)
         self.display.refresh()
-

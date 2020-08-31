@@ -1,23 +1,23 @@
 from inqbus.rpi.widgets.base.signal import Signal
 
 
-class Input_Move(Signal):
+class InputMove(Signal):
     pass
 
 
-class Input_Click(Signal):
+class InputClick(Signal):
     pass
 
 
-class Input_Up(Input_Move):
+class InputUp(InputMove):
     pass
 
 
-class Input_Down(Input_Move):
+class InputDown(InputMove):
     pass
 
 
-class Input_Char(Signal):
+class InputChar(Signal):
     """
     The char signal contains the character typed
     """

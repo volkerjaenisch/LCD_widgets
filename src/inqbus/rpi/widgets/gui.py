@@ -1,21 +1,19 @@
 import threading
-from queue import Queue, Empty
+from queue import Empty, Queue
 from time import sleep
 
-from inqbus.rpi.widgets.interfaces.widgets import (
-    IWidget, )
-from inqbus.rpi.widgets.interfaces.interfaces import (
-    IWidgetController,
-    INotify, IMoveFocus, IGUI, )
 from inqbus.rpi.widgets.interfaces.input import IBlockingInput
-from zope.interface import implementer, provider
+from inqbus.rpi.widgets.interfaces.interfaces import IGUI, IMoveFocus, IWidgetController
 from zope.component import getGlobalSiteManager
+from zope.interface import implementer
 
 
 @implementer(IGUI, IWidgetController)
 class GUI(object):
     """
-    The top most model isntance. THe GUI knows the registered displays and inputs as well as the widget tree (_layout).
+    The top most model instance.
+    The GUI knows the registered displays and inputs as well as
+    the widget tree (_layout).
     It manages the _focus state and holds the signal queue.
     """
 
@@ -37,15 +35,15 @@ class GUI(object):
         :param display: The frame_buffer to register
         :return:
         """
-        self._displays.append( display )
+        self._displays.append(display)
 
-    def add_input(self, input):
+    def add_input(self, input_dev):
         """
-        Register an input device.
-        :param frame_buffer: The input to register
+        Register an input_dev device.
+        :param input_dev: The input_dev to register
         :return:
         """
-        self._inputs.append(input)
+        self._inputs.append(input_dev)
 
     def set_layout(self, layout):
         """
@@ -55,7 +53,7 @@ class GUI(object):
         """
         self._layout = layout
         # Also set the focus to the topmost widget.
-        self._focus= self._layout
+        self._focus = self._layout
 
     @property
     def focus(self):
@@ -83,16 +81,20 @@ class GUI(object):
             display.init()
             display.run()
 
-        for input in self._inputs:
-            # Initialize the input devices and start them
-            input.init()
-            # if an input device is blocking start it in a thread and connect it to the signal queue
-            if IBlockingInput.providedBy(input):
-                thread = threading.Thread(target=input.run, args =(self.signal_queue, ))
+        for input_dev in self._inputs:
+            # Initialize the input_dev devices and start them
+            input_dev.init()
+            # if an input_dev device is blocking
+            # start it in a thread and connect it to the signal queue
+            if IBlockingInput.providedBy(input_dev):
+                thread = threading.Thread(
+                        target=input_dev.run,
+                        args=(self.signal_queue, )
+                )
                 thread.start()
             else:
-                # .. else simply start the input device
-                input.run()
+                # .. else simply start the input_dev device
+                input_dev.run()
 
     def run(self):
         """
@@ -106,7 +108,7 @@ class GUI(object):
 
     def signal_loop(self):
         """
-        THe main signal loop for the thread of blocking input devices
+        THe main signal loop for the thread of blocking input_dev devices
         :return:
         """
 
@@ -121,10 +123,11 @@ class GUI(object):
                 pass
             sleep(0.1)
 
-
     def notify(self, signal):
         """
-        Top level signal dispatcher. Will be called from the signal queue as well as the nonblocking inputs directly.
+        Top level signal dispatcher.
+        Will be called from the signal queue
+        as well as the nonblocking inputs directly.
         :param signal: The signal to dispatch
         :return:
         """

@@ -3,7 +3,7 @@ from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ISelectWidget
 from inqbus.rpi.widgets.lines import Lines
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(ISelectWidget)
@@ -13,7 +13,8 @@ class Select(Lines):
     """
     # knows it selected index
     _selected_idx = 0
-    # and has a flag if it should be rendered after a change of the selcetion index
+    # and has a flag if it should be rendered
+    # after a change of the selcetion index
     render_on_selection_change = True
 
     @property
@@ -47,14 +48,15 @@ class SelectRenderer(Renderer):
         pos_y = self.widget.pos_y
 
         if self.widget.selected_idx + pos_y >= self.display.height:
-            start_idx =  self.widget.selected_idx - (self.display.height - pos_y - 1)
+            offset = (self.display.height - pos_y - 1)
+            start_idx =  self.widget.selected_idx - offset
             end_idx = self.widget.selected_idx + 1
         else:
             start_idx = 0
             end_idx = self.display.height - pos_y
         idx = start_idx
         for line in self.widget.content[start_idx:end_idx]:
-            if self.widget.has_focus and idx == self.widget.selected_idx :
+            if self.widget.has_focus and idx == self.widget.selected_idx:
                 self.display.write_at_pos(pos_x, pos_y, '>')
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')

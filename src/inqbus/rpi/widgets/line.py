@@ -3,7 +3,7 @@ from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ILineWidget
 from zope.component import getGlobalSiteManager
-from zope.interface import implementer, Interface
+from zope.interface import Interface, implementer
 
 
 @implementer(ILineWidget)
@@ -36,7 +36,6 @@ class Line(Widget):
         :param value: width
         """
         self._desired_width = value
-
 
 
 @implementer(IRenderer)
