@@ -1,10 +1,5 @@
-from inqbus.rpi.widgets.line import Line
 from inqbus.rpi.widgets.lines import Lines
 from inqbus.rpi.widgets.tests.base import TestBase
-
-
-import inqbus.rpi.widgets.base.controller
-import inqbus.rpi.widgets.gui
 
 
 class TestLines(TestBase):
@@ -47,7 +42,7 @@ class TestLines(TestBase):
 
     def test_lines_single(self, x=0, y=0):
 
-        self.lines_single(['abcd'])
+        self.lines_single(['This is a short line'])
 
 
     def test_long_lines_single_clipping(self, x=0, y=0):

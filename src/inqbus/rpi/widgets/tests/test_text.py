@@ -1,10 +1,4 @@
-from inqbus.rpi.widgets.line import Line
-from inqbus.rpi.widgets.lines import Lines
-from inqbus.rpi.widgets.tests.base import TestBase
-
-
-import inqbus.rpi.widgets.base.controller
-import inqbus.rpi.widgets.gui
+from inqbus.rpi.widgets.tests.base import LONG_LINE, SHORT_LINE, TINY_LINE, TestBase
 from inqbus.rpi.widgets.text import Text
 
 
@@ -48,10 +42,17 @@ class TestText(TestBase):
     def test_text(self, x=0, y=0):
 
         widget = Text(x,y)
-        widget.content = 'Ich bin ein moderat langer Satz ohne Komma'
+        widget.content = TINY_LINE
+        self.text(widget,x=x, y=y)
+
+        widget = Text(x,y)
+        widget.content = SHORT_LINE
         self.text(widget,x=x, y=y)
 
         widget.width = 5
+        self.text(widget,x=x, y=y)
+
+        widget.content = LONG_LINE
         self.text(widget,x=x, y=y)
 
 
