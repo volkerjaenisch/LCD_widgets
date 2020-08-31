@@ -16,6 +16,7 @@ class TestBase(unittest.TestCase):
         self.display.clear()
 
     def widget_test(self, widget):
+        self.display.clear()
         self.gui.set_layout(widget)
         self.gui.render()
 
