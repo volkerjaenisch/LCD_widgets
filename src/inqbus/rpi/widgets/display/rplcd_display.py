@@ -38,8 +38,11 @@ class RPLCDDisplay(Display):
     def init(self, display=None):
         """
         Bring up the frame_buffer.
-        :param display:
-        :return:
+
+        Args:
+            display:
+                Optional RPLCDD display instance
+
         """
         super(RPLCDDisplay, self).init()
         self.display = CharLCD(
@@ -66,16 +69,20 @@ class RPLCDDisplay(Display):
         Call the write_at(x,y,value) instead,
         which subsequently calls set_cursor_pos for you
         and is thread safe.
-        :param x: X position in characters
-        :param y: Y position in characters
-        :return:
+
+        Args:
+            x:
+                X position in characters
+            y:
+                Y position in characters
+
         """
         if not self.initialized:
             return
         super(RPLCDDisplay, self).set_cursor_pos(x, y)
         self.display.cursor_pos = (y, x)
 
-    def write(self, value):
+    def write(self, string):
         """
         Write a string to the frame_buffer.
         This function should not be called directly,
@@ -83,16 +90,18 @@ class RPLCDDisplay(Display):
         Call the write_at(x,y,value) instead,
         which subsequently calls set_cursor_pos for you
         and is thread safe.
-        :param value: The string to be written
-        :return:
+
+        Args:
+            string:
+                The string to be written
         """
         if not self.initialized:
             return
-        self.display.write_string(value)
+        self.display.write_string(string)
 
     def show(self):
         """
         Not used since the frame_buffer reacts immedialtely.
-        :return:
+        Returns:
         """
         pass

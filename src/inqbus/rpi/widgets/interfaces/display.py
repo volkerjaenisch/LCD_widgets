@@ -10,17 +10,22 @@ class IDisplayHardware(IDevice):
         """
         Set the cursor at position. This function should not be called directly but only from
         write_at_pos to keep access to the frame_buffer atomic.
-        :param x:
-        :param y:
-        :return:
+
+        Args:
+            x:
+                X position in characters
+            y:
+                Y position in characters
         """
 
-    def write(self, line):
+    def write(self, string):
         """
         Write a string at the cursor position. This function should not be called directly but only from
         write_at_pos to keep access to the frame_buffer atomic.
-        :param line:
-        :return:
+
+        Args:
+            string:
+                The string to be written on the display
         """
 
 
@@ -33,10 +38,13 @@ class IDisplay(IDisplayHardware):
         """
         Write a string at a given frame_buffer position. This atomic operation has to be secured by a threadsafe Lock.
         It calls "set_cursor_pos" and then "write" of the device.
-        :param x:
-        :param y:
-        :param content:
-        :return:
+        Args:
+            x:
+                X position in characters
+            y:
+                Y position in characters
+            content:
+                The string to be written on the display
         """
 
 

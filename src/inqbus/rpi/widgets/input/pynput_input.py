@@ -13,11 +13,12 @@ class PynputInput(BlockingInput):
     """
     Input from the keyboard via the pynput python lib.
     """
+
     def __init__(self, keyboard_signals=None):
         """
         A dict of keyboard to signal mappings
         can be given to the PynputInput instance
-        :param keyboard_signals: A dict of keyboard to signal mappings
+        Args: keyboard_signals: A dict of keyboard to signal mappings
         """
         if keyboard_signals:
             self.keyboard_signals = keyboard_signals
@@ -26,16 +27,17 @@ class PynputInput(BlockingInput):
 
     def init(self):
         """
-        :return:
+        Returns:
         """
         pass
 
     def run(self, queue):
         """
         Setup the queue for thread safe communiation with the GUI
-        :param queue: communiation queue. Will be set by the frameworks
-                run method if the input is blocking.
-        :return:
+
+        Args:
+            queue: communication queue. Will be set by the frameworks
+                    run method if the input is blocking.
         """
         super(PynputInput, self).run(queue)
         # Configure a handler for key release events
@@ -47,17 +49,19 @@ class PynputInput(BlockingInput):
     def on_key_release(self, key):
         """
         Handler for key_release events.
-        :param key:
-        :return:
+
+        Args:
+            key: The key released
         """
+
         # get the current released key as its character
         char = key.char.lower()
         # if the key is registered for a signal ..
         if char in self.keyboard_signals:
-            # .. optain the signal
+            # .. obtain the signal
             signal = self.keyboard_signals[char]
         else:
-            # if not generate a Character input signal containing the character
+            # if not generate a character input signal containing the character
             signal = InputChar(char)
         # finally send the signal to the queue
         self.queue.put(signal)

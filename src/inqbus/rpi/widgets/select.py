@@ -11,7 +11,8 @@ class Select(Lines):
     """
     The select widget
     """
-    # knows it selected index
+
+    # knows its selected index
     _selected_idx = 0
     # and has a flag if it should be rendered
     # after a change of the selcetion index
@@ -20,7 +21,7 @@ class Select(Lines):
     @property
     def selected_idx(self):
         """
-        :return: The current selected index
+        The current selected index
         """
         return self._selected_idx
 
@@ -28,9 +29,10 @@ class Select(Lines):
     def selected_idx(self, value):
         """
         Handles changes to the selected index
-        :param value: the new index
-        :return:
+
+        Args: value: The new index
         """
+
         # store the new index
         self._selected_idx = value
         # if render_on_selection_change is set ..

@@ -59,7 +59,7 @@ class INotify(Interface):
     """
 
     def notify(self, signal):
-        """notify an instance od a signal"""
+        """dispatch an instance od a signal"""
 
 
 class IMoveFocus(Interface):

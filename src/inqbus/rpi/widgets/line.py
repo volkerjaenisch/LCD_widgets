@@ -12,6 +12,12 @@ class Line(Widget):
     Line Widget. Representing a single read only line of characters.
     """
     def handle_new_content(self, value):
+        """
+        Handle new content to the widget
+
+        Args:
+            value: THe new content
+        """
         assert isinstance(value, str)
         super(Line, self).handle_new_content(value)
 
@@ -22,7 +28,7 @@ class Line(Widget):
     @property
     def width(self):
         """
-        :return: the width of the widget in characters
+        The width of the widget in characters
         """
         if self._desired_width is None:
             return len(self.content)
@@ -33,7 +39,8 @@ class Line(Widget):
     def width(self, value):
         """
         Set the width to a fixed value
-        :param value: width
+
+        Args: value: width
         """
         self._desired_width = value
 
@@ -48,8 +55,11 @@ class LineRenderer(Renderer):
     def render(self):
         """
         Render the line at the given position
-        :return: the new x, y position
+
+        Returns:
+            the new x, y position
         """
+
         # get the current widget position
         pos_x = self.widget.pos_x
         pos_y = self.widget.pos_y

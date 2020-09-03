@@ -35,14 +35,14 @@ class Page(Select):
         return self.selectable_widgets[0]
 
     def handle_signal(self, signal):
-        self.selector.notify(signal)
+        self.selector.dispatch(signal)
 
     def notify(self, signal, value=None):
         logging.debug('Page received Signal: %s' % signal)
         target = self.active_widget
         if not target:
             return
-        res = target.notify(signal)
+        res = target.dispatch(signal)
         if res:
             return
         else:

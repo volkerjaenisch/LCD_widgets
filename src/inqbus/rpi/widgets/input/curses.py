@@ -37,4 +37,4 @@ class InputCurses(Input):
                 signal = KEYBOARD_SIGNALS[key.lower()]
                 gui = getUtility(IGUI)
                 layout = gui._layout
-                layout.controller.notify(signal)
+                layout.controller.dispatch(signal)
