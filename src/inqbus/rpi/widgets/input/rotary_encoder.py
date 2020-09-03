@@ -25,8 +25,9 @@ class RotaryInput(Input):
         Initialize the rotary encoder.
         A rotary encoder instance may be given to this method
         if not an encoder instance is created.
-        :param rotary:
-        :return:
+
+        Args:
+            rotary (:obj:`pigpio_encoder.Rotary`, optional)
         """
         if not rotary:
             self.rotary = self.get_rotary()
@@ -35,7 +36,7 @@ class RotaryInput(Input):
 
         # Remember the current counter value of the rotary
         self.counter = self.rotary.counter
-        # get us a link to the GUI to notify it of signals
+        # get us a link to the GUI to dispatch it of signals
         gui = getUtility(IGUI)
         self.gui = gui
         # set us to initialized state
@@ -46,7 +47,9 @@ class RotaryInput(Input):
         Create a rotary encoder instance.
         Can be overridden by you.
         But keep in mind to register the correct callbacks.
-        :return:
+
+        Returns:
+            The rotary encoder instance
         """
         rotary = Rotary(clk_gpio=22, dt_gpio=27, sw_gpio=17)
         rotary.setup_rotary(
@@ -62,7 +65,14 @@ class RotaryInput(Input):
         pass
 
     def rotary_callback(self, counter):
-        """Call back for rotation"""
+        """
+        Call back for rotation. Dispatches Up/Down-Signals.
+
+        Args:
+            counter: The new counter value from the rotary driver
+
+        """
+
         logging.debug('Rotation %s', counter)
         # check if we are initialized ..
         if not self.initialized:
@@ -72,24 +82,23 @@ class RotaryInput(Input):
         if counter > self.counter:
             # .. memoize the new  counter value
             self.counter = counter
-            # and notify the gui of an InputUp Signal
-            self.gui.notify(InputUp)
+            # and dispatch the gui of an InputUp Signal
+            self.gui.dispatch(InputUp)
         # if the counter from the rotary is smaller than
         # the memorized counter ..
         elif counter < self.counter:
             # .. memoize the new  counter value
             self.counter = counter
-            self.gui.notify(InputDown)
-            # and notify the gui of an InputDown Signal
+            self.gui.dispatch(InputDown)
+            # and dispatch the gui of an InputDown Signal
 
     def click_callback(self):
         """
-        Call back for cklick operation
-        :return:
+        Call back for click operation. Dispatches Click-Signals.
         """
         logging.debug('Click!')
         # check if we are initialized ..
         if not self.initialized:
             return
-        # and notify the gui of an InputClick Signal
-        self.gui.notify(InputClick)
+        # and dispatch the gui of an InputClick Signal
+        self.gui.dispatch(InputClick)

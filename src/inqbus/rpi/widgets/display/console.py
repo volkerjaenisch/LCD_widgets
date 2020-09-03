@@ -30,7 +30,6 @@ class ConsoleDisplay(Display):
         """
         Initialize the frame_buffer.
         In this case we only build a character "frame buffer"
-        :return:
         """
         super(ConsoleDisplay, self).init()
         self.clear()
@@ -40,21 +39,14 @@ class ConsoleDisplay(Display):
         Initializing the frame buffer. The frame buffer is simply a list
         of strings.
         Empty positions on the display are denoted by " " aka char(32).
-        :return: None
         """
         self.frame_buffer = [' ' * self.width for i in range(self.height)]
-
-    def run(self):
-        pass
-
-    def done(self):
-        pass
 
     def write(self, content):
         """
         Write given content to the frame_buffer at the current cursor position.
-        :param content: the content given. String
-        :return:
+
+        Args: content: the content given.
         """
         # copy the line where the cursor is set into new_line
         new_line = self.frame_buffer[self.pos_y]
@@ -76,7 +68,6 @@ class ConsoleDisplay(Display):
         Do a simple representation of the frame_buffer
         by printing all its lines to the console.
         A frame is added for readability.
-        :return:
         """
         print('+' + '-' * self.width + '+')
         for line in self.frame_buffer:

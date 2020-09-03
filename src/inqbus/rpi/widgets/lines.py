@@ -42,7 +42,7 @@ class Lines(Widget):
     @property
     def height(self):
         """
-        :return: the height of the widget in characters
+        The height of the widget in characters
         """
         if self._desired_height is None:
             return len(self._content)
@@ -53,7 +53,8 @@ class Lines(Widget):
     def height(self, value):
         """
         Set the height to a fixed value
-        :param value: height
+
+        Args: value: height
         """
         self._desired_height = value
 

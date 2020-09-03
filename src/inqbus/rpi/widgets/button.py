@@ -13,13 +13,14 @@ class Button(Line):
     """
     Button Widget. Representing a single line button.
     """
+
     # The click_handler for the button
     _click_handler = None
 
     @property
     def width(self):
         """
-        :return: the width of the widget in characters
+        The width of the widget in characters
         """
         if self._desired_width is None:
             # The button adds two braces
@@ -32,7 +33,9 @@ class Button(Line):
     def width(self, value):
         """
         Set the width to a fixed value
-        :param value: width
+
+        Args:
+            value: width
         """
         self._desired_width = value
 
@@ -45,7 +48,9 @@ class Button(Line):
     def click_handler(self):
         """
         Property to get the click_handler
-        :return: the click_handler
+
+        Returns:
+            The click_handler
         """
         return self._click_handler
 
@@ -53,8 +58,8 @@ class Button(Line):
     def click_handler(self, handler):
         """
         Property to set the click_handler
-        :param handler: The handler
-        :return: None
+        Args:
+            handler: The handler
         """
         self._click_handler = handler
 
@@ -69,7 +74,8 @@ class ButtonRenderer(Renderer):
     def render(self):
         """
         Render the Button at the given position
-        :return: the new x, y position
+
+        Returns: the new x, y position
         """
         pos_x = self.widget.pos_x
         pos_y = self.widget.pos_y
@@ -96,7 +102,6 @@ class ButtonRenderer(Renderer):
     def clear(self):
         """
         Erase the button from the frame_buffer
-        :return:
         """
         self.display.write_at_pos(
                 self.widget.pos_x,
@@ -112,11 +117,15 @@ class ButtonController(WidgetController):
     """
     __used_for__ = IButtonWidget
 
-    def notify(self, signal):
+    def dispatch(self, signal):
         """
         Dispatcher for Signals. Displaytches only the InputClick signal
-        :param signal: Incoming Signal
-        :return: True if the widget consumes the Signal,
+
+        Args:
+            signal: Incoming Signal
+
+        Returns:
+            True if the widget consumes the Signal,
             False if the widget cannot consume the signal
         """
         if signal == InputClick:

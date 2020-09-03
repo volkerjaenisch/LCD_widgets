@@ -31,25 +31,30 @@ class GUI(object):
 
     def add_display(self, display):
         """
-        Register a frame_buffer device.
-        :param display: The frame_buffer to register
-        :return:
+        Register a display device.
+
+        Args:
+            display:
+                The display to register
         """
         self._displays.append(display)
 
     def add_input(self, input_dev):
         """
         Register an input_dev device.
-        :param input_dev: The input_dev to register
-        :return:
+
+        Args:
+            input_dev:
+                The input_dev to register
         """
         self._inputs.append(input_dev)
 
     def set_layout(self, layout):
         """
         Set the layout
-        :param layout: The layout to be set
-        :return:
+
+        Args:
+            layout: The layout to be set
         """
         self._layout = layout
         # Also set the focus to the topmost widget.
@@ -58,7 +63,7 @@ class GUI(object):
     @property
     def focus(self):
         """
-        :return: the current focussed widget
+        The current focussed widget
         """
         return self._focus
 
@@ -66,16 +71,17 @@ class GUI(object):
     def focus(self, widget):
         """
         Set the current focus to the given widget
-        :param widget: The widget to get the focus
-        :return:
+
+        Args:
+            widget: The widget to set the focus upon
         """
         self._focus = widget
 
     def init(self):
         """
         Initialize the GUI
-        :return:
         """
+
         # Initialize the frame_buffer devices and start them
         for display in self._displays:
             display.init()
@@ -99,7 +105,6 @@ class GUI(object):
     def run(self):
         """
         Run the GUI
-        :return:
         """
         # Initial Render
         self._layout.render()
@@ -108,8 +113,7 @@ class GUI(object):
 
     def signal_loop(self):
         """
-        THe main signal loop for the thread of blocking input_dev devices
-        :return:
+        The main signal loop for the thread of blocking input_dev devices
         """
 
         while True:
@@ -117,22 +121,25 @@ class GUI(object):
             try:
                 signal = self.signal_queue.get(block=False)
                 # dispatch the signal
-                self.notify(signal)
+                self.dispatch(signal)
             # if the queue is empty just continue after some small wait
             except Empty:
                 pass
             sleep(0.1)
 
-    def notify(self, signal):
+    def dispatch(self, signal):
         """
         Top level signal dispatcher.
         Will be called from the signal queue
         as well as the nonblocking inputs directly.
-        :param signal: The signal to dispatch
-        :return:
+
+        Args: signal: The signal to dispatch
+        Returns:
+            True if the signal could be dispatched, False if not
         """
+
         # dispatch the signal to the focussed widget's controller
-        result = self.focus.controller.notify(signal)
+        result = self.focus.controller.dispatch(signal)
         # If the focussed widget has consumed the signal ..
         if result:
             # .. return True for success to the caller
@@ -146,7 +153,7 @@ class GUI(object):
     @property
     def displays(self):
         """
-        :return: all registered displays
+        All registered displays
         """
         return self._displays
 
