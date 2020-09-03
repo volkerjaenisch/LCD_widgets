@@ -1,14 +1,11 @@
 from inqbus.rpi.widgets.base.display import Display
 from inqbus.rpi.widgets.input.pynput_input import PynputInput
 from inqbus.rpi.widgets.interfaces.interfaces import IGUI
-from inqbus.rpi.widgets.widgets import Page, Line, Select
 
 from zope.component import getUtility
 
 
 import inqbus.rpi.widgets.gui # IMPORTANT!
-import inqbus.rpi.widgets.render # IMPORTANT!
-import inqbus.rpi.widgets.widgets # IMPORTANT!
 import inqbus.rpi.widgets.base.controller # IMPORTANT!
 
 

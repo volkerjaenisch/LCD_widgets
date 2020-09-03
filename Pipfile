@@ -9,6 +9,9 @@ smbus2 = "*"
 pigpio = "*"
 pigpio-encoder = {editable = true, git = "https://github.com/Inqbus/pigpio_encoder.git", ref = "pigpio_reconstruction"}
 sphinx = "*"
+wrapt = "*"
+pytest = "*"
+sphinx-rtd-theme = "*"
 
 [dev-packages]
 
