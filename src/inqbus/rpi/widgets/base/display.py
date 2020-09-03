@@ -35,19 +35,43 @@ class Display(Device):
         self.lock = Lock()
 
     def clear(self):
+        """
+        Clear the display
+        """
         pass
 
     def init(self):
+        """
+        Initialize the display
+        """
         super(Display, self).init()
 
     def run(self):
+        """
+        Activate the display
+        """
         pass
 
     def done(self):
+        """
+        Deactivate the display
+        """
         pass
 
     def write_at_pos(self, x, y, content):
-        # Use the threading Lock
+        """
+        Write at the given display position the string in content.
+        Make use of a lock to prevent that concurrent threads are using the display driver at the same time.
+
+        Args:
+            x: Horizontal display postiton
+            y: Vertical display postiton
+            content: The string to be written
+
+        Returns:
+            None
+        """
+
         with self.lock:
             try:
                 self.set_cursor_pos(x, y)
@@ -56,6 +80,16 @@ class Display(Device):
                 return
 
     def set_cursor_pos(self, x, y):
+        """
+        Set the cursor position.
+
+        Args:
+            x: Horizontal position
+            y: Vertical position
+
+        Returns:
+            None
+        """
         if not y < self.height:
             raise OutOfDisplay
         if not x < self.width:

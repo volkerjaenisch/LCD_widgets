@@ -23,7 +23,11 @@ class BlockingInput(Input):
     def run(self, queue):
         """
         The run function will be called from the GUI with the signal queue.
-        :param queue:
-        :return:
+
+        Args:
+            queue: The Queue for thread safe communication to the caller
+
+        Returns:
+            None
         """
         self.queue = queue

@@ -16,6 +16,7 @@ class Widget(object):
     Functionality is provided by adapters e.g. for rendering,
     visual effects, focus change, signal handling.
     """
+
     _content = None
     _parent = None
     _controller = None
@@ -51,7 +52,9 @@ class Widget(object):
     def init_content(self):
         """
         Hook for content initialisation
-        :return:
+
+        Returns:
+            None
         """
         pass
 
@@ -60,7 +63,9 @@ class Widget(object):
         """
         The content of the widget. This may be a simple string value or a
         more complex content like other widgets or a list of other widgets.
-        :return:
+
+        Returns:
+            None
         """
         return self._content
 
@@ -70,37 +75,57 @@ class Widget(object):
         The content setter is responsible for the handling
         of new context. This is especially useful if content changes
         during the program run.
-        :param value:
-        :return:
+
+        Args:
+            value:
+                The content of the widget
+
+        Returns:
+            None
         """
         self.handle_new_content(value)
 
     @property
     def pos_x(self):
         """
-        :return: The x position of the widget in screen coordinates
+        The x position of the widget in screen coordinates
         """
         return self._pos_x
 
     @pos_x.setter
     def pos_x(self, value):
+        """
+        Set the horizontal position of the widget
+
+        Args:
+            value: horizontal position of the widget
+        """
         self._pos_x = value
 
     @property
     def pos_y(self):
         """
-        :return: The y position of the widget in screen coordinates
+        The y position of the widget in screen coordinates
         """
         return self._pos_y
 
     @pos_y.setter
     def pos_y(self, value):
+        """
+        Set the vertical position of the widget
+
+        Args:
+            value: vertical position of the widget
+
+        Returns:
+            None
+        """
         self._pos_y = value
 
     @property
     def rendered_pos_x(self):
         """
-        :return: The rendered x position of the widget in screen coordinates
+        The rendered x position of the widget in screen coordinates
         """
         if self.rendered__pos_x is None:
             return self.pos_x
@@ -109,12 +134,21 @@ class Widget(object):
 
     @rendered_pos_x.setter
     def rendered_pos_x(self, value):
+        """
+        Set the horizontal render position of the widget
+
+        Args:
+            value: horizontal render position of the widget
+
+        Returns:
+            None
+        """
         self.rendered__pos_x = value
 
     @property
     def rendered_pos_y(self):
         """
-        :return: The rendered_y position of the widget in screen coordinates
+        The rendered_y position of the widget in screen coordinates
         """
         if self.rendered__pos_y is None:
             return self.pos_y
@@ -123,12 +157,21 @@ class Widget(object):
 
     @rendered_pos_y.setter
     def rendered_pos_y(self, value):
+        """
+        Set the vertical render position of the widget
+
+        Args:
+            value: vertical render position of the widget
+
+        Returns:
+            None
+        """
         self.rendered__pos_y = value
 
     @property
     def height(self):
         """
-        :return: the height of the widget in characters
+        The height of the widget in characters
         """
         return self._desired_height
 
@@ -136,14 +179,15 @@ class Widget(object):
     def height(self, value):
         """
         Set the height to a fixed value
-        :param value: height
+
+        Args: value: height
         """
         self._desired_height = value
 
     @property
     def width(self):
         """
-        :return: the width of the widget in characters
+        The width of the widget in characters
         """
         return self._desired_width
 
@@ -151,14 +195,15 @@ class Widget(object):
     def width(self, value):
         """
         Set the width to a fixed value
-        :param value: width
+
+        Args: value: width
         """
         self._desired_width = value
 
     @property
     def rendered_width(self):
         """
-        :return: the rendered width of the widget in characters
+        The rendered width of the widget in characters
         """
         if self._rendered_width is None:
             return self._desired_width
@@ -169,14 +214,15 @@ class Widget(object):
     def rendered_width(self, value):
         """
         Set the rendered width
-        :param value: new rendered width
+
+        Args: value: new rendered width
         """
         self._rendered_width = value
 
     @property
     def rendered_height(self):
         """
-        :return: the rendered height of the widget in characters
+        The rendered height of the widget in characters
         """
         if self._rendered_height is None:
             return self._desired_height
@@ -187,7 +233,8 @@ class Widget(object):
     def rendered_height(self, value):
         """
         Set the rendered height
-        :param value: new rendered height
+
+        Args: value: new rendered height
         """
         self._rendered_height = value
 
@@ -196,35 +243,45 @@ class Widget(object):
         """
         The parent of the widget. If None the widget
         is the top most widget usually a page Widget.
-        :return:
         """
         return self._parent
 
     @parent.setter
-    def parent(self, value):
-        self._parent = value
+    def parent(self, widget):
+        """
+        Set the parent widget
+
+        Args:
+            value: the parent widget
+
+        Returns:
+            None
+        """
+        self._parent = widget
 
     @property
     def prev_widget(self):
         """
-        Return the previous sibling widget
-        :return:
+        The previous sibling widget
         """
         return self._parent.get_prev_sibling(self)
 
     @property
     def next_widget(self):
         """
-        Return the next sibling widget
-        :return:
+        The next sibling widget
         """
         return self._parent.get_next_sibling(self)
 
     def get_prev_sibling(self, widget):
         """
-        calculate the previous sibling widget for a given widget
-        :param widget:
-        :return:
+        Calculate the previous sibling widget for a given widget
+
+        Args:
+            widget: The widget
+
+        Returns:
+            The previous sibling
         """
         widget_idx = self.content.index(widget)
         if widget_idx == 0:
@@ -233,9 +290,13 @@ class Widget(object):
 
     def get_next_sibling(self, widget):
         """
-        calculate the next sibling widget for a given widget
-        :param widget:
-        :return:
+        Calculate the next sibling widget for a given widget
+
+        Args:
+            widget: The widget
+
+        Returns:
+            The next sibling
         """
         widget_idx = self.content.index(widget)
         if widget_idx == len(self.content) - 1:
@@ -249,7 +310,6 @@ class Widget(object):
         then the length of the string is returned.
         If the content is a list
         the number of elements is returned.
-        :return:
         """
         return len(self.content)
 
@@ -258,7 +318,6 @@ class Widget(object):
         """
         The controller adapter for the widget.
         This is in fact a caching for the controller adapter for performance.
-        :return: The controller Adapter
         """
         return self._controller
 
@@ -266,7 +325,6 @@ class Widget(object):
     def has_focus(self):
         """
         Returns if the widget is currently focussed
-        :return:
         """
         gui = getUtility(IGUI)
         return gui.focus == self
@@ -274,7 +332,6 @@ class Widget(object):
     def render(self):
         """
         Render the widget on all displays
-        :return:
         """
         gui = getUtility(IGUI)
         for display in gui.displays:
@@ -285,8 +342,9 @@ class Widget(object):
     def handle_new_content(self, value):
         """
         Deal with new content.
-        :param value:
-        :return:
+
+        Args:
+            value: THe new content
         """
         self._content = value
         # if render on contetn change is activated ..
@@ -295,4 +353,7 @@ class Widget(object):
             self.render()
 
     def init(self):
+        """
+        Initialize the widget
+        """
         pass

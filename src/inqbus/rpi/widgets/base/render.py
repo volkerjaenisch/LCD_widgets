@@ -16,6 +16,7 @@ class Renderer(object):
         * and its appearance on a certain type of Display. A display
             may be character frame_buffer, or HTML file...
     """
+
     __used_for__ = (IWidget, IDisplay)
 
     def __init__(self, widget, display):
@@ -25,9 +26,13 @@ class Renderer(object):
     def set_position(self, pos_x, pos_y):
         """
         Set the position of the widget in frame_buffer coordinates
-        :param pos_x:
-        :param pos_y:
-        :return:
+
+        Args:
+            pos_x: horizontal display position
+            pos_y: vertical display position
+
+        Returns:
+            None
         """
         self.widget.pos_x = pos_x
         self.widget.pos_y = pos_y
@@ -35,23 +40,29 @@ class Renderer(object):
     def content(self):
         """
         Return the content of the Widget
-        :return:
+
+        Returns:
+            Content of the Widget
         """
         return self.widget.content
 
     def render(self):
         """
         Render the Widget
-        :return: the cursor position after rendering the widget
+
+        Returns:
+            the cursor position after rendering the widget
         """
         return self.widget.pos_x, self.widget.pos_y
 
     def render_at(self, pos_x, pos_y):
         """
         Render the Widget at a certain screen position
-        :param pos_x:
-        :param pos_y:
-        :return: the cursor position after rendering the widget
+        Args:
+            pos_x: horizontal display position
+            pos_y: vertical display position
+
+        Returns: the cursor position after rendering the widget
         """
         self.set_position(pos_x, pos_y)
         return self.render()
@@ -59,7 +70,8 @@ class Renderer(object):
     def clear(self):
         """
         Render an Empty Widget at the current position of the widget
-        :return: the cursor position after rendering the widget
+
+        Returns: the cursor position after rendering the widget
         """
         self.display.write_at_pos(
                 self.widget.pos_x,
@@ -72,8 +84,13 @@ class Renderer(object):
         """
         Helper function to retrieve the renderer multi adapter
         for a given widget
-        :param widget:
-        :return:
+
+        Args:
+            widget:
+                The display a renderer has to be supplied for
+
+        Returns:
+            None
         """
         renderer = getMultiAdapter((widget, self.display), IRenderer)
         return renderer

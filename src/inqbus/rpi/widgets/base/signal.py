@@ -8,6 +8,6 @@ class Signal(object):
     def __str__(self):
         """
         The signal represents it self by its class name
-        :return:
+        Returns:
         """
         return self.__class__.__name__

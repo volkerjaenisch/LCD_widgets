@@ -16,10 +16,19 @@ class Device(object):
     initialized = False
 
     def init(self):
+        """
+        Initialize the device
+        """
         pass
 
     def run(self):
+        """
+        Activate the device
+        """
         pass
 
     def done(self):
+        """
+        Deactivate the device
+        """
         pass
