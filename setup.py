@@ -37,6 +37,10 @@ setup(
         'pigpio-encoder',
         'zope.component',
         'pynput',
+        'wrapt',
+        'pytest',
+        'sphinx',
+        'sphinx-rtd-theme',
     ],
     extras_require={
         'test': [
