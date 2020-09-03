@@ -24,6 +24,7 @@ class Effect(object):
     adapters to be used for asynchronous efects as
     blinking, scrolling, etc of a widget.
     """
+
     def __init__(self, widget, display):
         self.widget = widget
         self.display = display
@@ -38,6 +39,9 @@ class Effect(object):
         self.thread.start()
 
     def init(self):
+        """
+        Initialize the effect
+        """
         pass
 
     def get_renderer(self):
@@ -48,12 +52,28 @@ class Effect(object):
         return renderer
 
     def render(self):
+        """
+        Render the effect
+        """
         self.renderer.render()
 
     def clear(self):
+        """
+        Clear the effect
+        """
         self.renderer.clear()
 
     def run(self, queue):
+        """
+        Run the effect on the widget. If the calling thread put anything into the queue the effect will stop.
+
+        Args:
+            queue: The given Queue connects the Effect with its callers thread.
+
+        Returns:
+            None
+        """
+
         # get the renderer for the widget/frame_buffer
         self.renderer = self.get_renderer()
         while True:
@@ -79,8 +99,10 @@ class Effect(object):
 
     def done(self):
         """
-        Halt the blinking
-        :return: None
+        Finishes the effect. E.g. stop it.
+
+        Returns:
+            None
         """
         self.queue.put(True)
 
@@ -136,7 +158,9 @@ class Scrolling(Blinking):
     def _next_pos(self):
         """
         Generator for scroll positions. Generates circular char positions.
-        :return:
+
+        Returns:
+            None
         """
         # circular
         while True:
@@ -148,7 +172,8 @@ class Scrolling(Blinking):
     def get_renderer(self):
         """
         Returns the wrapper in place of the widget itself
-        :return:
+
+        Returns:
         """
         # Get the wrapper
         scrolling_widget = IScrollWrapper(self.widget)

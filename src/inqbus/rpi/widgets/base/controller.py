@@ -27,10 +27,28 @@ class WidgetController(object):
         }
 
     def on_click(self, signal):
+        """
+        Handles click signals
+
+        Args:
+            signal: incoming signal
+
+        Returns:
+            True if signal was handled, False otherwise
+        """
         logging.debug(self.__class__.__name__ + ' done click')
         return True
 
     def on_down(self, signal):
+        """
+        Handles down signals
+
+        Args:
+            signal: incoming signal
+
+        Returns:
+            True if signal was handled, False otherwise
+        """
         logging.debug(self.__class__.__name__ + ' done Down')
 
         if self.widget.selected_idx < self.widget.length - 1:
@@ -40,6 +58,15 @@ class WidgetController(object):
             return False
 
     def on_up(self, signal):
+        """
+        Handles up signals
+
+        Args:
+            signal: incoming signal
+
+        Returns:
+            True if signal was handled, False otherwise
+        """
         logging.debug(self.__class__.__name__ + ' done Up')
 
         if self.widget.selected_idx > 0:
@@ -48,14 +75,24 @@ class WidgetController(object):
         else:
             return False
 
-    def notify(self, signal):
+    def dispatch(self, signal):
+        """
+        Dispatches the incoming signal
+
+        Args:
+            signal: incoming signal
+        Returns:
+            True if signal was handled, False otherwise
+        Raises:
+            SignalNotCatched if signal could not be dispatched
+        """
         result = self._signals[signal](signal)
         if result:
             self.widget.render()
             return result
         else:
             if self.widget.parent:
-                return self.widget.parent.notify(signal)
+                return self.widget.parent.dispatch(signal)
             else:
                 raise SignalNotCatched
 

@@ -21,14 +21,22 @@ class MoveFocus(WidgetController):
         self._signals[signal](signal)
 
     def on_click(self, signal):
+        """
+        Handle click signals
+        Args:
+            signal: incoming signal
+        """
         pass
 
     def on_up(self, signal):
         """
         Get the current focussed widget and shift
         the focus to the previous (sibling) widget
-        :param signal:
-        :return:
+
+        Args:
+            signal: The incoming signal
+        Returns:
+            None
         """
         self.move_focus_to(self.widget.focus.prev_widget)
 
@@ -36,16 +44,24 @@ class MoveFocus(WidgetController):
         """
         Get the current focussed widget and
         shift the focus to the next (sibling) widget
-        :param signal:
-        :return:
+
+        Args:
+            signal: The incoming signal
+
+        Returns:
+            None
         """
         self.move_focus_to(self.widget.focus.next_widget)
 
     def move_focus_to(self, target_widget):
         """
         Move the focus to the object given
-        :param target_widget: The object to focus on
-        :return:
+
+        Args:
+            target_widget: The object to focus on
+
+        Returns:
+            None
         """
         old_focus = self.widget.focus
         self.widget.focus = target_widget
