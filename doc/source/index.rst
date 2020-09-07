@@ -10,35 +10,87 @@ Welcome to inqbus.rpi.widgets's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-Inqbus.rpi.widgets originated at the Inqbus Python-Summerschool 2020 in a small village in Bavaria (Germany).
-The idea was to enable our participants on a minimal hardware environment to come up
-with a capable set of widgets to control a RaspberryPi with a rotary encoder and 4x20 character display, only.
 
-Really fast the pupils overcame us teachers in terms of functionality and presented their solution:
-It was a nice and simple Framework, steadily growing for dealing exactly with the tasks we have asked for.
+:doc:`background`
 
-We teachers developed our own code in advance to guide our pupils. But our code becomes cluttered quite fastly.
-Not much better than the code of our pupils.
+inqbus.rpi.widgets (IRW) is a basic framework for extensible GUI systems for the raspberryPi or other systems with small displays.
+But there are no limits to extend or shape IRW.
 
-So I decided to push the problem onto a higher level: Component Design.
-The Summer-School was nearly over but I could finish it with a glimpse on component design for the pupils.
-They were impressed but not convinced of this strange new design.
+IRW has the some neat features:
 
-I do not like unfinished things so I completed the component design for the widgets.
+    * It is quite extensible due to its :doc:`component_design`.
 
+    .. figure:: ./diagram_input.png
+        :width: 800px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+    .. figure:: ./diagram_output.png
+        :width: 800px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+    * Native support of a wide range of character displays
+
+        IRW suports all the displays RPLCD can access (Hitachi mostly)
+
+        And can easily be extended to support any display by implementing just two member functions::
+
+            @implementer(IDisplay)
+            class MyDisplay(Display):
+
+            def set_cursor_pos(x, y)
+                ...
+
+            def write(string)
+                ...
+
+    * Character display emulation
+
+        IRW has support for display emulation as
+            * Curses
+            * Console (e.g. for logging/debuggin of display changes)
+
+        this enables you to develop your application on a desktop and then deploy it on the raspberry for debugging.
+
+        .. note::
+
+            This is not a true emulation of the Hitachi! It is just a framebuffer emulation.
+
+    * Support of multiple displays in parallel
+
+        You can write in parallel to all displays attached independed of their type
+
+    * Support of multiple input devices in parallel
+
+        You can attach any number of input devices.
+        Blocking as well as non blocking input devices are supported.
+
+        A non-blocking input device can coded simply as::
+
+            @implementer(IInput)
+            class MyInput(Input):
+
+                def someone_has_clicked(self):
+                    gui = getUtility(IGUI)
+                    self.gui.dispatch(InputClick)
+
+        For a blocking input device just change two lines::
+
+            @implementer(IBlockingInput)
+            class MyInput(BlockingInput):
+
+
+
+
+
+
+
+:doc:`quickstart`
+:doc:`introduction`
 :doc:`component_design`
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
