@@ -329,6 +329,7 @@ class Widget(object):
         gui = getUtility(IGUI)
         return gui.focus == self
 
+
     def render(self):
         """
         Render the widget on all displays
@@ -338,6 +339,16 @@ class Widget(object):
             renderer = getMultiAdapter((self, display), IRenderer)
             if renderer:
                 renderer.render()
+
+    def clear(self):
+        """
+        Render the widget on all displays
+        """
+        gui = getUtility(IGUI)
+        for display in gui.displays:
+            renderer = getMultiAdapter((self, display), IRenderer)
+            if renderer:
+                renderer.clear()
 
     def handle_new_content(self, value):
         """

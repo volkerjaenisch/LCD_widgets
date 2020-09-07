@@ -28,6 +28,8 @@ class GUI(object):
         self._focus = None
         # and holds the signal queue to dispatch Signals from the inputs
         self.signal_queue = Queue()
+        # is state of the main loop
+        self.running = True
 
     def add_display(self, display):
         """
@@ -102,21 +104,31 @@ class GUI(object):
                 # .. else simply start the input_dev device
                 input_dev.run()
 
-    def run(self):
+    def run(self, blocking=True):
         """
         Run the GUI
         """
         # Initial Render
         self._layout.render()
-        # Entering the signal processing loop
-        self.signal_loop()
+        self.running = True
+        if blocking:
+            # Entering the signal processing loop
+            self.signal_loop()
+        else:
+            self.main_thread = threading.Thread(
+                        target=self.signal_loop,
+                        )
+            self.main_thread.start()
+
+    def done(self):
+        self.running = False
 
     def signal_loop(self):
         """
         The main signal loop for the thread of blocking input_dev devices
         """
 
-        while True:
+        while self.running:
             # check the queue for new signal
             try:
                 signal = self.signal_queue.get(block=False)
