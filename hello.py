@@ -21,10 +21,10 @@ gui.set_layout(text)
 gui.init()
 gui.run(blocking=False)
 
-while True:
-    sleep(1)
-    text.clear()
-    text.pos_y = (text.pos_y + 1) % 4
-    text.render()
-
-gui.done()
+# while True:
+#     sleep(1)
+#     text.clear()
+#     text.pos_y = (text.pos_y + 1) % 4
+#     text.render()
+#
+# gui.done()
