@@ -15,7 +15,9 @@ A minimal application needs a
 
 Commented Examples
 
-    :doc:`hello_world`
+    :doc:`Simple "hello world" <hello_world>`
+
+    :doc:`Rotating "hello world" <hello_world_rotation>`
 
 
 
