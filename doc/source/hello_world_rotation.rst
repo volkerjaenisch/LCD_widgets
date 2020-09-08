@@ -107,6 +107,5 @@ Line 24-28:
 
     render the widget at the new position
 
-
-
+Line 30: Since we have called gui.run() with no blocking, we have to stop GUIs thread explicit to end the program cleanly.
 
