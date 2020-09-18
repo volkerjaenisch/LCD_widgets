@@ -202,14 +202,16 @@ class GaugeController(WidgetController):
             True if the widget consumes the Signal,
             False if the widget cannot consume the signal
         """
+        result = False
         if signal == InputClick:
-            return self.widget.click_handler()
+            result = self.widget.click_handler()
         elif signal == InputUp:
-            return self.widget.up_handler()
+            result = self.widget.up_handler()
         elif signal == InputDown:
-            return self.widget.down_handler()
+            result = self.widget.down_handler()
 
-        return False
+        if not result:
+            return self.widget.parent.controller.dispatch(signal)
 
 
 # Register the adapters
