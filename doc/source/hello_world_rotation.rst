@@ -4,40 +4,7 @@ Moving Hello World
 
 Text widget with label "Hello world" moves.
 
-.. code-block:: python
-    :linenos:
-
-    from inqbus.rpi.widgets.display.curses import DisplayCurses
-    from inqbus.rpi.widgets.interfaces.interfaces import IGUI
-    from inqbus.rpi.widgets.text import Text
-    from zope.component import getUtility
-
-    # load the gui component
-    import inqbus.rpi.widgets.gui # IMPORTANT!
-    # load the base controller component
-    import inqbus.rpi.widgets.base.controller # IMPORTANT!
-
-    text = Text()
-    text.content = 'Hello World'
-
-    display = DisplayCurses()
-
-    gui = getUtility(IGUI)
-
-    gui.add_display(display)
-    gui.set_layout(text)
-
-    gui.init()
-    gui.run(blocking=False)
-
-    while True:
-        sleep(1)
-        text.clear()
-        text.pos_y = (text.pos_y + 1) % 4
-        text.render()
-
-    gui.done()
-
+.. literalinclude:: code_samples/hello_moving.py
 
 This should produce::
     .. figure:: ./hello_moving.gif
@@ -45,8 +12,6 @@ This should produce::
         :align: center
         :alt: alternate text
         :figclass: align-center
-
-
 
 in your console.
 
@@ -107,5 +72,5 @@ Line 24-28:
 
     render the widget at the new position
 
-Line 30: Since we have called gui.run() with no blocking, we have to stop GUIs thread explicit to end the program cleanly.
+Line 30: Since we have called gui.run() with no blocking, we have to stop the GUIs thread explicit to end the program cleanly.
 
