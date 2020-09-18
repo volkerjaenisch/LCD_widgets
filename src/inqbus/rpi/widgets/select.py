@@ -33,12 +33,21 @@ class Select(Lines):
         Args: value: The new index
         """
 
+        # release the focus of the former selected item
+        self._content[self._selected_idx].release_focus()
         # store the new index
         self._selected_idx = value
+        # aquiere the focus for the new selected item
+        self.set_as_focus(self._content[self._selected_idx])
         # if render_on_selection_change is set ..
         if self.render_on_selection_change:
             # .. render the widget
             self.render()
+
+    def aquire_focus(self):
+        focussed_widget = self._content[self._selected_idx]
+        self.set_as_focus(focussed_widget)
+        focussed_widget.aquire_focus()
 
 
 @implementer(IRenderer)

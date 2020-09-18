@@ -77,7 +77,10 @@ class GUI(object):
         Args:
             widget: The widget to set the focus upon
         """
+        self._focus.release_focus()
         self._focus = widget
+        self._focus.aquire_focus()
+
 
     def init(self):
         """
@@ -152,15 +155,8 @@ class GUI(object):
 
         # dispatch the signal to the focussed widget's controller
         result = self.focus.controller.dispatch(signal)
-        # If the focussed widget has consumed the signal ..
-        if result:
-            # .. return True for success to the caller
-            return True
-        else:
-            # ..else do a MoveFocus Operation
-            result = IMoveFocus(self)(signal)
-            # and return its result
-            return result
+
+        return result
 
     @property
     def displays(self):

@@ -330,6 +330,15 @@ class Widget(object):
         gui = getUtility(IGUI)
         return gui.focus == self
 
+    @classmethod
+    def set_as_focus(self, widget):
+        """
+        Set myself as the focussed object
+        """
+        gui = getUtility(IGUI)
+        gui.focus = widget
+        if widget is not None and self.render_on_focus_change:
+            widget.render()
 
     def render(self):
         """

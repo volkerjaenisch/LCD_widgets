@@ -91,7 +91,7 @@ class WidgetController(object):
             self.widget.render()
             return result
         else:
-            if self.widget.parent:
+            if self.widget.parent is not None:
                 return self.widget.parent.dispatch(signal)
             else:
                 raise SignalNotCatched
