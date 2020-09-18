@@ -65,10 +65,10 @@ class MoveFocus(WidgetController):
         """
         old_focus = self.widget.focus
         self.widget.focus = target_widget
-        old_focus.render()
+        old_focus.release_focus()
         # ToDo: This should be a signal send to the widget
         if target_widget:
-            target_widget.render()
+            target_widget.aquire_focus()
 
 
 gsm = getGlobalSiteManager()
