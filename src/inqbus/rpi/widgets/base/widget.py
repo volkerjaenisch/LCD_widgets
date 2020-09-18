@@ -21,6 +21,7 @@ class Widget(object):
     _parent = None
     _controller = None
     render_on_content_change = True
+    render_on_focus_change = True
     autoscroll = False
 
     def __init__(self,
@@ -368,3 +369,13 @@ class Widget(object):
         Initialize the widget
         """
         pass
+
+    def aquire_focus(self):
+        """We got the focus"""
+        if self.render_on_focus_change:
+            self.render()
+
+    def release_focus(self):
+        """We lost the focus"""
+        if self.render_on_focus_change:
+            self.render()

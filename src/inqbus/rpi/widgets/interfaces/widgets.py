@@ -28,7 +28,14 @@ class IWidget(Interface):
         """Handle the addition of new content"""
 
     def init(self):
+        """Initialize"""
         pass
+
+    def aquire_focus(self):
+        """We got the focus"""
+
+    def release_focus(self):
+        """We lost the focus"""
 
 
 class ILineWidget(IWidget):
@@ -40,6 +47,10 @@ class ITextWidget(IWidget):
 
 
 class IButtonWidget(ILineWidget):
+    pass
+
+
+class IGaugeWidget(ILineWidget):
     pass
 
 
