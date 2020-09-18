@@ -15,6 +15,8 @@ class DisplayCurses(Display):
         super(DisplayCurses, self).init()
         # Initialize a curses screen
         curses.initscr()
+        # hide the cursor
+        curses.curs_set(0)
         # get a new window from curses at 0,0 on the active console
         self.display = curses.newwin(self.height + 3, self.width + 2, 0, 0)
         # Draw a frame around the active char display area
