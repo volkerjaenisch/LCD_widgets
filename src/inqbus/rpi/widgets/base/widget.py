@@ -25,6 +25,7 @@ class Widget(object):
     autoscroll = False
 
     def __init__(self,
+                 label = None,
                  pos_x = 0,
                  pos_y = 0,
                  width=None,
@@ -34,6 +35,7 @@ class Widget(object):
                  fixed_pos=False,
                  fixed_size=False,
                  ):
+        self._label = label
         self._pos_x = pos_x
         self._pos_y = pos_y
         self._desired_width = width

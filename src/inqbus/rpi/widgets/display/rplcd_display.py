@@ -1,10 +1,11 @@
 from inqbus.rpi.widgets.base.display import Display
-from inqbus.rpi.widgets.interfaces.display import IDisplay
+from inqbus.rpi.widgets.config_default import CHAR_TRANSLATION_LCD
+from inqbus.rpi.widgets.interfaces.display import IDisplay, IRPLCD
 from RPLCD.i2c import CharLCD
 from zope.interface import implementer
 
 
-@implementer(IDisplay)
+@implementer(IRPLCD)
 class RPLCDDisplay(Display):
     """
     Display class for character displays via the RPLCD python driver
@@ -82,6 +83,17 @@ class RPLCDDisplay(Display):
         super(RPLCDDisplay, self).set_cursor_pos(x, y)
         self.display.cursor_pos = (y, x)
 
+    def map_characters(self, content):
+        """
+        Map special characters according to a mapping in the config.
+        Args:
+            content: THe content to write to the display
+
+        Returns:
+            The translated content
+        """
+        return content.translate(CHAR_TRANSLATION_LCD)
+
     def write(self, string):
         """
         Write a string to the frame_buffer.
@@ -97,7 +109,8 @@ class RPLCDDisplay(Display):
         """
         if not self.initialized:
             return
-        self.display.write_string(string)
+        mapped_string = self.map_characters(string)
+        self.display.write_string(mapped_string)
 
     def show(self):
         """

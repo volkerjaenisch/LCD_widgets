@@ -1,6 +1,9 @@
+from inqbus.rpi.widgets.config_default import (
+    FUCTION_CHARS_CURSES,
+    FUNCTION_CHARS_LCD, CHARMAP_LCD, CHAR_TRANSLATION_LCD, )
 from inqbus.rpi.widgets.interfaces.widgets import IWidget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
-from inqbus.rpi.widgets.interfaces.display import IDisplay
+from inqbus.rpi.widgets.interfaces.display import IDisplay, IRPLCD
 from zope.component import getMultiAdapter
 from zope.interface import implementer
 import zope.component
@@ -22,6 +25,13 @@ class Renderer(object):
     def __init__(self, widget, display):
         self.widget = widget
         self.display = display
+
+        if IRPLCD.providedBy(self.display):
+            self.special_chars = FUNCTION_CHARS_LCD
+            self.char_translation = CHAR_TRANSLATION_LCD
+        else:
+            self.special_chars = FUCTION_CHARS_CURSES
+            self.char_translation = None
 
     def set_position(self, pos_x, pos_y):
         """
@@ -70,6 +80,25 @@ class Renderer(object):
             self.set_position(pos_x, pos_y)
         return self.render()
 
+    def render_focus(self, content):
+        # If the button is focussed
+        # indicate this by changing the braces to angles
+        if self.widget.has_focus:
+            out_str = self.special_chars['FOCUS_LEFT'] + content
+        else:
+            out_str = ' ' + content
+        return out_str
+
+    def render_clear(self, content):
+        # Render and clear the former content from the display.
+        # also set the new rendered width.
+        result = content
+        if self.widget.rendered_width is not None and self.widget.rendered_width > len(content):
+            result = content + ' ' * (self.widget.rendered_width-len(content))
+
+        self.widget.rendered_width = len(content)
+        return result
+
     def clear(self):
         """
         Render an Empty Widget at the current position of the widget
@@ -79,7 +108,7 @@ class Renderer(object):
         self.display.write_at_pos(
                 self.widget.pos_x,
                 self.widget.pos_y,
-                ' ' * self.widget.length
+                ' ' * self.widget.rendered_width
         )
         return self.widget.pos_x, self.widget.pos_y
 

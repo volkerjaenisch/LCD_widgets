@@ -12,6 +12,7 @@ sphinx = "*"
 wrapt = "*"
 pytest = "*"
 sphinx-rtd-theme = "*"
+nose = "*"
 
 [dev-packages]
 

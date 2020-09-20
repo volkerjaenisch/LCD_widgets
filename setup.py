@@ -44,6 +44,7 @@ setup(
     ],
     extras_require={
         'test': [
+            'nose',
         ],
     },
     entry_points="""

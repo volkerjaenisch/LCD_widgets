@@ -32,9 +32,8 @@ class GaugeTarget(Gauge):
             down_handler=None,
             **kwargs,
         ):
-        super(Gauge, self).__init__(**kwargs)
+        super(Gauge, self).__init__(label=label, **kwargs)
         self._desired_height = 1
-        self._label = label
         self._content = initial_value
         self._reading_value = initial_reading_value
         self._increment = increment
@@ -105,15 +104,11 @@ class GaugeTargetRenderer(Renderer):
             else :
                 fc['operator'] = '>'
 
-        # If the Gauge is focussed
-        # indicate this by changing the braces to angles
-        if self.widget.has_focus:
-            fc['focus'] = '>'
-        else:
-            fc['focus'] = ' '
 
-        out_str = '{focus}{label}:{reading:{format}}{operator}{level:{format}}{unit}'.format(**fc)
-        self.display.write_at_pos(pos_x, pos_y, out_str)
+        out_str = '{label}:{reading:{format}}{operator}{level:{format}}{unit}'.format(**fc)
+
+        out_str_focus = self.render_focus(out_str)
+        self.display.write_at_pos(pos_x, pos_y, out_str_focus)
         # return the coordinate after the content
         # ToDo width, height handling
         return pos_x, pos_y + 1

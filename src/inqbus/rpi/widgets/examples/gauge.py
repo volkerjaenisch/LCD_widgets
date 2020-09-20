@@ -18,6 +18,8 @@ gui = getUtility(IGUI)
 
 display2 = RPLCDDisplay(4, 20, 'PCF8574', 0x27)
 gui.add_display(display2)
+input = RotaryInput()
+gui.add_input(input)
 
 #display = DisplayCurses()
 #gui.add_display(display)
@@ -36,8 +38,7 @@ gui.set_layout(page)
 
 page.aquire_focus()
 
-input = RotaryInput()
-gui.add_input(input)
+
 
 gui.init()
 gui.run(blocking=True)
