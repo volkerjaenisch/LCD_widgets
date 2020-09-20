@@ -19,6 +19,7 @@ class DisplayCurses(Display):
         curses.curs_set(0)
         # get a new window from curses at 0,0 on the active console
         self.display = curses.newwin(self.height + 3, self.width + 2, 0, 0)
+        self.initialized = True
         # Draw a frame around the active char display area
         self.draw_frame()
 
@@ -34,6 +35,8 @@ class DisplayCurses(Display):
 
     def write(self, line):
         # chack for range violations
+        if not self.initialized:
+            return
         if not self.pos_y < self.height:
             return
         if not self.pos_x < self.width:
