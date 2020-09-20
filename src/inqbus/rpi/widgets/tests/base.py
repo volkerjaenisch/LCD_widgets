@@ -24,7 +24,7 @@ class TestBase(unittest.TestCase):
     def tearDown(self):
         self.display.clear()
 
-    def widget_test(self, widget):
+    def widget_set_as_layout(self, widget):
         self.display.clear()
         self.gui.set_layout(widget)
         self.gui.render()

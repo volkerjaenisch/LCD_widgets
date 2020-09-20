@@ -6,7 +6,7 @@ class TestText(TestBase):
 
     def text(self, widget, x=0, y=0):
 
-        self.widget_test(widget)
+        self.widget_set_as_layout(widget)
 
         content = widget.content
         expected_result = []
@@ -44,11 +44,11 @@ class TestText(TestBase):
 
     def test_text(self, x=0, y=0):
 
-        widget = Text(x, y)
+        widget = Text(pos_x=x, pos_y=y)
         widget.content = TINY_LINE
         self.text(widget, x=x, y=y)
 
-        widget = Text(x, y)
+        widget = Text(pos_x=x, pos_y=y)
         widget.content = SHORT_LINE
         self.text(widget, x=x, y=y)
 
