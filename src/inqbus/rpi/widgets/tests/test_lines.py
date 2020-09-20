@@ -6,10 +6,10 @@ class TestLines(TestBase):
 
     def lines_single(self, content_in, x=0, y=0):
 
-        lines = Lines(x, y)
+        lines = Lines(pos_x=x, pos_y=y)
         lines.content = content_in
 
-        self.widget_test(lines)
+        self.widget_set_as_layout(lines)
 
         content = lines.content[0].content
         space_before = ' ' * x
@@ -21,10 +21,10 @@ class TestLines(TestBase):
 
     def lines_multi(self, content_in, x=0, y=0):
 
-        lines = Lines(x, y)
+        lines = Lines(pos_x=x, pos_y=y)
         lines.content = content_in
 
-        self.widget_test(lines)
+        self.widget_set_as_layout(lines)
         expected_result = []
         pos_y = y
         for line in lines.content:

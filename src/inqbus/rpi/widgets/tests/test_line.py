@@ -4,12 +4,12 @@ from inqbus.rpi.widgets.tests.base import LONG_LINE, SHORT_LINE, TestBase
 
 class TestLine(TestBase):
 
-    def line_test(self, content, x=0, y=0):
+    def line_run(self, content, x=0, y=0):
 
-        line = Line(x, y)
+        line = Line(pos_x=x, pos_y=y)
         line.content = content
 
-        self.widget_test(line)
+        self.widget_set_as_layout(line)
 
         space_before = ' ' * x
         space_after = ' ' * (self.display.width - len(line.content) - x)
@@ -22,5 +22,5 @@ class TestLine(TestBase):
         for x in range(self.display.width):
             for y in range(self.display.height):
                 self.display.clear()
-                self.line_test(SHORT_LINE, x, y)
-                self.line_test(LONG_LINE, x, y)
+                self.line_run(SHORT_LINE, x, y)
+                self.line_run(LONG_LINE, x, y)
