@@ -54,6 +54,10 @@ class IGaugeWidget(ILineWidget):
     pass
 
 
+class IGaugeTargetWidget(ILineWidget):
+    pass
+
+
 class ILinesWidget(IWidget):
     pass
 

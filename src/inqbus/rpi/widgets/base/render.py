@@ -64,7 +64,10 @@ class Renderer(object):
 
         Returns: the cursor position after rendering the widget
         """
-        self.set_position(pos_x, pos_y)
+        if self.widget.fixed_pos:
+            self.set_position(self.widget.pos_x, self.widget.pos_y)
+        else:
+            self.set_position(pos_x, pos_y)
         return self.render()
 
     def clear(self):
