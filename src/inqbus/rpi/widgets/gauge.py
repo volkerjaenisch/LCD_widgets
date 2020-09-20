@@ -19,17 +19,31 @@ class Gauge(Line):
     _up_handler = None
     _down_handler = None
 
-    def __init__(self, label, initial_value=0, increment=1, unit=None, value_callback=None, up_handler=None, down_handler=None):
-        super(Line, self).__init__()
+    def __init__(
+            self,
+            label,
+            initial_value=0,
+            increment=1,
+            unit=None,
+            format='.2f',
+            read_only=False,
+            value_callback=None,
+            up_handler=None,
+            down_handler=None,
+            **kwargs,
+        ):
+        super(Gauge, self).__init__(**kwargs)
         self._desired_height = 1
         self._label = label
         self._content = initial_value
         self._increment = increment
+        self._format = format
         self._unit = unit
         self._value_callback = value_callback
         self._up_handler = up_handler
         self._down_handler = down_handler
         self.is_activated = False
+        self.is_read_only = read_only
 
     @property
     def width(self):
@@ -68,6 +82,8 @@ class Gauge(Line):
         Returns:
             True
         """
+        if self.is_read_only:
+            return False
         self.is_activated = not self.is_activated
         if self.render_on_content_change:
             self.render()
@@ -138,36 +154,41 @@ class GaugeRenderer(Renderer):
         # else:
         #     content = self.widget.content
 
+        fc = {}
         # Label handling
         if self.widget._label is not None:
-            label = self.widget._label
+            fc['label'] = self.widget._label
         else:
-            label = ''
+            fc['label'] = ''
 
         # If the Gauge is activated
         if self.widget.is_activated:
-            operator = '?'
+            fc['operator'] = '?'
         else:
-            if label:
-                operator = ':'
+            if fc['label']:
+                fc['operator'] = ':'
             else:
-                operator = ''
+                fc['operator'] = ''
 
         # Do we have a unit?
         if self.widget._unit is not None:
-            unit = self.widget._unit
+            fc['unit'] = self.widget._unit
         else:
-            unit = ''
+            fc['unit'] = ''
+
 
         # Handling of the content
-        content = str(self.widget.content)
+        fc['content'] = self.widget.content
+        fc['format'] = self.widget._format
 
         # If the Gauge is focussed
         # indicate this by changing the braces to angles
         if self.widget.has_focus:
-            out_str = '>' + label + operator + content + unit
+            fc['focus'] = '>'
         else:
-            out_str = ' ' + label + ':' + content + unit
+            fc['focus'] = ' '
+
+        out_str = '{focus}{label}{operator}{content:{format}}{unit}'.format(**fc)
         self.display.write_at_pos(pos_x, pos_y, out_str)
         # return the coordinate after the content
         # ToDo width, height handling
