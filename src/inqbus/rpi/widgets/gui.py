@@ -2,11 +2,12 @@ import threading
 from queue import Empty, Queue
 from time import sleep
 
+from inqbus.rpi.widgets.errors import SignalNotCatched
 from inqbus.rpi.widgets.interfaces.input import IBlockingInput
 from inqbus.rpi.widgets.interfaces.interfaces import IGUI, IMoveFocus, IWidgetController
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer
-
+from inqbus.rpi.widgets.base.log import logging
 
 @implementer(IGUI, IWidgetController)
 class GUI(object):
@@ -153,10 +154,13 @@ class GUI(object):
             True if the signal could be dispatched, False if not
         """
 
-        # dispatch the signal to the focussed widget's controller
-        result = self.focus.controller.dispatch(signal)
+        try:
+            # dispatch the signal to the focussed widget's controller
+            return self.focus.controller.dispatch(signal)
+        except SignalNotCatched:
+            logging.warning('Signal not catched!')
 
-        return result
+        return False
 
     @property
     def displays(self):
