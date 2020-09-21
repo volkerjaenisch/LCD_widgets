@@ -72,7 +72,7 @@ class SelectRenderer(Renderer):
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')
             renderer = self.get_display_renderer_for(line)
-            _pos_x, pos_y = renderer.render_at(pos_x+1, pos_y)
+            _pos_x, pos_y = renderer.render(pos_x=pos_x+1, pos_y=pos_y)
             idx += 1
         # return the coordinate after the content
         # ToDo width, height handling

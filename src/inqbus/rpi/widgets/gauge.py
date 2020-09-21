@@ -1,5 +1,5 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
-from inqbus.rpi.widgets.base.render import Renderer
+from inqbus.rpi.widgets.base.render import Renderer, render_session
 from inqbus.rpi.widgets.base.signals import InputClick, InputUp, InputDown
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
 from inqbus.rpi.widgets.interfaces.widgets import IGaugeWidget
@@ -167,30 +167,6 @@ class GaugeRenderer(Renderer):
         out_str = '{label}{operator}{content:{format}}{unit}'.format(**fc)
 
         return self.render_focus(out_str)
-
-    def render(self):
-        """
-        Render the Gauge at the given position
-
-        Returns: the new x, y position
-        """
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
-        # # if a Gauge width is set truncate the content
-        # if self.widget.width:
-        #     # when we render the Gauge
-        #     # we have to substract two characters for the braces to determine
-        #     # the amount of characters to use from the content.
-        #     content = 'self.widget._content
-        # else:
-        #     content = self.widget.content
-
-        render_content = self.render_content()
-        self.display.write_at_pos(pos_x, pos_y, render_content)
-        # return the coordinate after the content
-        # ToDo width, height handling
-        return pos_x, pos_y + 1
-
 
 
 @implementer(IWidgetController)

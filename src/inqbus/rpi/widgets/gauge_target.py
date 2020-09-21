@@ -57,22 +57,12 @@ class GaugeTargetRenderer(Renderer):
     """
     __used_for__ = (IGaugeTargetWidget, Interface)
 
-    def render(self):
+    def render_content(self):
         """
         Render the Gauge at the given position
 
         Returns: the new x, y position
         """
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
-        # # if a Gauge width is set truncate the content
-        # if self.widget.width:
-        #     # when we render the Gauge
-        #     # we have to substract two characters for the braces to determine
-        #     # the amount of characters to use from the content.
-        #     content = 'self.widget._content
-        # else:
-        #     content = self.widget.content
 
         fc = {}
         # Label handling
@@ -80,7 +70,6 @@ class GaugeTargetRenderer(Renderer):
             fc['label'] = self.widget._label
         else:
             fc['label'] = ''
-
 
         # Do we have a unit?
         if self.widget._unit is not None:
@@ -108,11 +97,7 @@ class GaugeTargetRenderer(Renderer):
         out_str = '{label}:{reading:{format}}{operator}{level:{format}}{unit}'.format(**fc)
 
         out_str_focus = self.render_focus(out_str)
-        self.display.write_at_pos(pos_x, pos_y, out_str_focus)
-        # return the coordinate after the content
-        # ToDo width, height handling
-        return pos_x, pos_y + 1
-
+        return out_str_focus
 
 
 # Register the adapters
