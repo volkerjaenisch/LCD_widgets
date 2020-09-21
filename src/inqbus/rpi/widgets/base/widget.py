@@ -159,7 +159,6 @@ class Widget(object):
         """
         self._desired_width = value
 
-
     @property
     def parent(self):
         """
@@ -261,19 +260,25 @@ class Widget(object):
         if widget is not None and self.render_on_focus_change:
             widget.render()
 
-    def render(self):
+    def render(self, pos_x=None, pos_y=None):
         """
         Render the widget on all displays
         """
         gui = getUtility(IGUI)
         for display in gui.displays:
-            if not display in self.renderers:
-                renderer = getMultiAdapter((self, display), IRenderer)
-                if renderer:
-                    self.renderers[display] = renderer
-                    renderer.render()
-            else:
-                self.renderers[display].render()
+            self.render_for_display(display, pos_x=pos_x, pos_y=pos_y)
+
+    def get_renderer_for_display(self, display):
+        if display in self.renderers:
+            return self.renderers[display]
+        else:
+            renderer = getMultiAdapter((self, display), IRenderer)
+            self.renderers[display] = renderer
+            return renderer
+
+    def render_for_display(self, display, pos_x=None, pos_y=None):
+        renderer = self.get_renderer_for_display(display)
+        return renderer.render(pos_x=pos_x, pos_y=pos_y)
 
     def clear(self):
         """

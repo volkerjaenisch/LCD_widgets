@@ -1,4 +1,5 @@
 from threading import Timer
+from time import sleep
 
 from inqbus.rpi.widgets.button import Button
 from inqbus.rpi.widgets.display.console import ConsoleDisplay
@@ -51,7 +52,7 @@ layout = Page()
 #     'sel7',
 # ]
 
-text = Text(1,2)
+text = Text(pos_x=1,pos_y=0)
 text.content = 'ich bin ein moderat langer Satz ohne Komma'
 
 layout.add_widget(text)
@@ -82,5 +83,12 @@ gui.set_layout(layout)
 #scroll_button()
 
 gui.init()
-gui.run()
+gui.run(blocking=False)
 
+sleep(1)
+
+text.render(pos_x=2,pos_y=2)
+
+sleep(1)
+
+text.render(pos_x=2,pos_y=1)

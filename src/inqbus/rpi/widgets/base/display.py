@@ -40,10 +40,11 @@ class Display(Device):
         self.setup_cleaning_buffer()
 
     def setup_cleaning_buffer(self):
-        self.cleaning_mask = self.height * [bitarray(self.width)]
-        for cleaning_mask in self.cleaning_mask:
+        self.cleaning_mask = []
+        for y in range(self.height):
+            cleaning_mask = bitarray(self.width)
             cleaning_mask.setall(False)
-
+            self.cleaning_mask.append(cleaning_mask)
 
     def clear(self):
         """
@@ -123,7 +124,8 @@ class Display(Device):
         self.cleaning_mask[y][x:x + len(content)] = False
 
     def erase_from_cleaning_mask(self, x, y, content_length):
-        self.cleaning_mask[y][x:x + content_length] = True
+        if y < self.height:
+            self.cleaning_mask[y][x:x + content_length] = True
 
     def flush_cleaning_mask(self):
         for y, cleaning_mask in enumerate(self.cleaning_mask):

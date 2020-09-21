@@ -1,4 +1,4 @@
-from inqbus.rpi.widgets.base.render import Renderer
+from inqbus.rpi.widgets.base.render import Renderer, render_session
 from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ILinesWidget
@@ -66,26 +66,41 @@ class LinesRenderer(Renderer):
     """
     __used_for__ = (ILinesWidget, Interface)
 
-    def render(self):
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
+    @render_session
+    def render(self, pos_x=None, pos_y=None):
+
+        self.clear()
+        pos_x, pos_y = self.render_position(pos_x, pos_y)
+
         if self.widget.height == 1:
-            renderer = self.get_display_renderer_for(self.widget.content[0])
-            _pos_x, pos_y = renderer.render(
+            self.widget.content[0].render_for_display(
+                    self.display,
                     pos_x=pos_x,
                     pos_y=pos_y
             )
         else:
-
             for line in self.widget.content:
-                renderer = self.get_display_renderer_for(line)
-                pos_x, pos_y = renderer.render(pos_x=pos_x, pos_y=pos_y)
+                line.render_for_display(
+                        self.display,
+                        pos_x=pos_x,
+                        pos_y=pos_y
+                )
                 pos_y += 1
 
         # return the coordinate after the content
         # ToDo width, height handling
         return pos_x, pos_y + 1
 
+    def clear(self):
+        """
+        Clean widget from the display
+        """
+        if not self.was_rendered:
+            return
+
+        for line in self.widget.content:
+            renderer = line.get_renderer_for_display(self.display)
+            renderer.clear()
 
 # Register the render adapter
 gsm = getGlobalSiteManager()
