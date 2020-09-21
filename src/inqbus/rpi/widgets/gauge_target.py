@@ -113,17 +113,6 @@ class GaugeTargetRenderer(Renderer):
         # ToDo width, height handling
         return pos_x, pos_y + 1
 
-    def clear(self):
-        """
-        Erase the Gauge from the frame_buffer
-        """
-        self.display.write_at_pos(
-                self.widget.pos_x,
-                self.widget.pos_y,
-                ' ' * (len(self.widget.content) + 2)
-        )
-
-
 
 
 # Register the adapters

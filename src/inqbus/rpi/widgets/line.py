@@ -61,8 +61,8 @@ class LineRenderer(Renderer):
         """
 
         # get the current widget position
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
+        pos_x = self.rendered_pos_x
+        pos_y = self.rendered_pos_y
         # check if we have something to render
         if self.widget.content is None:
             # .. if not simply return our original coordinates

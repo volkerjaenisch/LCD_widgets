@@ -26,6 +26,11 @@ class Renderer(object):
         self.widget = widget
         self.display = display
 
+        self._rendered_width = None
+        self._rendered_height = None
+        self._rendered_pos_x = None
+        self._rendered_pos_y = None
+
         if IRPLCD.providedBy(self.display):
             self.special_chars = FUNCTION_CHARS_LCD
             self.char_translation = CHAR_TRANSLATION_LCD
@@ -44,8 +49,8 @@ class Renderer(object):
         Returns:
             None
         """
-        self.widget.pos_x = pos_x
-        self.widget.pos_y = pos_y
+        self._rendered_pos_x = pos_x
+        self._rendered_pos_y = pos_y
 
     def content(self):
         """
@@ -55,6 +60,91 @@ class Renderer(object):
             Content of the Widget
         """
         return self.widget.content
+
+    @property
+    def rendered_pos_x(self):
+        """
+        The rendered x position of the widget in screen coordinates
+        """
+        if self._rendered_pos_x is None:
+            return self.widget.pos_x
+        else:
+            return self._rendered_pos_x
+
+    @rendered_pos_x.setter
+    def rendered_pos_x(self, value):
+        """
+        Set the horizontal render position of the widget
+
+        Args:
+            value: horizontal render position of the widget
+
+        Returns:
+            None
+        """
+        self._rendered_pos_x = value
+
+    @property
+    def rendered_pos_y(self):
+        """
+        The rendered_y position of the widget in screen coordinates
+        """
+        if self._rendered_pos_y is None:
+            return self.widget.pos_y
+        else:
+            return self._rendered_pos_y
+
+    @rendered_pos_y.setter
+    def rendered_pos_y(self, value):
+        """
+        Set the vertical render position of the widget
+
+        Args:
+            value: vertical render position of the widget
+
+        Returns:
+            None
+        """
+        self._rendered_pos_y = value
+
+    @property
+    def rendered_width(self):
+        """
+        The rendered width of the widget in characters
+        """
+        if self._rendered_width is None:
+            return self.widget._desired_width
+        else:
+            return self._rendered_width
+
+    @rendered_width.setter
+    def rendered_width(self, value):
+        """
+        Set the rendered width
+
+        Args: value: new rendered width
+        """
+        self._rendered_width = value
+
+    @property
+    def rendered_height(self):
+        """
+        The rendered height of the widget in characters
+        """
+        if self._rendered_height is None:
+            return self.widget._desired_height
+        else:
+            return self._rendered_height
+
+    @rendered_height.setter
+    def rendered_height(self, value):
+        """
+        Set the rendered height
+
+        Args: value: new rendered height
+        """
+        self._rendered_height = value
+
 
     def render(self):
         """
@@ -78,6 +168,7 @@ class Renderer(object):
             self.set_position(self.widget.pos_x, self.widget.pos_y)
         else:
             self.set_position(pos_x, pos_y)
+
         return self.render()
 
     def render_focus(self, content):
@@ -93,10 +184,10 @@ class Renderer(object):
         # Render and clear the former content from the display.
         # also set the new rendered width.
         result = content
-        if self.widget.rendered_width is not None and self.widget.rendered_width > len(content):
-            result = content + ' ' * (self.widget.rendered_width-len(content))
+        if self.rendered_width is not None and self.rendered_width > len(content):
+            result = content + ' ' * (self.rendered_width-len(content))
 
-        self.widget.rendered_width = len(content)
+        self.rendered_width = len(content)
         return result
 
     def clear(self):
