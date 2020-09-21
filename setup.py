@@ -41,6 +41,7 @@ setup(
         'pytest',
         'sphinx',
         'sphinx-rtd-theme',
+        'bitarray',
     ],
     extras_require={
         'test': [

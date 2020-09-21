@@ -1,6 +1,6 @@
 import logging
 
-from inqbus.rpi.widgets.base.render import Renderer
+from inqbus.rpi.widgets.base.render import Renderer, render_session
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import IPageWidget
 from inqbus.rpi.widgets.select import Select
@@ -53,11 +53,22 @@ class Page(Select):
 class PageRenderer(Renderer):
     __used_for__ = (IPageWidget, Interface)
 
-    def render(self):
+
+    @render_session
+    def render(self, pos_x=None, pos_y=None):
+        """
+        Render the Widget at a certain screen position
+        Args:
+            pos_x: horizontal display position
+            pos_y: vertical display position
+
+        Returns:
+            the cursor position after rendering the widget
+        """
         new_x, new_y = 0, 0
         for widget in self.widget.content:
             renderer = self.get_display_renderer_for(widget)
-            new_x, new_y = renderer.render_at(new_x, new_y)
+            new_x, new_y = renderer.render(new_x, new_y)
         # return the coordinate after the content
         # ToDo width, height handling
         return new_x, new_y + 1

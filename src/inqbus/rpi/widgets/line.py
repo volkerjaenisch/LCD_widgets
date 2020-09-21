@@ -52,28 +52,13 @@ class LineRenderer(Renderer):
     """
     __used_for__ = (ILineWidget, Interface)
 
-    def render(self):
+    def render_content(self):
         """
-        Render the line at the given position
+        Render the line content
 
-        Returns:
-            the new x, y position
         """
 
-        # get the current widget position
-        pos_x = self.rendered_pos_x
-        pos_y = self.rendered_pos_y
-        # check if we have something to render
-        if self.widget.content is None:
-            # .. if not simply return our original coordinates
-            return pos_x, pos_y
-
-        content = self.render_clear(self.widget.content)
-        # issue the frame_buffer to frame_buffer the widgets content
-        self.display.write_at_pos(pos_x, pos_y, content)
-        # return the coordinate after the content
-        # ToDo width, height handling
-        return pos_x, pos_y + 1
+        return self.widget.content
 
 
 # Register the render adapter

@@ -71,15 +71,16 @@ class LinesRenderer(Renderer):
         pos_y = self.widget.pos_y
         if self.widget.height == 1:
             renderer = self.get_display_renderer_for(self.widget.content[0])
-            _pos_x, pos_y = renderer.render_at(
-                    pos_x,
-                    pos_y
+            _pos_x, pos_y = renderer.render(
+                    pos_x=pos_x,
+                    pos_y=pos_y
             )
         else:
 
             for line in self.widget.content:
                 renderer = self.get_display_renderer_for(line)
-                pos_x, pos_y = renderer.render_at(pos_x, pos_y)
+                pos_x, pos_y = renderer.render(pos_x=pos_x, pos_y=pos_y)
+                pos_y += 1
 
         # return the coordinate after the content
         # ToDo width, height handling

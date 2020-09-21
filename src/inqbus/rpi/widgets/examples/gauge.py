@@ -16,13 +16,13 @@ import inqbus.rpi.widgets.base.controller # IMPORTANT!
 
 gui = getUtility(IGUI)
 
-#display2 = RPLCDDisplay(4, 20, 'PCF8574', 0x27)
-#gui.add_display(display2)
-#input = RotaryInput()
-#gui.add_input(input)
+display2 = RPLCDDisplay(4, 20, 'PCF8574', 0x27)
+gui.add_display(display2)
+input = RotaryInput()
+gui.add_input(input)
 
-display = DisplayCurses()
-gui.add_display(display)
+#display = DisplayCurses()
+#gui.add_display(display)
 
 page = Page()
 

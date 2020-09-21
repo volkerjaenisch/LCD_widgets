@@ -1,6 +1,7 @@
 from threading import Lock
 from time import sleep
 
+from bitarray._bitarray import bitarray
 from inqbus.rpi.widgets.base.device import Device
 from inqbus.rpi.widgets.errors import OutOfDisplay
 from inqbus.rpi.widgets.interfaces.display import IDisplay
@@ -34,6 +35,15 @@ class Display(Device):
         # Threading.Lock isntance to serialize write operations
         # from different render threads
         self.lock = Lock()
+        # Session for render events. Features a cleaning_mask of bits
+        self._session_holder = None
+        self.setup_cleaning_buffer()
+
+    def setup_cleaning_buffer(self):
+        self.cleaning_mask = self.height * [bitarray(self.width)]
+        for cleaning_mask in self.cleaning_mask:
+            cleaning_mask.setall(False)
+
 
     def clear(self):
         """
@@ -77,6 +87,7 @@ class Display(Device):
             try:
                 self.set_cursor_pos(x, y)
                 self.write(content)
+                self.write_to_cleaning_mask(x, y, content)
             except OutOfDisplay:
                 return
 
@@ -99,3 +110,35 @@ class Display(Device):
 
     def write(self, content):
         pass
+
+    def open_session(self, renderer):
+        if self._session_holder is None:
+            self._session_holder = renderer
+
+    def commit_session(self, renderer):
+        if renderer == self._session_holder:
+            self.flush_cleaning_mask()
+
+    def write_to_cleaning_mask(self, x, y, content):
+        self.cleaning_mask[y][x:x + len(content)] = False
+
+    def erase_from_cleaning_mask(self, x, y, content_length):
+        self.cleaning_mask[y][x:x + content_length] = True
+
+    def flush_cleaning_mask(self):
+        for y, cleaning_mask in enumerate(self.cleaning_mask):
+            start = 0
+            while True:
+                try :
+                   true_start = cleaning_mask.index(True, start)
+                except ValueError:
+                    break
+                try:
+                    true_end = cleaning_mask.index(False, true_start)
+                    self.write_at_pos(true_start, y, ' ' * (true_end-true_start))
+                except ValueError:
+                    self.write_at_pos(true_start, y, ' ' * (self.width-true_start))
+                    break
+
+        self.setup_cleaning_buffer()
+        self._session_holder = None

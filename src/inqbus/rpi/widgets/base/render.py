@@ -9,6 +9,16 @@ from zope.interface import implementer
 import zope.component
 
 
+def render_session(original_function):
+    def decorated(self, *args, **kwargs):
+        self.display.open_session(self)
+        result = original_function(self, *args,**kwargs)
+        self.was_rendered = True
+        self.display.commit_session(self)
+        return result
+    return decorated
+
+
 @implementer(IRenderer)
 class Renderer(object):
     """
@@ -26,6 +36,7 @@ class Renderer(object):
         self.widget = widget
         self.display = display
 
+        self.was_rendered = False
         self._rendered_width = None
         self._rendered_height = None
         self._rendered_pos_x = None
@@ -66,10 +77,7 @@ class Renderer(object):
         """
         The rendered x position of the widget in screen coordinates
         """
-        if self._rendered_pos_x is None:
-            return self.widget.pos_x
-        else:
-            return self._rendered_pos_x
+        return self._rendered_pos_x
 
     @rendered_pos_x.setter
     def rendered_pos_x(self, value):
@@ -89,10 +97,7 @@ class Renderer(object):
         """
         The rendered_y position of the widget in screen coordinates
         """
-        if self._rendered_pos_y is None:
-            return self.widget.pos_y
-        else:
-            return self._rendered_pos_y
+        return self._rendered_pos_y
 
     @rendered_pos_y.setter
     def rendered_pos_y(self, value):
@@ -145,31 +150,31 @@ class Renderer(object):
         """
         self._rendered_height = value
 
+    def render_position(self, pos_x, pos_y):
+        if self.widget.fixed_pos or pos_x is None:
+            self.set_position(self.widget.pos_x, self.widget.pos_y)
+        else:
+            self.set_position(pos_x, pos_y)
 
-    def render(self):
-        """
-        Render the Widget
-
-        Returns:
-            the cursor position after rendering the widget
-        """
-        return self.widget.pos_x, self.widget.pos_y
-
-    def render_at(self, pos_x, pos_y):
+    @render_session
+    def render(self, pos_x=None, pos_y=None):
         """
         Render the Widget at a certain screen position
         Args:
             pos_x: horizontal display position
             pos_y: vertical display position
 
-        Returns: the cursor position after rendering the widget
+        Returns:
+            the cursor position after rendering the widget
         """
-        if self.widget.fixed_pos:
-            self.set_position(self.widget.pos_x, self.widget.pos_y)
-        else:
-            self.set_position(pos_x, pos_y)
+        self.clear()
+        self.render_position(pos_x, pos_y)
 
-        return self.render()
+        render_content = self.render_content()
+        self.display.write_at_pos(self.rendered_pos_x, self.rendered_pos_y, render_content)
+        self.rendered_width = len(render_content)
+
+        return self.rendered_pos_x, self.rendered_pos_y
 
     def render_focus(self, content):
         # If the button is focussed
@@ -180,26 +185,19 @@ class Renderer(object):
             out_str = ' ' + content
         return out_str
 
-    def render_clear(self, content):
-        # Render and clear the former content from the display.
-        # also set the new rendered width.
-        result = content
-        if self.rendered_width is not None and self.rendered_width > len(content):
-            result = content + ' ' * (self.rendered_width-len(content))
-
-        self.rendered_width = len(content)
-        return result
-
     def clear(self):
         """
         Render an Empty Widget at the current position of the widget
 
         Returns: the cursor position after rendering the widget
         """
-        self.display.write_at_pos(
-                self.widget.pos_x,
-                self.widget.pos_y,
-                ' ' * self.widget.rendered_width
+        if not self.was_rendered:
+            return
+
+        self.display.erase_from_cleaning_mask(
+                self.rendered_pos_x,
+                self.rendered_pos_y,
+                self.rendered_width
         )
         return self.widget.pos_x, self.widget.pos_y
 

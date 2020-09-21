@@ -29,14 +29,14 @@ class ConsoleDisplay(Display):
     def init(self):
         """
         Initialize the frame_buffer.
-        In this case we only build a character "frame buffer"
+        In this case we only build a character "frame cleaning_mask"
         """
         super(ConsoleDisplay, self).init()
         self.clear()
 
     def clear(self):
         """
-        Initializing the frame buffer. The frame buffer is simply a list
+        Initializing the frame cleaning_mask. The frame cleaning_mask is simply a list
         of strings.
         Empty positions on the display are denoted by " " aka char(32).
         """

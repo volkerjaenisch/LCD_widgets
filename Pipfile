@@ -13,6 +13,7 @@ wrapt = "*"
 pytest = "*"
 sphinx-rtd-theme = "*"
 nose = "*"
+bitarray = "*"
 
 [dev-packages]
 
