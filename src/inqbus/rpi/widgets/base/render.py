@@ -155,6 +155,7 @@ class Renderer(object):
             self.set_position(self.widget.pos_x, self.widget.pos_y)
         else:
             self.set_position(pos_x, pos_y)
+        return self.rendered_pos_x, self.rendered_pos_y
 
     @render_session
     def render(self, pos_x=None, pos_y=None):
@@ -188,8 +189,6 @@ class Renderer(object):
     def clear(self):
         """
         Render an Empty Widget at the current position of the widget
-
-        Returns: the cursor position after rendering the widget
         """
         if not self.was_rendered:
             return
@@ -199,23 +198,6 @@ class Renderer(object):
                 self.rendered_pos_y,
                 self.rendered_width
         )
-        return self.widget.pos_x, self.widget.pos_y
-
-    def get_display_renderer_for(self, widget):
-        """
-        Helper function to retrieve the renderer multi adapter
-        for a given widget
-
-        Args:
-            widget:
-                The display a renderer has to be supplied for
-
-        Returns:
-            None
-        """
-        renderer = getMultiAdapter((widget, self.display), IRenderer)
-        return renderer
-
 
 gsm = zope.component.getGlobalSiteManager()
 gsm.registerAdapter(Renderer, (IWidget, IDisplay), IRenderer)

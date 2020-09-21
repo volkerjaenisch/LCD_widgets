@@ -80,14 +80,12 @@ class ButtonRenderer(Renderer):
             out_str = '[' + content + ']'
         return out_str
 
-    def render(self):
+    def render_content(self):
         """
         Render the Button at the given position
 
         Returns: the new x, y position
         """
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
         # if a button width is set truncate the content
         if self.widget.width:
             # when we render the button
@@ -98,20 +96,7 @@ class ButtonRenderer(Renderer):
             content = self.widget.content
 
         out_str = self.render_focus(content)
-        self.display.write_at_pos(pos_x, pos_y, out_str)
-        # return the coordinate after the content
-        # ToDo width, height handling
-        return pos_x, pos_y + 1
-
-    def clear(self):
-        """
-        Erase the button from the frame_buffer
-        """
-        self.display.write_at_pos(
-                self.widget.pos_x,
-                self.widget.pos_y,
-                ' ' * (len(self.widget.content) + 2)
-        )
+        return out_str
 
 
 @implementer(IWidgetController)

@@ -61,4 +61,5 @@ class TestText(TestBase):
     def test_position(self):
         for x in range(self.display.width):
             for y in range(self.display.height):
+                self.display.clear()
                 self.test_text(x, y)

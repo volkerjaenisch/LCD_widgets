@@ -1,4 +1,4 @@
-from inqbus.rpi.widgets.base.render import Renderer
+from inqbus.rpi.widgets.base.render import Renderer, render_session
 from inqbus.rpi.widgets.base.widget import Widget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.widgets import ITextWidget
@@ -31,9 +31,11 @@ class TextRenderer(Renderer):
     """
     __used_for__ = (ITextWidget, Interface)
 
-    def render(self):
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
+    @render_session
+    def render(self, pos_x=None, pos_y=None):
+
+        self.clear()
+        pos_x, pos_y = self.render_position(pos_x, pos_y)
 
         if self.widget.width:
             width = self.widget.width
@@ -41,29 +43,43 @@ class TextRenderer(Renderer):
             width = self.display.width - pos_x
 
         content = self.widget.content
-        start_pos = 0
-
+        start_pos_x = 0
+        start_pos_y = pos_y
         while True:
-            rest_len = len(content[start_pos:])
+            rest_len = len(content[start_pos_x:])
             if width > rest_len:
                 self.display.write_at_pos(
                         pos_x,
                         pos_y,
-                        content[start_pos:start_pos + width]
+                        content[start_pos_x:start_pos_x + width]
                 )
                 break
             else:
                 self.display.write_at_pos(
                         pos_x,
                         pos_y,
-                        content[start_pos:start_pos + width]
+                        content[start_pos_x:start_pos_x + width]
                 )
-                start_pos += width
+                start_pos_x += width
             pos_y += 1
+        self.rendered_height = pos_y - start_pos_y
+        self.rendered_width = width
         # return the coordinate after the content
-        # ToDo width, height handling
         return pos_x, pos_y + 1
 
+    def clear(self):
+        """
+        Render empty Widget at the current position of the widget
+        """
+        if not self.was_rendered:
+            return
+
+        for pos_y in range(self.rendered_height):
+            self.display.erase_from_cleaning_mask(
+                self.rendered_pos_x,
+                self.rendered_pos_y + pos_y,
+                self.rendered_width
+        )
 
 # Register the render adapter
 gsm = getGlobalSiteManager()

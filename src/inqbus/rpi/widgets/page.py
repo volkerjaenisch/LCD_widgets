@@ -62,16 +62,11 @@ class PageRenderer(Renderer):
             pos_x: horizontal display position
             pos_y: vertical display position
 
-        Returns:
-            the cursor position after rendering the widget
         """
-        new_x, new_y = 0, 0
         for widget in self.widget.content:
-            renderer = self.get_display_renderer_for(widget)
-            new_x, new_y = renderer.render(new_x, new_y)
+            widget.render_for_display(self.display)
         # return the coordinate after the content
         # ToDo width, height handling
-        return new_x, new_y + 1
 
 
 # Register the render adapter

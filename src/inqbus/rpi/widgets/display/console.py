@@ -58,7 +58,7 @@ class ConsoleDisplay(Display):
         new_line = new_line[0:self.width]
         # replace the line in the frame_buffer with the new_line
         self.frame_buffer[self.pos_y] = new_line
-        # if the diplay autoupdate is set ..
+        # if the display autoupdate is set ..
         if self.autoupdate:
             # .. show the frame_buffer
             self.show()
