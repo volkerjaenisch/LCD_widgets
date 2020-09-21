@@ -136,23 +136,7 @@ class GaugeRenderer(Renderer):
     """
     __used_for__ = (IGaugeWidget, Interface)
 
-    def render(self):
-        """
-        Render the Gauge at the given position
-
-        Returns: the new x, y position
-        """
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
-        # # if a Gauge width is set truncate the content
-        # if self.widget.width:
-        #     # when we render the Gauge
-        #     # we have to substract two characters for the braces to determine
-        #     # the amount of characters to use from the content.
-        #     content = 'self.widget._content
-        # else:
-        #     content = self.widget.content
-
+    def render_content(self):
         fc = {}
         # Label handling
         if self.widget._label is not None:
@@ -182,21 +166,31 @@ class GaugeRenderer(Renderer):
 
         out_str = '{label}{operator}{content:{format}}{unit}'.format(**fc)
 
-        out_str_focus = self.render_clear(self.render_focus(out_str))
-        self.display.write_at_pos(pos_x, pos_y, out_str_focus)
+        return self.render_focus(out_str)
+
+    def render(self):
+        """
+        Render the Gauge at the given position
+
+        Returns: the new x, y position
+        """
+        pos_x = self.widget.pos_x
+        pos_y = self.widget.pos_y
+        # # if a Gauge width is set truncate the content
+        # if self.widget.width:
+        #     # when we render the Gauge
+        #     # we have to substract two characters for the braces to determine
+        #     # the amount of characters to use from the content.
+        #     content = 'self.widget._content
+        # else:
+        #     content = self.widget.content
+
+        render_content = self.render_content()
+        self.display.write_at_pos(pos_x, pos_y, render_content)
         # return the coordinate after the content
         # ToDo width, height handling
         return pos_x, pos_y + 1
 
-    def clear(self):
-        """
-        Erase the Gauge from the frame_buffer
-        """
-        self.display.write_at_pos(
-                self.widget.pos_x,
-                self.widget.pos_y,
-                ' ' * (len(self.widget.content) + 2)
-        )
 
 
 @implementer(IWidgetController)

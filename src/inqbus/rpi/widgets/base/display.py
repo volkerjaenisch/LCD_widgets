@@ -1,4 +1,5 @@
 from threading import Lock
+from time import sleep
 
 from inqbus.rpi.widgets.base.device import Device
 from inqbus.rpi.widgets.errors import OutOfDisplay

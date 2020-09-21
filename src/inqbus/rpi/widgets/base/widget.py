@@ -40,8 +40,7 @@ class Widget(object):
         self._pos_y = pos_y
         self._desired_width = width
         self._desired_height = height
-        self._rendered_width = None
-        self._rendered_height = None
+
 
         self.fixed_pos = fixed_pos
         self.fixed_size = fixed_size
@@ -50,6 +49,7 @@ class Widget(object):
         self.autoscroll = autoscroll
 
         self._controller = IWidgetController(self)
+        self.renderers = {}
         self.init_content()
 
     def init_content(self):
@@ -125,51 +125,7 @@ class Widget(object):
         """
         self._pos_y = value
 
-    @property
-    def rendered_pos_x(self):
-        """
-        The rendered x position of the widget in screen coordinates
-        """
-        if self.rendered__pos_x is None:
-            return self.pos_x
-        else:
-            return self.rendered__pos_x
 
-    @rendered_pos_x.setter
-    def rendered_pos_x(self, value):
-        """
-        Set the horizontal render position of the widget
-
-        Args:
-            value: horizontal render position of the widget
-
-        Returns:
-            None
-        """
-        self.rendered__pos_x = value
-
-    @property
-    def rendered_pos_y(self):
-        """
-        The rendered_y position of the widget in screen coordinates
-        """
-        if self.rendered__pos_y is None:
-            return self.pos_y
-        else:
-            return self.rendered__pos_y
-
-    @rendered_pos_y.setter
-    def rendered_pos_y(self, value):
-        """
-        Set the vertical render position of the widget
-
-        Args:
-            value: vertical render position of the widget
-
-        Returns:
-            None
-        """
-        self.rendered__pos_y = value
 
     @property
     def height(self):
@@ -203,43 +159,6 @@ class Widget(object):
         """
         self._desired_width = value
 
-    @property
-    def rendered_width(self):
-        """
-        The rendered width of the widget in characters
-        """
-        if self._rendered_width is None:
-            return self._desired_width
-        else:
-            return self._rendered_width
-
-    @rendered_width.setter
-    def rendered_width(self, value):
-        """
-        Set the rendered width
-
-        Args: value: new rendered width
-        """
-        self._rendered_width = value
-
-    @property
-    def rendered_height(self):
-        """
-        The rendered height of the widget in characters
-        """
-        if self._rendered_height is None:
-            return self._desired_height
-        else:
-            return self._rendered_height
-
-    @rendered_height.setter
-    def rendered_height(self, value):
-        """
-        Set the rendered height
-
-        Args: value: new rendered height
-        """
-        self._rendered_height = value
 
     @property
     def parent(self):
@@ -348,9 +267,13 @@ class Widget(object):
         """
         gui = getUtility(IGUI)
         for display in gui.displays:
-            renderer = getMultiAdapter((self, display), IRenderer)
-            if renderer:
-                renderer.render()
+            if not display in self.renderers:
+                renderer = getMultiAdapter((self, display), IRenderer)
+                if renderer:
+                    self.renderers[display] = renderer
+                    renderer.render()
+            else:
+                self.renderers[display].render()
 
     def clear(self):
         """
