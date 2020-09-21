@@ -102,6 +102,7 @@ class LinesRenderer(Renderer):
             renderer = line.get_renderer_for_display(self.display)
             renderer.clear()
 
+
 # Register the render adapter
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(LinesRenderer, (ILinesWidget, Interface), IRenderer)

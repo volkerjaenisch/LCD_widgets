@@ -36,9 +36,7 @@ class ConsoleDisplay(Display):
 
     def clear(self):
         """
-        Initializing the frame cleaning_mask. The frame cleaning_mask is simply a list
-        of strings.
-        Empty positions on the display are denoted by " " aka char(32).
+        Clean up the frame buffer
         """
         self.frame_buffer = [' ' * self.width for i in range(self.height)]
 

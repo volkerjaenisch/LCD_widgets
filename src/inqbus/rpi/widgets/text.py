@@ -79,7 +79,8 @@ class TextRenderer(Renderer):
                 self.rendered_pos_x,
                 self.rendered_pos_y + pos_y,
                 self.rendered_width
-        )
+            )
+
 
 # Register the render adapter
 gsm = getGlobalSiteManager()

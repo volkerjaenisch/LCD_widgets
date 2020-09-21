@@ -1,6 +1,6 @@
 from inqbus.rpi.widgets.base.display import Display
 from inqbus.rpi.widgets.config_default import CHAR_TRANSLATION_LCD
-from inqbus.rpi.widgets.interfaces.display import IDisplay, IRPLCD
+from inqbus.rpi.widgets.interfaces.display import IRPLCD
 from RPLCD.i2c import CharLCD
 from zope.interface import implementer
 

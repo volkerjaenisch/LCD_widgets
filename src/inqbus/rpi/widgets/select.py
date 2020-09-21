@@ -60,7 +60,7 @@ class SelectRenderer(Renderer):
 
         if self.widget.selected_idx + pos_y >= self.display.height:
             offset = (self.display.height - pos_y - 1)
-            start_idx =  self.widget.selected_idx - offset
+            start_idx = self.widget.selected_idx - offset
             end_idx = self.widget.selected_idx + 1
         else:
             start_idx = 0
@@ -68,7 +68,11 @@ class SelectRenderer(Renderer):
         idx = start_idx
         for line in self.widget.content[start_idx:end_idx]:
             if self.widget.has_focus and idx == self.widget.selected_idx:
-                self.display.write_at_pos(pos_x, pos_y, self.special_chars['FOCUS_LEFT'])
+                self.display.write_at_pos(
+                        pos_x,
+                        pos_y,
+                        self.special_chars['FOCUS_LEFT']
+                )
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')
             renderer = self.get_display_renderer_for(line)

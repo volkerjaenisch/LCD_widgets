@@ -9,4 +9,3 @@ class SignalNotCatched(Exception):
 class OutOfDisplay(Exception):
     """Raised when a write out of the bounds of the frame_buffer occurs"""
     pass
-

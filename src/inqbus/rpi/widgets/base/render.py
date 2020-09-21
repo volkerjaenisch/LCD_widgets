@@ -1,10 +1,9 @@
 from inqbus.rpi.widgets.config_default import (
     FUCTION_CHARS_CURSES,
-    FUNCTION_CHARS_LCD, CHARMAP_LCD, CHAR_TRANSLATION_LCD, )
+    FUNCTION_CHARS_LCD, CHAR_TRANSLATION_LCD, )
 from inqbus.rpi.widgets.interfaces.widgets import IWidget
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 from inqbus.rpi.widgets.interfaces.display import IDisplay, IRPLCD
-from zope.component import getMultiAdapter
 from zope.interface import implementer
 import zope.component
 
@@ -12,7 +11,7 @@ import zope.component
 def render_session(original_function):
     def decorated(self, *args, **kwargs):
         self.display.open_session(self)
-        result = original_function(self, *args,**kwargs)
+        result = original_function(self, *args, **kwargs)
         self.was_rendered = True
         self.display.commit_session(self)
         return result
@@ -172,7 +171,11 @@ class Renderer(object):
         self.render_position(pos_x, pos_y)
 
         render_content = self.render_content()
-        self.display.write_at_pos(self.rendered_pos_x, self.rendered_pos_y, render_content)
+        self.display.write_at_pos(
+                self.rendered_pos_x,
+                self.rendered_pos_y,
+                render_content
+        )
         self.rendered_width = len(render_content)
 
         return self.rendered_pos_x, self.rendered_pos_y
@@ -198,6 +201,7 @@ class Renderer(object):
                 self.rendered_pos_y,
                 self.rendered_width
         )
+
 
 gsm = zope.component.getGlobalSiteManager()
 gsm.registerAdapter(Renderer, (IWidget, IDisplay), IRenderer)

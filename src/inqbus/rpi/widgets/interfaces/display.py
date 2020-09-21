@@ -8,7 +8,8 @@ class IDisplayHardware(IDevice):
 
     def set_cursor_pos(self, x, y):
         """
-        Set the cursor at position. This function should not be called directly but only from
+        Set the cursor at position.
+        This function should not be called directly but only from
         write_at_pos to keep access to the frame_buffer atomic.
 
         Args:
@@ -20,7 +21,8 @@ class IDisplayHardware(IDevice):
 
     def write(self, string):
         """
-        Write a string at the cursor position. This function should not be called directly but only from
+        Write a string at the cursor position.
+        This function should not be called directly but only from
         write_at_pos to keep access to the frame_buffer atomic.
 
         Args:
@@ -31,12 +33,14 @@ class IDisplayHardware(IDevice):
 
 class IDisplay(IDisplayHardware):
     """
-    Abstraction of the frame_buffer driver. Dealing with out of bounds coordinates and so the like.
+    Abstraction of the frame_buffer driver.
+    Dealing with out of bounds coordinates and so the like.
     """
 
     def write_at_pos(self, x, y, content):
         """
-        Write a string at a given frame_buffer position. This atomic operation has to be secured by a threadsafe Lock.
+        Write a string at a given frame_buffer position.
+        This atomic operation has to be secured by a threadsafe Lock.
         It calls "set_cursor_pos" and then "write" of the device.
         Args:
             x:

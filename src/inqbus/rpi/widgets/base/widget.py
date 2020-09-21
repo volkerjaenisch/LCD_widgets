@@ -25,9 +25,9 @@ class Widget(object):
     autoscroll = False
 
     def __init__(self,
-                 label = None,
-                 pos_x = 0,
-                 pos_y = 0,
+                 label=None,
+                 pos_x=0,
+                 pos_y=0,
                  width=None,
                  height=None,
                  render_on_content_change=True,
@@ -40,7 +40,6 @@ class Widget(object):
         self._pos_y = pos_y
         self._desired_width = width
         self._desired_height = height
-
 
         self.fixed_pos = fixed_pos
         self.fixed_size = fixed_size
@@ -124,8 +123,6 @@ class Widget(object):
             None
         """
         self._pos_y = value
-
-
 
     @property
     def height(self):

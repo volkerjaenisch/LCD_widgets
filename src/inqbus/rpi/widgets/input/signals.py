@@ -6,4 +6,3 @@ KEYBOARD_SIGNALS = {
     'd': InputDown,
     'c': InputClick
 }
-

@@ -4,14 +4,13 @@ from inqbus.rpi.widgets.tests.base import TestBase
 
 class TestGauge(TestBase):
 
-    def gauge(self, widget, x=0, y=0):
+    def gauge(self, widget):
 
         self.widget_set_as_layout(widget)
 
         expected_result = '→test:13.450°       '
 
         assert self.display.frame_buffer[0] == expected_result
-
 
     def test_gauge(self, x=0, y=0):
 
@@ -24,5 +23,4 @@ class TestGauge(TestBase):
                 unit='°',
                 format='3.3f',
         )
-        self.gauge(widget, x=x, y=y)
-
+        self.gauge(widget)

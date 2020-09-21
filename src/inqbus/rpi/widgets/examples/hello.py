@@ -5,9 +5,9 @@ from inqbus.rpi.widgets.text import Text
 from zope.component import getUtility
 
 # load the gui component
-import inqbus.rpi.widgets.gui # IMPORTANT!
+import inqbus.rpi.widgets.gui  # noqa: W06111
 # load the base controller component
-import inqbus.rpi.widgets.base.controller # IMPORTANT!
+import inqbus.rpi.widgets.base.controller  # noqa: W06111
 
 text = Text()
 text.content = 'Hello World'
