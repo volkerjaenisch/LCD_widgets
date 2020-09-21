@@ -9,7 +9,8 @@ class IWidget(Interface):
     width = Attribute('Width of widget')
     height = Attribute('Height of widget')
     parent = Attribute('Parent widget')
-    content_length = Attribute('Length of the content e.g. number of select item')
+    content_length = Attribute(
+            'Length of the content e.g. number of select item')
     prev_widget = Attribute('Previous sibling widget')
     next_widget = Attribute('Next sibling widget')
     controller = Attribute('Controller for the widget')
@@ -68,5 +69,3 @@ class ISelectWidget(IWidget):
 
 class IPageWidget(IWidget):
     pass
-
-

@@ -1,7 +1,8 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.base.render import Renderer
 from inqbus.rpi.widgets.base.signals import InputClick
-from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
+from inqbus.rpi.widgets.interfaces.interfaces import (
+    IRenderer, IWidgetController)
 from inqbus.rpi.widgets.interfaces.widgets import IButtonWidget
 from inqbus.rpi.widgets.line import Line
 from zope.component import getGlobalSiteManager
@@ -75,7 +76,9 @@ class ButtonRenderer(Renderer):
         # If the button is focussed
         # indicate this by changing the braces to angles
         if self.widget.has_focus:
-            out_str = self.special_chars['FOCUS_LEFT'] + content + self.special_chars['FOCUS_RIGHT']
+            out_str = self.special_chars['FOCUS_LEFT'] + \
+                      content + \
+                      self.special_chars['FOCUS_RIGHT']
         else:
             out_str = '[' + content + ']'
         return out_str

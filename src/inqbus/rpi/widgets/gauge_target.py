@@ -1,13 +1,9 @@
-from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.base.render import Renderer
-from inqbus.rpi.widgets.base.signals import InputClick, InputUp, InputDown
 from inqbus.rpi.widgets.gauge import Gauge
-from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
+from inqbus.rpi.widgets.interfaces.interfaces import IRenderer
 
 from inqbus.rpi.widgets.interfaces.widgets import (
-    IGaugeWidget,
     IGaugeTargetWidget, )
-from inqbus.rpi.widgets.line import Line
 from zope.component import getGlobalSiteManager
 from zope.interface import Interface, implementer
 
@@ -31,7 +27,7 @@ class GaugeTarget(Gauge):
             up_handler=None,
             down_handler=None,
             **kwargs,
-        ):
+    ):
         super(Gauge, self).__init__(label=label, **kwargs)
         self._desired_height = 1
         self._content = initial_value
@@ -90,11 +86,11 @@ class GaugeTargetRenderer(Renderer):
                 fc['operator'] = '<'
             elif self.widget._reading_value == self.widget._content:
                 fc['operator'] = '='
-            else :
+            else:
                 fc['operator'] = '>'
 
 
-        out_str = '{label}:{reading:{format}}{operator}{level:{format}}{unit}'.format(**fc)
+        out_str = """{label}:{reading:{format}}{operator}{level:{format}}{unit}""".format(**fc)  # noqa: E501
 
         out_str_focus = self.render_focus(out_str)
         return out_str_focus
@@ -102,4 +98,7 @@ class GaugeTargetRenderer(Renderer):
 
 # Register the adapters
 gsm = getGlobalSiteManager()
-gsm.registerAdapter(GaugeTargetRenderer, (IGaugeTargetWidget, Interface), IRenderer)
+gsm.registerAdapter(
+        GaugeTargetRenderer,
+        (IGaugeTargetWidget, Interface),
+        IRenderer)

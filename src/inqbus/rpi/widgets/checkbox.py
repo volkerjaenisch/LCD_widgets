@@ -1,10 +1,8 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
-from inqbus.rpi.widgets.base.render import Renderer
 from inqbus.rpi.widgets.base.signals import InputClick
 from inqbus.rpi.widgets.button import Button
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
 from inqbus.rpi.widgets.interfaces.widgets import IButtonWidget
-from inqbus.rpi.widgets.line import Line
 from zope.component import getGlobalSiteManager
 from zope.interface import Interface, implementer
 

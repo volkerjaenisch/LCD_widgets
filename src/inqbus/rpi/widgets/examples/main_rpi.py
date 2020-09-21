@@ -1,30 +1,27 @@
-from threading import Timer
 from time import sleep
 
-from inqbus.rpi.widgets.button import Button
 from inqbus.rpi.widgets.display.console import ConsoleDisplay
 from inqbus.rpi.widgets.display.rplcd_display import RPLCDDisplay
 from inqbus.rpi.widgets.input.rotary_encoder import RotaryInput
 from inqbus.rpi.widgets.interfaces.interfaces import IGUI
-from inqbus.rpi.widgets.interfaces.effects import IBlinking, IScrolling
-from inqbus.rpi.widgets.lines import Lines
 from inqbus.rpi.widgets.page import Page
-from inqbus.rpi.widgets.select import Select
 from inqbus.rpi.widgets.text import Text
 
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility
 
-import inqbus.rpi.widgets.gui # IMPORTANT!
-import inqbus.rpi.widgets.base.controller # IMPORTANT!
-import inqbus.rpi.widgets.base.focus # IMPORTANT!
-import inqbus.rpi.widgets.base.effects # IMPORTANT!
+import inqbus.rpi.widgets.gui  # noqa: W06111
+import inqbus.rpi.widgets.base.controller  # noqa: W06111
+import inqbus.rpi.widgets.base.focus  # noqa: W06111
+import inqbus.rpi.widgets.base.effects  # noqa: W06111
 
 
 def button_clicked():
     print('Button Clicked!')
     return True
 
+
 layout = Page()
+
 
 # button1 = Button()
 # button1.content = 'Marc'
@@ -52,7 +49,7 @@ layout = Page()
 #     'sel7',
 # ]
 
-text = Text(pos_x=1,pos_y=0)
+text = Text(pos_x=1, pos_y=0)
 text.content = 'ich bin ein moderat langer Satz ohne Komma'
 
 layout.add_widget(text)
@@ -70,25 +67,25 @@ gui.add_input(input)
 
 gui.set_layout(layout)
 
-#gui.focus = button1
+# gui.focus = button1
 
-#blink_button  = getMultiAdapter((button1, display2), interface=IBlinking)
-#fake  = getMultiAdapter((select, display2), interface=IBlinking)()
-#blink_button()
+# blink_button  = getMultiAdapter((button1, display2), interface=IBlinking)
+# fake  = getMultiAdapter((select, display2), interface=IBlinking)()
+# blink_button()
 
-#t = Timer(5, blink_button.done)
-#t.start()
+# t = Timer(5, blink_button.done)
+# t.start()
 
-#scroll_button  = getMultiAdapter((button2, display2), interface=IScrolling)
-#scroll_button()
+# scroll_button  = getMultiAdapter((button2, display2), interface=IScrolling)
+# scroll_button()
 
 gui.init()
 gui.run(blocking=False)
 
 sleep(1)
 
-text.render(pos_x=2,pos_y=2)
+text.render(pos_x=2, pos_y=2)
 
 sleep(1)
 
-text.render(pos_x=2,pos_y=1)
+text.render(pos_x=2, pos_y=1)

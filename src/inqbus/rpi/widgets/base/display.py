@@ -1,5 +1,4 @@
 from threading import Lock
-from time import sleep
 
 from bitarray._bitarray import bitarray
 from inqbus.rpi.widgets.base.device import Device
@@ -73,7 +72,8 @@ class Display(Device):
     def write_at_pos(self, x, y, content):
         """
         Write at the given display position the string in content.
-        Make use of a lock to prevent that concurrent threads are using the display driver at the same time.
+        Make use of a lock to prevent that concurrent threads
+        are using the display driver at the same time.
 
         Args:
             x: Horizontal display postiton
@@ -131,15 +131,22 @@ class Display(Device):
         for y, cleaning_mask in enumerate(self.cleaning_mask):
             start = 0
             while True:
-                try :
-                   true_start = cleaning_mask.index(True, start)
+                try:
+                    true_start = cleaning_mask.index(True, start)
                 except ValueError:
                     break
                 try:
                     true_end = cleaning_mask.index(False, true_start)
-                    self.write_at_pos(true_start, y, ' ' * (true_end-true_start))
+                    self.write_at_pos(
+                            true_start,
+                            y,
+                            ' ' * (true_end-true_start))
                 except ValueError:
-                    self.write_at_pos(true_start, y, ' ' * (self.width-true_start))
+                    self.write_at_pos(
+                            true_start,
+                            y,
+                            ' ' * (self.width-true_start)
+                    )
                     break
 
         self.setup_cleaning_buffer()

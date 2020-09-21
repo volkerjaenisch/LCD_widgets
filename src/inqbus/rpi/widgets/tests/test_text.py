@@ -1,4 +1,5 @@
-from inqbus.rpi.widgets.tests.base import LONG_LINE, SHORT_LINE, TINY_LINE, TestBase
+from inqbus.rpi.widgets.tests.base import (
+    LONG_LINE, SHORT_LINE, TINY_LINE, TestBase)
 from inqbus.rpi.widgets.text import Text
 
 

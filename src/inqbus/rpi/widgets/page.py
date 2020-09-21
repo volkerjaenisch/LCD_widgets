@@ -53,7 +53,6 @@ class Page(Select):
 class PageRenderer(Renderer):
     __used_for__ = (IPageWidget, Interface)
 
-
     @render_session
     def render(self, pos_x=None, pos_y=None):
         """

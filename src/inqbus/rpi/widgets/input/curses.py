@@ -7,11 +7,6 @@ from inqbus.rpi.widgets.interfaces.interfaces import IGUI
 from zope.component import getUtility
 from zope.interface import implementer
 
-try:
-    from pigpio_encoder import Rotary
-except ImportError:
-    from inqbus.rpi.widgets.fake.rotary import Rotary
-
 
 @implementer(IInput)
 class InputCurses(Input):
@@ -33,8 +28,6 @@ class InputCurses(Input):
     def run_curses(self):
         while True:
             key = self.display.getkey()
-            if key.lower() in KEYBOARD_SIGNALS:
-                signal = KEYBOARD_SIGNALS[key.lower()]
-                gui = getUtility(IGUI)
-                layout = gui._layout
-                layout.controller.dispatch(signal)
+            gui = getUtility(IGUI)
+            layout = gui._layout
+            layout.controller.dispatch(key)

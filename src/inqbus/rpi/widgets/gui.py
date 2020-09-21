@@ -4,10 +4,11 @@ from time import sleep
 
 from inqbus.rpi.widgets.errors import SignalNotCatched
 from inqbus.rpi.widgets.interfaces.input import IBlockingInput
-from inqbus.rpi.widgets.interfaces.interfaces import IGUI, IMoveFocus, IWidgetController
+from inqbus.rpi.widgets.interfaces.interfaces import IGUI, IWidgetController
 from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 from inqbus.rpi.widgets.base.log import logging
+
 
 @implementer(IGUI, IWidgetController)
 class GUI(object):
@@ -81,7 +82,6 @@ class GUI(object):
         self._focus.release_focus()
         self._focus = widget
         self._focus.aquire_focus()
-
 
     def init(self):
         """

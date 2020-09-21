@@ -65,7 +65,8 @@ class Effect(object):
 
     def run(self, queue):
         """
-        Run the effect on the widget. If the calling thread put anything into the queue the effect will stop.
+        Run the effect on the widget.
+        If the calling thread put anything into the queue the effect will stop.
 
         Args:
             queue: The given Queue connects the Effect with its callers thread.
@@ -87,7 +88,7 @@ class Effect(object):
             # check for stopping the blinking
             try:
                 # get a signal from the queue
-                _signal = queue.get(block=False)
+                _ = queue.get(block=False)
                 # if we got a signal break the loop/end the thread
                 break
             # if the queue is empty we have to continue

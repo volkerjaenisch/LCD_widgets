@@ -1,4 +1,3 @@
-from inqbus.rpi.widgets.gauge import Gauge
 from inqbus.rpi.widgets.gauge_target import GaugeTarget
 from inqbus.rpi.widgets.tests.base import TestBase
 
@@ -13,7 +12,6 @@ class TestGaugeTarget(TestBase):
 
         assert self.display.frame_buffer[0] == expected_result
 
-
     def test_gauge(self, x=0, y=0):
 
         widget = GaugeTarget(
@@ -27,4 +25,3 @@ class TestGaugeTarget(TestBase):
                 format='3.3f',
         )
         self.gauge(widget, x=x, y=y)
-

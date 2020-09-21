@@ -13,7 +13,8 @@ class TestButton(TestBase):
         self.widget_set_as_layout(button)
         before = ' ' * x
         after = ' ' * (self.display.width - len(button.content) - x - 1)
-        out_line = before + FUCTION_CHARS_CURSES['FOCUS_LEFT'] + button.content + FUCTION_CHARS_CURSES['FOCUS_RIGHT'] + after
+        out_line = before + FUCTION_CHARS_CURSES['FOCUS_LEFT'] + \
+            button.content + FUCTION_CHARS_CURSES['FOCUS_RIGHT'] + after
         expected_result = out_line[:self.display.width]
 
         assert self.display.frame_buffer[y] == expected_result
@@ -26,7 +27,8 @@ class TestButton(TestBase):
         self.widget_set_as_layout(button)
         before = ' ' * x
         after = ' ' * (self.display.width - len(button.content) - x - 1)
-        out_line = before + FUCTION_CHARS_CURSES['FOCUS_LEFT'] + button.content + FUCTION_CHARS_CURSES['FOCUS_RIGHT'] + after
+        out_line = before + FUCTION_CHARS_CURSES['FOCUS_LEFT'] + \
+            button.content + FUCTION_CHARS_CURSES['FOCUS_RIGHT'] + after
         expected_result = out_line[:self.display.width]
 
         assert self.display.frame_buffer[y] == expected_result

@@ -1,7 +1,9 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
-from inqbus.rpi.widgets.base.render import Renderer, render_session
+from inqbus.rpi.widgets.base.render import Renderer
 from inqbus.rpi.widgets.base.signals import InputClick, InputUp, InputDown
-from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
+from inqbus.rpi.widgets.interfaces.interfaces import (
+    IRenderer, IWidgetController
+)
 from inqbus.rpi.widgets.interfaces.widgets import IGaugeWidget
 from inqbus.rpi.widgets.line import Line
 from zope.component import getGlobalSiteManager
@@ -31,8 +33,8 @@ class Gauge(Line):
             up_handler=None,
             down_handler=None,
             **kwargs,
-        ):
-        super(Gauge, self).__init__(label = label, **kwargs)
+    ):
+        super(Gauge, self).__init__(label=label, **kwargs)
         self._desired_height = 1
         self._content = initial_value
         self._increment = increment
@@ -158,7 +160,6 @@ class GaugeRenderer(Renderer):
             fc['unit'] = self.widget._unit
         else:
             fc['unit'] = ''
-
 
         # Handling of the content
         fc['content'] = self.widget.content
