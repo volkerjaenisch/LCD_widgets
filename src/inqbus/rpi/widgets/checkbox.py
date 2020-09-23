@@ -1,8 +1,11 @@
 from inqbus.rpi.widgets.base.controller import WidgetController
 from inqbus.rpi.widgets.base.signals import InputClick
-from inqbus.rpi.widgets.button import Button
+from inqbus.rpi.widgets.button import Button, ButtonRenderer
 from inqbus.rpi.widgets.interfaces.interfaces import IRenderer, IWidgetController
-from inqbus.rpi.widgets.interfaces.widgets import IButtonWidget
+
+from inqbus.rpi.widgets.interfaces.widgets import (
+    IButtonWidget,
+    ICheckboxWidget, )
 from zope.component import getGlobalSiteManager
 from zope.interface import Interface, implementer
 
@@ -24,14 +27,21 @@ class CheckboxRenderer(ButtonRenderer):
     """
     __used_for__ = (ICheckboxWidget, Interface)
 
-    def render(self):
-        """
-        Render the Button at the given position
+    def render_focus(self, content):
+        # If the checkbox is focussed
+        # indicate this by changing the braces to angles
+        if self.widget.has_focus:
+            out_str = self.special_chars['FOCUS_LEFT'] + \
+                      content + \
+                      self.special_chars['FOCUS_RIGHT']
+        else:
+            out_str = '[' + content + ']'
+        return out_str
 
-        Returns: the new x, y position
+    def render_content(self):
         """
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
+        Render the Checkbox
+        """
         # if a button width is set truncate the content
         if self.widget.width:
             # when we render the button
@@ -41,49 +51,11 @@ class CheckboxRenderer(ButtonRenderer):
         else:
             content = self.widget.content
 
+        out_str = self.render_focus(content)
+        return out_str
 
-
-        self.display.write_at_pos(pos_x, pos_y, self.render_focus(out_str))
-        # return the coordinate after the content
-        # ToDo width, height handling
-        return pos_x, pos_y + 1
-
-    def clear(self):
-        """
-        Erase the button from the frame_buffer
-        """
-        self.display.write_at_pos(
-                self.widget.pos_x,
-                self.widget.pos_y,
-                ' ' * (len(self.widget.content) + 2)
-        )
-
-
-@implementer(IWidgetController)
-class ButtonController(WidgetController):
-    """
-    Controller for IButtonWidgets.
-    """
-    __used_for__ = IButtonWidget
-
-    def dispatch(self, signal):
-        """
-        Dispatcher for Signals. Displaytches only the InputClick signal
-
-        Args:
-            signal: Incoming Signal
-
-        Returns:
-            True if the widget consumes the Signal,
-            False if the widget cannot consume the signal
-        """
-        if signal == InputClick:
-            return self.widget.click_handler()
-        else:
-            return False
 
 
 # Register the adapters
 gsm = getGlobalSiteManager()
 gsm.registerAdapter(ButtonRenderer, (IButtonWidget, Interface), IRenderer)
-gsm.registerAdapter(ButtonController, (IButtonWidget,), IWidgetController)

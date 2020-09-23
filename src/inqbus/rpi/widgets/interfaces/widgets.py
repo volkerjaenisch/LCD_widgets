@@ -51,12 +51,17 @@ class IButtonWidget(ILineWidget):
     pass
 
 
+class ICheckboxWidget(IButtonWidget):
+    pass
+
+
 class IGaugeWidget(ILineWidget):
     pass
 
 
 class IGaugeTargetWidget(ILineWidget):
     pass
+
 
 
 class ILinesWidget(IWidget):
