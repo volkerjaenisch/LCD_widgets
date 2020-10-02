@@ -17,6 +17,7 @@ class Button(Line):
 
     # The click_handler for the button
     _click_handler = None
+    _can_focus = True
 
     @property
     def width(self):
@@ -121,9 +122,9 @@ class ButtonController(WidgetController):
             False if the widget cannot consume the signal
         """
         if signal == InputClick:
-            return self.widget.click_handler()
-        else:
-            return False
+            if self.widget.click_handler:
+                return self.widget.click_handler()
+        return False
 
 
 # Register the adapters

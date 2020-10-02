@@ -1,3 +1,4 @@
+from inqbus.rpi.widgets.checkbox import Checkbox
 from inqbus.rpi.widgets.display.rplcd_display import RPLCDDisplay
 from inqbus.rpi.widgets.gauge import Gauge
 from inqbus.rpi.widgets.gauge_target import GaugeTarget
@@ -19,9 +20,6 @@ gui.add_display(display2)
 input = RotaryInput()
 gui.add_input(input)
 
-# display = DisplayCurses()
-# gui.add_display(display)
-
 page = Page()
 
 gauge1 = Gauge(
@@ -31,7 +29,10 @@ gauge1 = Gauge(
         unit='°C',
         increment=5,
         fixed_pos=True,
+        read_only=True,
 )
+page.add_widget(gauge1)
+
 gauge2 = Gauge(
         pos_y=0,
         pos_x=10,
@@ -42,6 +43,9 @@ gauge2 = Gauge(
         read_only=True,
         fixed_pos=True,
 )
+page.add_widget(gauge2)
+
+
 gauge3 = GaugeTarget(
         pos_y=1,
         pos_x=0,
@@ -51,14 +55,26 @@ gauge3 = GaugeTarget(
         increment=0.1,
         fixed_pos=True
 )
-
-page.add_widget(gauge1)
-page.add_widget(gauge2)
 page.add_widget(gauge3)
+
+irrigation = Checkbox(
+        label='Irrigation',
+        pos_y=2,
+        pos_x=0,
+)
+page.add_widget(irrigation)
+
+pump = Checkbox(
+        label='Pumping',
+        pos_y=3,
+        pos_x=0,
+)
+page.add_widget(pump)
+
 
 gui.set_layout(page)
 
-page.acquire_focus()
+page.controller.acquire_focus()
 
 
 gui.init()

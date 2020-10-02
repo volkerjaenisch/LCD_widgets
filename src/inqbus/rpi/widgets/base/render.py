@@ -181,13 +181,20 @@ class Renderer(object):
         return self.rendered_pos_x, self.rendered_pos_y
 
     def render_focus(self, content):
-        # If the button is focussed
-        # indicate this by changing the braces to angles
+        # If the widget is focussed
+        # indicate this by changing its style
         if self.widget.has_focus:
             out_str = self.special_chars['FOCUS_LEFT'] + content
         else:
             out_str = ' ' + content
         return out_str
+
+    def clear_focus(self, content):
+        # If the widget is focussed
+        # indicate this by changing its style
+        out_str = ' ' + content
+        return out_str
+
 
     def clear(self):
         """

@@ -20,6 +20,7 @@ class Widget(object):
     _content = None
     _parent = None
     _controller = None
+    _can_focus = False
     render_on_content_change = True
     render_on_focus_change = True
     autoscroll = False
@@ -247,15 +248,6 @@ class Widget(object):
         gui = getUtility(IGUI)
         return gui.focus == self
 
-    @classmethod
-    def set_as_focus(self, widget):
-        """
-        Set myself as the focussed object
-        """
-        gui = getUtility(IGUI)
-        gui.focus = widget
-        if widget is not None and self.render_on_focus_change:
-            widget.render()
 
     def render(self, pos_x=None, pos_y=None):
         """
@@ -306,12 +298,3 @@ class Widget(object):
         """
         pass
 
-    def aquire_focus(self):
-        """We got the focus"""
-        if self.render_on_focus_change:
-            self.render()
-
-    def release_focus(self):
-        """We lost the focus"""
-        if self.render_on_focus_change:
-            self.render()

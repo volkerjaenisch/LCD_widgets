@@ -18,7 +18,19 @@ class Checkbox(Button):
 
     # The click_handler for the toggle
     _click_handler = None
+    _state = False
 
+    def __init__(self, *args, state=False, **kwargs):
+        super(Checkbox, self).__init__(*args, **kwargs)
+        self._content = state
+
+    @property
+    def content(self):
+        if self._state:
+            result = 'On'
+        else:
+            result = 'Off'
+        return result
 
 @implementer(IRenderer)
 class CheckboxRenderer(ButtonRenderer):
@@ -31,11 +43,11 @@ class CheckboxRenderer(ButtonRenderer):
         # If the checkbox is focussed
         # indicate this by changing the braces to angles
         if self.widget.has_focus:
-            out_str = self.special_chars['FOCUS_LEFT'] + \
-                      content + \
-                      self.special_chars['FOCUS_RIGHT']
+            out_str = self.special_chars['FOCUS_LEFT'] + self.widget._label + \
+                      ':>' + self.widget.content + '<'
+
         else:
-            out_str = '[' + content + ']'
+            out_str = ' ' + self.widget._label + ':[' + self.widget.content + ']'
         return out_str
 
     def render_content(self):
@@ -54,8 +66,35 @@ class CheckboxRenderer(ButtonRenderer):
         out_str = self.render_focus(content)
         return out_str
 
+@implementer(IWidgetController)
+class CheckboxController(WidgetController):
+    """
+    Controller for IButtonWidgets.
+    """
+    __used_for__ = ICheckboxWidget
+
+    def dispatch(self, signal):
+        """
+        Dispatcher for Signals. Displaytches only the InputClick signal
+
+        Args:
+            signal: Incoming Signal
+
+        Returns:
+            True if the widget consumes the Signal,
+            False if the widget cannot consume the signal
+        """
+        if signal == InputClick:
+            self.widget._state = not self.widget._state
+            self.widget.render()
+            if self.widget.click_handler:
+                return self.widget.click_handler()
+            return True
+
+        return self.widget.parent.controller.dispatch(signal)
 
 
 # Register the adapters
 gsm = getGlobalSiteManager()
-gsm.registerAdapter(ButtonRenderer, (IButtonWidget, Interface), IRenderer)
+gsm.registerAdapter(CheckboxRenderer, (ICheckboxWidget, Interface), IRenderer)
+gsm.registerAdapter(CheckboxController, (ICheckboxWidget,), IWidgetController)

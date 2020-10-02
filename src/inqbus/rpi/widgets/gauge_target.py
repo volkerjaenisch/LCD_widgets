@@ -13,6 +13,7 @@ class GaugeTarget(Gauge):
     """
     Gauge Widget. Representing a single line Gauge.
     """
+    _can_focus = True
 
     def __init__(
             self,
