@@ -9,7 +9,6 @@ from zope.component import getGlobalSiteManager
 from zope.interface import implementer
 from inqbus.rpi.widgets.base.log import logging
 
-
 @implementer(IGUI, IWidgetController)
 class GUI(object):
     """
@@ -79,9 +78,8 @@ class GUI(object):
         Args:
             widget: The widget to set the focus upon
         """
-        self._focus.release_focus()
+        logging.info('Focus change from %s to %s' % (self.focus, widget))
         self._focus = widget
-        self._focus.aquire_focus()
 
     def init(self):
         """

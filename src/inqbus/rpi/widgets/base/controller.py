@@ -1,9 +1,9 @@
 from inqbus.rpi.widgets.base import signals
 from inqbus.rpi.widgets.base.log import logging
 from inqbus.rpi.widgets.errors import SignalNotCatched
-from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController
+from inqbus.rpi.widgets.interfaces.interfaces import IWidgetController, IGUI
 from inqbus.rpi.widgets.interfaces.widgets import IWidget
-from zope.component import getGlobalSiteManager
+from zope.component import getGlobalSiteManager, getUtility
 from zope.interface import implementer
 
 
@@ -36,8 +36,8 @@ class WidgetController(object):
         Returns:
             True if signal was handled, False otherwise
         """
-        logging.debug(self.__class__.__name__ + ' done click')
-        return True
+        logging.debug(self.__class__.__name__ + ' done no click!')
+        return False
 
     def on_down(self, signal):
         """
@@ -49,7 +49,7 @@ class WidgetController(object):
         Returns:
             True if signal was handled, False otherwise
         """
-        logging.debug(self.__class__.__name__ + ' done Down')
+        logging.debug(self.__class__.__name__ + ' done no Down')
 
         if self.widget.selected_idx < self.widget.length - 1:
             self.widget.selected_idx += 1
@@ -88,13 +88,46 @@ class WidgetController(object):
         """
         result = self._signals[signal](signal)
         if result:
-            self.widget.render()
             return result
         else:
             if self.widget.parent is not None:
                 return self.widget.parent.dispatch(signal)
             else:
                 raise SignalNotCatched
+
+    def acquire_focus(self):
+        """
+        Get the focus set on the widget. This can be on the widget the controller controlls
+        or a subcompontent of the widget.
+        Returns:
+            True is a widget was found to focus on: False if not
+        """
+        if not self.widget._can_focus:
+            return False
+
+        self.set_as_focus(self.widget)
+
+        return True
+
+    def release_focus(self):
+        """
+        Release the focus set on this widget.
+        Returns:
+            True
+        """
+        self.widget.controller.set_as_focus(widget=None)
+        self.widget.render()
+
+    def set_as_focus(self, widget=None):
+        """
+        Set the controlled widget as focussed
+        Args:
+            widget:
+        """
+        gui = getUtility(IGUI)
+        gui.focus = widget
+        if widget is not None:
+            widget.render()
 
 
 gsm = getGlobalSiteManager()
