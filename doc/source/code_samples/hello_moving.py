@@ -11,6 +11,7 @@ import inqbus.rpi.widgets.base.controller # IMPORTANT!
 
 text = Text()
 text.content = 'Hello World'
+text.fixed_pos = True
 
 gui = getUtility(IGUI)
 display = DisplayCurses()

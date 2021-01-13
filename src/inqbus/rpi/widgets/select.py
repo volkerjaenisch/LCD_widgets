@@ -25,6 +25,8 @@ class Select(Lines):
     # so this False by default. Use with care to much rendering can
     # cause severe side effects or slow down your application.
     render_on_selection_change = False
+    # Automatically hold the focus in the display range
+    autoscroll = True
 
     @property
     def selected_idx(self):
@@ -51,9 +53,17 @@ class Select(Lines):
 class SelectRenderer(Renderer):
     __used_for__ = (ISelectWidget, Interface)
 
-    def render(self):
-        pos_x = self.widget.pos_x
-        pos_y = self.widget.pos_y
+    def render(self, pos_x=None, pos_y=None):
+        if pos_x is None:
+            if self.widget.pos_x is not None:
+                pos_x = self.widget.pos_x
+            else:
+                pos_x =0
+        if pos_y is None:
+            if self.widget.pos_y is not None:
+                pos_y = self.widget.pos_y
+            else:
+                pos_y =0
 
         if self.widget.selected_idx + pos_y >= self.display.height:
             offset = (self.display.height - pos_y - 1)
@@ -72,8 +82,6 @@ class SelectRenderer(Renderer):
                 )
             else:
                 self.display.write_at_pos(pos_x, pos_y, ' ')
-            renderer = self.get_display_renderer_for(line)
-            _pos_x, pos_y = renderer.render(pos_x=pos_x+1, pos_y=pos_y)
             idx += 1
         # return the coordinate after the content
         # ToDo width, height handling
@@ -91,7 +99,6 @@ class SelectController(WidgetController):
     """
     __used_for__ = ISelectWidget
 
-
     def on_down(self, signal):
         """
         Handles down signals
@@ -107,6 +114,7 @@ class SelectController(WidgetController):
         new_idx = self.next_focusable_widget_idx_down()
         if new_idx is None:
             return False
+
         # store the new index into the widget
         self.widget.selected_idx = self.change_focus(
                 self.widget.selected_idx,
@@ -163,7 +171,6 @@ class SelectController(WidgetController):
     def change_focus(self, old_focus_idx, new_focus_idx):
         # Remember old selection index
         old_focussed_widget = self.widget.content[old_focus_idx]
-
         # The new focus
         new_focussed_widget = self.widget.content[new_focus_idx]
         # Shift the focus to the new widget. Since the focus is global,

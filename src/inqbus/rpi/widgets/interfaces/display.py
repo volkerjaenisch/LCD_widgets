@@ -51,6 +51,21 @@ class IDisplay(IDisplayHardware):
                 The string to be written on the display
         """
 
+    def scroll_up(self):
+        """
+        Scrolls the display one line up
+        Returns:
+
+        """
+
+    def scroll_down(self):
+        """
+        Scrolls the display one line up
+        Returns:
+
+        """
+
+
 
 class IConsoleDisplay(IDisplay):
     """
