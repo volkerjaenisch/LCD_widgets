@@ -150,9 +150,13 @@ class Renderer(object):
         self._rendered_height = value
 
     def render_position(self, pos_x, pos_y):
-        if self.widget.fixed_pos or pos_x is None:
+        if self.widget.fixed_pos:
             self.set_position(self.widget.pos_x, self.widget.pos_y)
         else:
+            if pos_x is None:
+                pos_x = 0
+            if pos_y is None:
+                pos_y = 0
             self.set_position(pos_x, pos_y)
         return self.rendered_pos_x, self.rendered_pos_y
 
@@ -167,6 +171,24 @@ class Renderer(object):
         Returns:
             the cursor position after rendering the widget
         """
+        if self.widget.has_focus:
+            if pos_y is not None:
+                if (pos_y < 0 or pos_y > self.display.height-1):
+                    if self.widget.parent.autoscroll:
+                        result = self.widget.parent.render_for_display(display=self.display)
+                        if result:
+                            self.was_rendered = True
+                        return result
+
+            else:
+                if self.rendered_pos_y is not None:
+                    if self.rendered_pos_y < 0 or self.rendered_pos_y > self.display.height-1:
+                        if self.widget.parent.autoscroll:
+                            result = self.widget.parent.render_for_display(display=self.display)
+                            if result:
+                                self.was_rendered = True
+                            return result
+
         self.clear()
         self.render_position(pos_x, pos_y)
 
@@ -177,8 +199,8 @@ class Renderer(object):
                 render_content
         )
         self.rendered_width = len(render_content)
-
-        return self.rendered_pos_x, self.rendered_pos_y
+        self.was_rendered = True
+        return self
 
     def render_focus(self, content):
         # If the widget is focussed

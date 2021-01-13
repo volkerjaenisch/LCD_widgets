@@ -46,30 +46,37 @@ gauge2 = Gauge(
 page.add_widget(gauge2)
 
 
-gauge3 = GaugeTarget(
+
+sub_page = Page(
         pos_y=1,
-        pos_x=0,
+        pos_x=0)
+
+page.add_widget(sub_page)
+
+
+gauge3 = GaugeTarget(
         label='Mois.',
         initial_value=1.6,
         initial_reading_value=1.6,
         increment=0.1,
         fixed_pos=True
 )
-page.add_widget(gauge3)
+sub_page.add_widget(gauge3)
 
 irrigation = Checkbox(
         label='Irrigation',
-        pos_y=2,
-        pos_x=0,
 )
-page.add_widget(irrigation)
+sub_page.add_widget(irrigation)
 
 pump = Checkbox(
         label='Pumping',
-        pos_y=3,
-        pos_x=0,
 )
-page.add_widget(pump)
+sub_page.add_widget(pump)
+
+otto = Checkbox(
+        label='Otto',
+)
+sub_page.add_widget(otto)
 
 
 gui.set_layout(page)

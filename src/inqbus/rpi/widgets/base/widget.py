@@ -33,7 +33,7 @@ class Widget(object):
                  height=None,
                  render_on_content_change=True,
                  autoscroll=True,
-                 fixed_pos=False,
+                 fixed_pos=True,
                  fixed_size=False,
                  ):
         self._label = label
@@ -51,6 +51,12 @@ class Widget(object):
         self._controller = IWidgetController(self)
         self.renderers = {}
         self.init_content()
+
+    def __str__(self):
+        result = self.__class__.__name__
+        if self._label is not None:
+            result += ':' + self._label
+        return result
 
     def init_content(self):
         """
@@ -275,7 +281,7 @@ class Widget(object):
         """
         gui = getUtility(IGUI)
         for display in gui.displays:
-            renderer = getMultiAdapter((self, display), IRenderer)
+            renderer = self.get_renderer_for_display(display)
             if renderer:
                 renderer.clear()
 

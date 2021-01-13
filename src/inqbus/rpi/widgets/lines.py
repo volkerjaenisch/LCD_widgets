@@ -26,7 +26,7 @@ class Lines(Widget):
             # if line is string
             if isinstance(line_val, str):
                 # .. then transform it into a line instance
-                line = Line()
+                line = Line(fixed_pos=False)
                 line.render_on_content_change = False
                 line.content = line_val
                 self._content.append(line)

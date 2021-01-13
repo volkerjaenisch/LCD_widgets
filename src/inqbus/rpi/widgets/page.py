@@ -63,7 +63,10 @@ class PageRenderer(Renderer):
 
         """
         for widget in self.widget.content:
-            widget.render_for_display(self.display)
+            if IPageWidget.providedBy(widget):
+                a=5
+            renderer = widget.render_for_display(self.display, pos_x=pos_x, pos_y=pos_y)
+            pos_y = renderer.rendered_pos_y + 1
         # return the coordinate after the content
         # ToDo width, height handling
 

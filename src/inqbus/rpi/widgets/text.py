@@ -53,6 +53,7 @@ class TextRenderer(Renderer):
                         pos_y,
                         content[start_pos_x:start_pos_x + width]
                 )
+                pos_y += 1
                 break
             else:
                 self.display.write_at_pos(
@@ -64,6 +65,7 @@ class TextRenderer(Renderer):
             pos_y += 1
         self.rendered_height = pos_y - start_pos_y
         self.rendered_width = width
+        self.was_rendered = True
         # return the coordinate after the content
         return pos_x, pos_y + 1
 
